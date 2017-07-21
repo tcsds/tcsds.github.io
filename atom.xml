@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>学习博客</title>
+  
+  <link href="/atom.xml" rel="self"/>
+  
+  <link href="http://yoursite.com/"/>
+  <updated>2017-07-21T07:45:37.290Z</updated>
+  <id>http://yoursite.com/</id>
+  
+  <author>
+    <name>善良的右行</name>
+    
+  </author>
+  
+  <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>新一代人工智能发展规划</title>
+    <link href="http://yoursite.com/2017/07/21/%E6%96%B0%E4%B8%80%E4%BB%A3%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E5%8F%91%E5%B1%95%E8%A7%84%E5%88%92/"/>
+    <id>http://yoursite.com/2017/07/21/新一代人工智能发展规划/</id>
+    <published>2017-07-21T09:24:30.279Z</published>
+    <updated>2017-07-21T07:45:37.290Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;人工智能的迅速发展将深刻改变人类社会生活、改变世界。为抢抓人工智能发展的重大战略机遇，构筑我国人工智能发展的先发优势，加快建设创新型国家和世界科技强国，按照党中央、国务院部署要求，制定本规划。&lt;/p&gt;
+&lt;h2 id=&quot;一、-战略态势&quot;&gt;&lt;a href=&quot;#一、-战略态势&quot; 
+    
+    </summary>
+    
+    
+  </entry>
+  
+</feed>
