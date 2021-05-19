@@ -53,11 +53,13 @@ $$
 <p>​		GCN块的架构如图3所示。每个GCN块由2个图卷积(GraphConv)层、6个图残余卷积(GraphResConv)层和1个全连通(FC)层组成。第一个GraphConv层和所有的GraphResConv层有256个通道。最后一个GraphConv层有32个通道。FC层有两个通道分别在x轴和y轴上输出偏移量。</p>
 <h1 id="分析与结果"><a class="markdownIt-Anchor" href="#分析与结果"></a> 分析与结果</h1>
 <p>​		本实验使用的数据集为膝关节、肺、指骨和髋关节不同解剖结构的4个x射线图像数据集上对我们的方法进行了验证。</p>
-<p>表1：CTN和现有的8种方法在4个数据集上的性能</p>
+<center>表1：CTN和现有的8种方法在4个数据集上的性能</center>
 <p><img src="/2021/05/19/ContourTransformerNetworkforOne-shotSegmentationofAnatomicalStructures/image-20210507203208865.png%22" alt></p>
-<p>表2：在训练中使用更多未标记的图像。我们将膝关节和趾骨的训练集从100张图像扩展到500张图像，以检验我们的方法利用未标记数据的能力。两种情况都只使用一个样本。</p>
+<p>将膝关节和趾骨的训练集从100张图像扩展到500张图像，以检验我们的方法利用未标记数据的能力。两种情况都只使用一个样本。</p>
+<center>表2：在训练中使用更多未标记的图像。</center>
 <p><img src="/2021/05/19/ContourTransformerNetworkforOne-shotSegmentationofAnatomicalStructures/image-20210507203330186.png" alt="image-20210507203330186"></p>
-<p>表3：消融研究。CTN的三个损失被单独去除，以评估它们对分割性能的影响</p>
+<p>CTN的三个损失被单独去除，以评估它们对分割性能的影响</p>
+<center>表3：消融研究。</center>
 <p><img src="/2021/05/19/ContourTransformerNetworkforOne-shotSegmentationofAnatomicalStructures/image-20210507203438920.png" alt="image-20210507203438920"></p>
 <h1 id="结论"><a class="markdownIt-Anchor" href="#结论"></a> 结论</h1>
 <p>​		在本文中，我们提出了一种单镜头分割方法CTN，它可以用一个标记样本和一组未标记图像进行训练。我们证明，通过适当地利用解剖结构的正则化性质，用一个标记数据(样本)训练的CTN可以与用大量标记数据训练的全监督方法正面竞争。<br>
