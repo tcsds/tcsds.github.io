@@ -1,6 +1,284 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Contour Transformer Network for One-shot Segmentation of Anatomical Structures</title>
+    <url>/2021/05/19/ContourTransformerNetworkforOne-shotSegmentationofAnatomicalStructures/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><h1 id="作者及介绍"><a class="markdownIt-Anchor" href="#作者及介绍"></a> 作者及介绍</h1>
+<p>论文引用：Lu Y , Zheng K , Li W , et al. Contour Transformer Network for One-shot Segmentation of Anatomical Structures[J]. 2020.</p>
+<p>作者单位：University of South Carolina, Columbia, SC 29208, USA；University of<br>
+Rochester, Rochester, NY 14627, USA.</p>
+<p>论文出处：<a href="https://arxiv.org/abs/2012.01480">https://arxiv.org/abs/2012.01480</a></p>
+<h1 id="研究问题"><a class="markdownIt-Anchor" href="#研究问题"></a> 研究问题</h1>
+<p>​		解剖结构的准确分割是医学图像分析的关键。最先进的准确性通常是通过监督学习方法实现的，在这种方法中，以可变化的方式收集必要的专家标记的图像注释仍然是主要障碍。因此能够产生精确解剖结构分割的高效注释方法是非常需要的。由于没有丰富的像素级标签，目前最先进的分割方法<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup>、<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup>、<sup class="footnote-ref"><a href="#fn3" id="fnref3">[3]</a></sup>、<sup class="footnote-ref"><a href="#fn4" id="fnref4">[4]</a></sup>、<sup class="footnote-ref"><a href="#fn5" id="fnref5">[5]</a></sup>、<sup class="footnote-ref"><a href="#fn6" id="fnref6">[6]</a></sup>无法达到其最优性能[^7]。注释医学图像的分割掩模是非常耗时的，并且需要人体解剖及其变体方面的专业知识。因此，迅速解决方案需要训练一个精确的分割模型与有限的标记数据。<br>
+​		为了减少对大数据的依赖，近年来研究了单标签/少标签图像分割方法。知识转移广泛应用于自然图像的一次/几次分割。这些方法利用外部标记的数据集(如PASCAL VOC和MS-COCO)学习分割的一般知识，并能够将知识转移到给定小标记支持集的对象类别中。虽然在训练过程中没有看到要分割的对象类别，但是仍然需要一个大的、有不同对象标记的数据集。在医学图像领域，特别是x光平片，这样的标记数据集还是小范围用到。更重要的是，在现有的单次/少次标签方法和完全监督的方法之间仍有很大的精度差距。</p>
+<h1 id="概念框架"><a class="markdownIt-Anchor" href="#概念框架"></a> 概念框架</h1>
+<p>​		在这篇论文中，我们根据人类注释的能力模仿改进了一种有效的标注的解剖结构分割方法来解决上述出现数据集与有限的标记数据较少和提高解剖结构准确度的问题，称为轮廓Transformer网络(CTN)。<br>
+​		我们的工作灵感来自于人类注释的能力，从一个或很少的例子学习解剖结构的分割。这是通过从样本中了解目标物体的形状和外观特征，并在新图像中积极寻找具有相似特征的物体来实现的。为了模仿这个行为，我们根据解剖结构的问题改进了一种半监督学习方法，利用标记和未标记图像之间的目标对象的形状和外观相似性来训练分割模型。因此CTN能够从能够从一个标记的范例和一组未标记的图像学习分割，而不依赖于外部标记的数据集(如图1所示)。</p>
+<p><img src="/2021/05/19/ContourTransformerNetworkforOne-shotSegmentationofAnatomicalStructures/image-20210507165201136.png" alt="image-20210507165201136"></p>
+<center>图1 CTN概况</center>
+<p>​		CTN可以学会仅从一个样本和一组未标记的图像中准确分割解剖结构。相比之下，完全监督的方法，例如DeepLab训练模型，在标记图像不足的情况下训练会失败。通过从一个样本中学习，CTN被训练成使轮廓适合物体边界。图像轮廓就是位于已知边界上的边缘所形成的连续曲线，因此轮廓可用于图像分割，能提供大量关于物体边界形状的信息。在训练中，它采用一个标记样本和一组未标记图像作为输入。经过一个CNN编码器和五个GCN轮廓演化块后，输出预测轮廓。我们使用三个一次性损失(即轮廓感知损失、轮廓弯曲损失和边缘损失)来训练网络，旨在使预测轮廓具有与样本相似的轮廓特征。</p>
+<p><img src="/2021/05/19/ContourTransformerNetworkforOne-shotSegmentationofAnatomicalStructures/image-20210507210709990.png" alt></p>
+<center>图2 轮廓Transformer网络</center>
+<p>​		由于解剖结构固有的正规化性质，不同(x射线)图像中的同一解剖结构可能具有共同的特征或属性，如解剖结构的形状、外观和沿结构对象边界的梯度。虽然不同的图像不能直接进行比较，但我们可以只比较它们的共同特征，用样本分割的方法对其他未标记的图像进行部分引导，从而使CTN可以一次性训练。<br>
+​		具体来说，我们将分割问题表述为学习由级联图卷积网络(GCN)建模的轮廓进化行为。提出了三种基于轮廓的可微损失函数，即轮廓感知损失、轮廓弯曲损失和边缘损失，分别用来描述外观、形状和边缘响应的共同特征。对于每一幅未标记的图像，CTN将样本轮廓作为初始化，然后在三种丢失的指导下逐步演化。我们在4个x射线图像分割任务中评估了CTN，并证明了它显著优于以前的一次性分割方法，与完全监督的方法相比具有竞争力。</p>
+<h1 id="所使用的方法"><a class="markdownIt-Anchor" href="#所使用的方法"></a> 所使用的方法</h1>
+<p>​		将解剖结构分割问题分解为两个步骤:ROI(感兴趣区域)检测和ROI分割。ROI检测可以通过地标检测来实现，在过去的文献[^8]，<sup class="footnote-ref"><a href="#fn6" id="fnref6:1">[6:1]</a></sup>，<sup class="footnote-ref"><a href="#fn7" id="fnref7">[7]</a></sup>，<sup class="footnote-ref"><a href="#fn8" id="fnref8">[8]</a></sup>中已经有了很好的研究，所以我们将检测到的ROI(带有噪声和误差)作为输入图像来实现非常高的分割精度。<br>
+​		CTN的训练流程图如图2所示。我们的任务是从一组未标记的图像{I}和一个样本图像中学习一个解剖结构的分割模型及其目标结构的分割 。我们将每个分割模型作为一个轮廓，由固定数量的均匀间隔的顶点表示，C = {<span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>p</mi><mn>1</mn></msub></mrow><annotation encoding="application/x-tex">p_1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.19444em;"></span><span class="mord"><span class="mord mathdefault">p</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>,<span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>p</mi><mn>2</mn></msub></mrow><annotation encoding="application/x-tex">p_2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.19444em;"></span><span class="mord"><span class="mord mathdefault">p</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mo separator="true">,</mo><mo>…</mo><mo separator="true">,</mo><msub><mi>p</mi><mi>N</mi></msub></mrow><annotation encoding="application/x-tex">,…,p_N</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.19444em;"></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="minner">…</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathdefault">p</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.32833099999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.10903em;">N</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>}。对于每个未标记的图像I，其轮廓C被初始化，将样本轮廓放置在图像的中心。CTN对i中将初始轮廓C替换到目标结构边界的轮廓演化策略进行建模，可表示为:</p>
+<p class="katex-block"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math><semantics><mtable width="100%"><mtr><mtd width="50%"></mtd><mtd><mrow><msub><mi>F</mi><mi mathvariant="bold-italic">θ</mi></msub><mrow><mo fence="true">(</mo><msub><mi>I</mi><mi>E</mi></msub><mo separator="true">,</mo><msub><mi>C</mi><mi>E</mi></msub><mo separator="true">,</mo><mi>I</mi><mo separator="true">,</mo><mi>C</mi><mo fence="true">)</mo></mrow><mo>=</mo><mi mathvariant="normal">Δ</mi><mi>C</mi></mrow></mtd><mtd width="50%"></mtd><mtd><mtext>(1)</mtext></mtd></mtr></mtable><annotation encoding="application/x-tex">F_{\boldsymbol{\theta}}\left(I_{E}, C_{E}, I, C\right)=\Delta C\tag{1}
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.13889em;">F</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.33610799999999996em;"><span style="top:-2.5500000000000003em;margin-left:-0.13889em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord boldsymbol mtight" style="margin-right:0.03194em;">θ</span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="minner"><span class="mopen delimcenter" style="top:0em;">(</span><span class="mord"><span class="mord mathdefault" style="margin-right:0.07847em;">I</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.32833099999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.07847em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight" style="margin-right:0.05764em;">E</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.07153em;">C</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.32833099999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.07153em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight" style="margin-right:0.05764em;">E</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathdefault" style="margin-right:0.07847em;">I</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathdefault" style="margin-right:0.07153em;">C</span><span class="mclose delimcenter" style="top:0em;">)</span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord">Δ</span><span class="mord mathdefault" style="margin-right:0.07153em;">C</span></span><span class="tag"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord text"><span class="mord">(</span><span class="mord"><span class="mord">1</span></span><span class="mord">)</span></span></span></span></span></span></p>
+<p>其中F表示重量θ的CTN。该算法以样本和目标图像为输入，输出轮廓顶点的估计偏移量。<br>
+由于I上缺乏标签，完全监督的损失不能用于训练CTN。在这里，我们利用将分割为轮廓建模的优势，即，它提供了分割边界和形状的自然表示。特别地，我们不是将模型预测与地面真理在完全监督的设置中进行比较，而是通过测量它们的形状与局部图像模式之间的差异以及以及它们之间的不同之处来比较C与示样本轮廓 。这是通过识别所激发的，即目标图像中的正确分割应该类似于其整体形状的示例性轮廓，以及对应顶点的局部图像外观模式。作为一个副作用，CTN的预测轮廓与样本轮廓自然对应。</p>
+<p><img src="/2021/05/19/ContourTransformerNetworkforOne-shotSegmentationofAnatomicalStructures/image-20210507200924819.png" alt="image-20210507200924819"></p>
+<center>图3：GCN块的网络架构</center>
+​		CTN使用五个级联的GCN块来模拟轮廓进化行为。他们将沿着轮廓的图像特征和一个表示顶点连接的邻接矩阵作为输入，并预测点向偏移量来更新轮廓。它们的架构是相同的，但权重是不同的。
+​		我们提出了两种新的损失来衡量形状和外观的差异:即轮廓感知损失和轮廓弯曲损失。此外我们采用经典的基于梯度的损失，表示为壁架，以进一步驱动轮廓边缘。CTN通过最小化三种损失的加权组合来训练，实现公式如下所示：
+$$
+\min _{\theta} \sum_{\{I\}} \lambda_{1} \cdot L_{p e r c}+\lambda_{2} \cdot L_{b e n d}+\lambda_{3} \cdot L_{e d g e}\tag{2}
+$$
+​		我们使用CNN-GCN架构来模拟轮廓演化。如图2所示，CTN由两部分组成:编码CNN的图像块和随后的级联轮廓进化GCN块。采用resnet - 50作为图像编码块的主干。以目标图像作为输入，输出编码局部图像外观的特征映射。实现的公式如下所示：
+$$
+f=F_{c n n}(I)\tag{3}
+$$
+​		所有轮廓演化块具有相同的多层GCN结构，但权重并不共享。GCN以具有顶点特征的轮廓图为输入，记为G = (C, E, Q)，其中C表示轮廓顶点，E表示连通性，Q表示顶点特征。轮廓上的每个顶点都与四个相邻的顶点相连，每边两个。通过双线性插值从顶点位置的特征图f中提取顶点特征，实现的过程如下所示:
+$$
+Q=\{f(\mathbf{p})\}_{\mathbf{p} \in C}\tag{4}
+$$
+​		其中f(p)表示f在p位置的双线性插值结果
+<p>​		5个GCN块体级联形成等高线。第k块以图<span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>G</mi><mi>k</mi></msub><mo>=</mo><mo stretchy="false">(</mo><msub><mi>C</mi><mi>k</mi></msub><mo separator="true">,</mo><mi>E</mi><mo separator="true">,</mo><msub><mi>Q</mi><mi>k</mi></msub><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">G_k= (C_k, E, Q_k)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault">G</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.33610799999999996em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.03148em;">k</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord"><span class="mord mathdefault" style="margin-right:0.07153em;">C</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.33610799999999996em;"><span style="top:-2.5500000000000003em;margin-left:-0.07153em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.03148em;">k</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathdefault" style="margin-right:0.05764em;">E</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathdefault">Q</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.33610799999999996em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.03148em;">k</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span>为输入，等高线顶点的输出偏移量:</p>
+<p class="katex-block"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math><semantics><mtable width="100%"><mtr><mtd width="50%"></mtd><mtd><mrow><msub><mi>C</mi><mrow><mi>k</mi><mo>+</mo><mn>1</mn></mrow></msub><mo>=</mo><msub><mi>C</mi><mi>k</mi></msub><mo>+</mo><msubsup><mi>F</mi><mrow><mi>g</mi><mi>c</mi><mi>n</mi></mrow><mi>k</mi></msubsup><mrow><mo fence="true">(</mo><msub><mi>C</mi><mi>k</mi></msub><mo separator="true">,</mo><mi>E</mi><mo separator="true">,</mo><msub><mi>Q</mi><mi>k</mi></msub><mo fence="true">)</mo></mrow></mrow></mtd><mtd width="50%"></mtd><mtd><mtext>(5)</mtext></mtd></mtr></mtable><annotation encoding="application/x-tex">C_{k+1}=C_{k}+F_{g c n}^{k}\left(C_{k}, E, Q_{k}\right)\tag{5}
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.891661em;vertical-align:-0.208331em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.07153em;">C</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361079999999999em;"><span style="top:-2.5500000000000003em;margin-left:-0.07153em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight" style="margin-right:0.03148em;">k</span><span class="mbin mtight">+</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.208331em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.07153em;">C</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.33610799999999996em;"><span style="top:-2.5500000000000003em;margin-left:-0.07153em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight" style="margin-right:0.03148em;">k</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1.282216em;vertical-align:-0.383108em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.13889em;">F</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.899108em;"><span style="top:-2.4530000000000003em;margin-left:-0.13889em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight" style="margin-right:0.03588em;">g</span><span class="mord mathdefault mtight">c</span><span class="mord mathdefault mtight">n</span></span></span></span><span style="top:-3.1130000000000004em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight" style="margin-right:0.03148em;">k</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.383108em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="minner"><span class="mopen delimcenter" style="top:0em;">(</span><span class="mord"><span class="mord mathdefault" style="margin-right:0.07153em;">C</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.33610799999999996em;"><span style="top:-2.5500000000000003em;margin-left:-0.07153em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight" style="margin-right:0.03148em;">k</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathdefault" style="margin-right:0.05764em;">E</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathdefault">Q</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.33610799999999996em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight" style="margin-right:0.03148em;">k</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose delimcenter" style="top:0em;">)</span></span></span><span class="tag"><span class="strut" style="height:1.282216em;vertical-align:-0.383108em;"></span><span class="mord text"><span class="mord">(</span><span class="mord"><span class="mord">5</span></span><span class="mord">)</span></span></span></span></span></span></p>
+<p>​		使用范例轮廓进行初始化，最后一个轮廓进化块的输出为最终输出.</p>
+<p class="katex-block"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math><semantics><mtable width="100%"><mtr><mtd width="50%"></mtd><mtd><mrow><msub><mi>C</mi><mi>O</mi></msub><mo>=</mo><msub><mi>C</mi><mi>E</mi></msub></mrow></mtd><mtd width="50%"></mtd><mtd><mtext>(6)</mtext></mtd></mtr></mtable><annotation encoding="application/x-tex">C_O=C_E\tag{6}
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.07153em;">C</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.32833099999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.07153em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.02778em;">O</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.07153em;">C</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.32833099999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.07153em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.05764em;">E</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span><span class="tag"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord text"><span class="mord">(</span><span class="mord"><span class="mord">6</span></span><span class="mord">)</span></span></span></span></span></span></p>
+<p>​		GCN块的架构如图3所示。每个GCN块由2个图卷积(GraphConv)层、6个图残余卷积(GraphResConv)层和1个全连通(FC)层组成。第一个GraphConv层和所有的GraphResConv层有256个通道。最后一个GraphConv层有32个通道。FC层有两个通道分别在x轴和y轴上输出偏移量。</p>
+<h1 id="分析与结果"><a class="markdownIt-Anchor" href="#分析与结果"></a> 分析与结果</h1>
+<p>​		本实验使用的数据集为膝关节、肺、指骨和髋关节不同解剖结构的4个x射线图像数据集上对我们的方法进行了验证。</p>
+<p>表1：CTN和现有的8种方法在4个数据集上的性能</p>
+<p><img src="/2021/05/19/ContourTransformerNetworkforOne-shotSegmentationofAnatomicalStructures/image-20210507203208865.png%22" alt></p>
+<p>表2：在训练中使用更多未标记的图像。我们将膝关节和趾骨的训练集从100张图像扩展到500张图像，以检验我们的方法利用未标记数据的能力。两种情况都只使用一个样本。</p>
+<p><img src="/2021/05/19/ContourTransformerNetworkforOne-shotSegmentationofAnatomicalStructures/image-20210507203330186.png" alt="image-20210507203330186"></p>
+<p>表3：消融研究。CTN的三个损失被单独去除，以评估它们对分割性能的影响</p>
+<p><img src="/2021/05/19/ContourTransformerNetworkforOne-shotSegmentationofAnatomicalStructures/image-20210507203438920.png" alt="image-20210507203438920"></p>
+<h1 id="结论"><a class="markdownIt-Anchor" href="#结论"></a> 结论</h1>
+<p>​		在本文中，我们提出了一种单镜头分割方法CTN，它可以用一个标记样本和一组未标记图像进行训练。我们证明，通过适当地利用解剖结构的正则化性质，用一个标记数据(样本)训练的CTN可以与用大量标记数据训练的全监督方法正面竞争。<br>
+​		我们工作的一个关键假设是，相同的解剖结构在不同的图像中具有相似的形状和视觉模式。基于这一假设，CTN采用了一种带有损失的半监督训练策略来度量未标记图像分割与样本之间的相似性。CTN与现有的大多数分割方法(单次分割和有监督分割)的一个关键区别在于，CTN将分割建模为轮廓，并学习轮廓的演化行为。通过使用轮廓表示，可以直接比较分割结果的形状，以及测量沿分割边界的视觉外观的相似性。通过研究实验可以得到以下的结论：</p>
+<ul>
+<li>形状相似度可以用两条轮廓线的TPS弯曲度来度量，并作为训练损失，对形状的剧烈变化敏感，适合于进行形状正则化以防止不规则分割。</li>
+<li>可以通过比较ImageNet训练的VGG特征空间中相应顶点的特征来评估两个轮廓的视觉图案相似度VGG特征空间，这是目前一个相对好的解决问题的方法。</li>
+<li>由于VGG是在ImageNet上训练的，它的特点是对结构突出，对低层图像变化不敏感，这是比较两个分割轮廓的视觉相似性的理想选择。</li>
+</ul>
+<h1 id="对未来研究的启示"><a class="markdownIt-Anchor" href="#对未来研究的启示"></a> 对未来研究的启示</h1>
+<p>​		通过分析CTN在训练集的表现可以总结，CTN的性能可以通过使用更多的未标记数据进行训练和加入human-in-the-loop（人为回环）<a href="https://www.aaai.org/ocs/index.php/AAAI/AAAI18/paper/view/17422/15847" title="人为回环">1</a>的校正。通过使用更多未标记的训练数据，CTN可以在不增加注释的情况下达到最先进的监督分割方法(例如DeepLab)的性能。人机回圈校正具有很高的人力成本效益，即注释者只需要绘制误分割的部分轮廓。在人机回圈的情况下，CTN的性能可以远远超过受监督的方法。要使一次学习方法在临床应用中有用，特别是对精度要求很高的方法，能够有效地结合人机回圈中的校正以提高性能是一个关键特征。然而有的大多数一次性方法都不能提供这样的机制。</p>
+<h1 id="对实践的启示"><a class="markdownIt-Anchor" href="#对实践的启示"></a> 对实践的启示</h1>
+<p>​		CTN的成功是通过大量利用目标解剖结构在不同图像中具有相似形状和外观的假设来实现的。如果解剖结构在形状和/或外观上与样本有显著差异(例如，由病理引起)，轮廓弯曲损失和轮廓感知损失可能会对CTN提供错误的指导，我们预计CTN的性能会下降。这一限制可以通过具有某些手动校正努力的人机回圈中的机制部分地解决。CTN的另一个限制是它只能利用一个样本，并且不支持少镜头学习场景。这主要是因为轮廓弯曲损失和轮廓感知损失是在样本和未标记图像之间成对计算的。未来的研究可以通过GroupWise损失计算来研究CTN扩展到少机会学习场景。此外，CTN向3D分割的扩展可能是未来研究的一个重要领域。与基于FCN的分割方法不同，基于FCN的分割方法可以通过使用3D卷积直接应用于3D任务，而将基于2D轮廓的CTN公式扩展到基于3D曲面的公式是非常重要的，值得进一步研究。</p>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p>L.-C. Chen, K. Zhu, G. Papandreou, F. Schroff, and H. Adam. Encoderdecoder with atrous separable convolution   for semantic image segmentation. In Proceedings of the European Conference on Computer Vision, pp. 801–818, 2018. <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn2" class="footnote-item"><p>J . Dolz, K. Gopinath, J. Y uan, H. Lombaert, C. Desrosiers, and I. B. Ayed. Hyperdense-net: A hyper-densely connected cnn for multimodal image segmentation. IEEE Transactions on Medical Imaging, 38(5):1116–1126, 2018 <a href="#fnref2" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn3" class="footnote-item"><p>A. P . Harrison, Z. Xu, K. George, L. Lu, R. M. Summers, and D. J. Mollura. Progressive and multi-path holistically nested neural networks for pathological lung segmentation from ct images. In International Conference on Medical Image Computing and Computer-Assisted Intervention, pp. 621–629, 2017. <a href="#fnref3" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn4" class="footnote-item"><p>O. Ronneberger, P . Fischer, and T. Brox. U-net: Convolutional networks for biomedical image segmentation. In International Conference on Medical Image Computing and Computer-Assisted Intervention, pp. 234–241, 2015. <a href="#fnref4" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn5" class="footnote-item"><p>H. R. Roth et al. Spatial aggregation of holistically-nested convolutional neural networks for automated pancreas localization and segmentation. Medical Image Analysis, 45:94–107, 2018. <a href="#fnref5" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn6" class="footnote-item"><p>J. Wang et al. Deep high-resolution representation learning for visual recognition. IEEE Transactions on Pattern Analysis and Machine Intelligence, 2020.<br>
+[^ 7]:N. Tajbakhsh, L. Jeyaseelan, Q. Li, J. N. Chiang, Z. Wu, and X. Ding. Embracing imperfect datasets: A review of deep learning solutions for medical image segmentation. Medical Image Analysis, page 101693, 2020.<br>
+[^ 8]:R. Chen, Y . Ma, N. Chen, D. Lee, and W. Wang. Cephalometric landmark detection by attentive feature pyramid fusion and regressionvoting. In International Conference on Medical Image Computing and Computer-Assisted Intervention, pp. 873–881. Springer, 2019. <a href="#fnref6" class="footnote-backref">↩︎</a> <a href="#fnref6:1" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn7" class="footnote-item"><p>W. Li et al. Structured landmark detection via topology-adapting deep graph learning. arXiv preprint arXiv:2004.08190, 2020. <a href="#fnref7" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn8" class="footnote-item"><p>W. Wu, C. Qian, S. Yang, Q. Wang, Y . Cai, and Q. Zhou. Look at boundary: A boundary-aware face alignment algorithm. In Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition, pp. 2129–2138, 2018. <a href="#fnref8" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
+]]></content>
+      <categories>
+        <category>文献阅读</category>
+        <category>医学图像</category>
+      </categories>
+      <tags>
+        <tag>VIT</tag>
+        <tag>图像分割</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>深度学习绘图工具PlotNeuralNet教程</title>
+    <url>/2021/05/10/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%BB%98%E5%9B%BE%E5%B7%A5%E5%85%B7PlotNeuralNet%E6%95%99%E7%A8%8B/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><h1 id="入门案例"><a class="markdownIt-Anchor" href="#入门案例"></a> 入门案例</h1>
+<blockquote>
+<p>本文参考了[不够优秀][1]</p>
+</blockquote>
+<p>该案例是pyexample中的例子，能够通过 bash …/tikzmake.sh test_simple 直接运行出来，</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> sys</span><br><span class="line">sys.path.append(<span class="string">&#x27;../&#x27;</span>)</span><br><span class="line"><span class="keyword">from</span> pycore.tikzeng <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">from</span> pycore.blocks  <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">arch = [</span><br><span class="line">    to_head( <span class="string">&#x27;..&#x27;</span> ),</span><br><span class="line">    to_cor(),</span><br><span class="line">    to_begin(),</span><br><span class="line">    to_Conv(name=<span class="string">&quot;conv1&quot;</span>, s_filer=<span class="number">512</span>, n_filer=<span class="number">64</span>, offset=<span class="string">&quot;(0,0,0)&quot;</span>, to=<span class="string">&quot;(0,0,0)&quot;</span>, height=<span class="number">64</span>, depth=<span class="number">64</span>, width=<span class="number">2</span>, opacity=<span class="number">0.5</span>，caption=<span class="string">&#x27;conv1&#x27;</span> ),</span><br><span class="line">    to_Pool(name=<span class="string">&quot;pool1&quot;</span>, offset=<span class="string">&quot;(0,0,0)&quot;</span>, to=<span class="string">&quot;(conv1-east)&quot;</span>,caption=<span class="string">&#x27;pool1&#x27;</span>),</span><br><span class="line">    to_Conv(name=<span class="string">&quot;conv2&quot;</span>, s_filer=<span class="number">128</span>, n_filer=<span class="number">64</span>, offset=<span class="string">&quot;(1,0,0)&quot;</span>, to=<span class="string">&quot;(pool1-east)&quot;</span>, height=<span class="number">32</span>, depth=<span class="number">32</span>, width=<span class="number">2</span>,caption=<span class="string">&#x27;conv2&#x27;</span>),</span><br><span class="line">    to_connection(<span class="string">&quot;pool1&quot;</span>, <span class="string">&quot;conv2&quot;</span>), </span><br><span class="line">    to_Pool(name=<span class="string">&quot;pool2&quot;</span>, offset=<span class="string">&quot;(0,0,0)&quot;</span>, to=<span class="string">&quot;(conv2-east)&quot;</span>, height=<span class="number">28</span>, depth=<span class="number">28</span>, width=<span class="number">1</span>, caption=<span class="string">&#x27;pool2&#x27;</span>),</span><br><span class="line">    to_SoftMax(name=<span class="string">&quot;soft1&quot;</span>, s_filer=<span class="number">10</span>, offset=<span class="string">&quot;(3,0,0)&quot;</span>, to=<span class="string">&quot;(pool1-east)&quot;</span>, caption=<span class="string">&quot;SOFT&quot;</span> ),</span><br><span class="line">    to_connection(<span class="string">&quot;pool2&quot;</span>, <span class="string">&quot;soft1&quot;</span>),    </span><br><span class="line">    to_end()</span><br><span class="line">    ]</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span>():</span></span><br><span class="line">    namefile = <span class="built_in">str</span>(sys.argv[<span class="number">0</span>]).split(<span class="string">&#x27;.&#x27;</span>)[<span class="number">0</span>]</span><br><span class="line">    to_generate(arch, namefile+<span class="string">&#x27;.tex&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    main()</span><br></pre></td></tr></table></figure>
+<p>结果如图所示<br>
+<img src="/2021/05/10/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%BB%98%E5%9B%BE%E5%B7%A5%E5%85%B7PlotNeuralNet%E6%95%99%E7%A8%8B/demo.jpg" alt="入门案例"></p>
+<h2 id="卷积层api详解"><a class="markdownIt-Anchor" href="#卷积层api详解"></a> 卷积层api详解</h2>
+<p>to_Conv(name=“conv1”, s_filer=512, n_filer=64, offset=&quot;(0,0,0)&quot;, to=&quot;(0,0,0)&quot;, height=64, depth=64, width=2, caption=‘conv1’ )</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>参数值</th>
+<th>函数的功能</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>name</td>
+<td>“conv1”</td>
+<td>该层的名字</td>
+</tr>
+<tr>
+<td>s_filer(z_label)</td>
+<td>512</td>
+<td>写在左下角的z方向的数字</td>
+</tr>
+<tr>
+<td>n_filer(x_label)</td>
+<td>64</td>
+<td>写在左下角的x方向的数字</td>
+</tr>
+<tr>
+<td>offset(x,y,z)</td>
+<td>(0,0,0)</td>
+<td>和上一个图形在x,y,z方向上的偏移值，若x为1,则图像位于前面1的位置</td>
+</tr>
+<tr>
+<td>to(x,y,z)</td>
+<td>(0,0,0)</td>
+<td>若为(0,0,0)表示第一个图</td>
+</tr>
+<tr>
+<td>height</td>
+<td>64</td>
+<td>图像的高度,若没填，则为上一个图的一半</td>
+</tr>
+<tr>
+<td>depth</td>
+<td>64</td>
+<td>图像的深度,若没填，则为上一个图的一半</td>
+</tr>
+<tr>
+<td>width</td>
+<td>2</td>
+<td>图像的宽度,若没填，则为上一个图的一半</td>
+</tr>
+<tr>
+<td>opacity</td>
+<td>0.5</td>
+<td>图像的透明度</td>
+</tr>
+<tr>
+<td>caption</td>
+<td>2</td>
+<td>卷积层的名称</td>
+</tr>
+</tbody>
+</table>
+<h2 id="池化层api详解"><a class="markdownIt-Anchor" href="#池化层api详解"></a> 池化层api详解</h2>
+<p>to_Pool(name=“pool1”, offset=&quot;(0,0,0)&quot;, to=&quot;(conv1-east)&quot;,caption=‘pool1’)</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>参数值</th>
+<th>函数的功能</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>name</td>
+<td>“pool1”</td>
+<td>该层的名字</td>
+</tr>
+<tr>
+<td>offset(x,y,z)</td>
+<td>(0,0,0)</td>
+<td>和上一个图形在x,y,z方向上的偏移值，若都为0，则和原图像的位置相同</td>
+</tr>
+<tr>
+<td>to(x,y,z)</td>
+<td>“(conv1-east)”</td>
+<td>上一个图的name，再加上&quot;-east&quot;，跟在name这个图的后面</td>
+</tr>
+<tr>
+<td>height</td>
+<td>32</td>
+<td>若没填，则为上一个图的一半</td>
+</tr>
+<tr>
+<td>depth</td>
+<td>32</td>
+<td>若没填，则为上一个图的一半</td>
+</tr>
+<tr>
+<td>width</td>
+<td>1</td>
+<td>若没填，则为上一个图的一半</td>
+</tr>
+<tr>
+<td>opacity</td>
+<td>若为0.5</td>
+<td>透明度</td>
+</tr>
+</tbody>
+</table>
+<h2 id="激活函数-softmax"><a class="markdownIt-Anchor" href="#激活函数-softmax"></a> 激活函数-SoftMax</h2>
+<p>to_SoftMax(name=“soft1”, s_filer=10, offset=&quot;(3,0,0)&quot;, to=&quot;(pool1-east)&quot;, caption=“SOFT” )</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>参数值</th>
+<th>函数的功能</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>name</td>
+<td>“soft1”</td>
+<td>该层的名字</td>
+</tr>
+<tr>
+<td>s_filer(z_label)</td>
+<td>10</td>
+<td>写在左下角的z方向的数字</td>
+</tr>
+<tr>
+<td>offset(x,y,z)</td>
+<td>“(3,0,0)”</td>
+<td>和上一个图形在x,y,z方向上的偏移值，若都为0，则和原图像的位置相同</td>
+</tr>
+<tr>
+<td>to(x,y,z)</td>
+<td>“(pool1-east)”</td>
+<td>上一个图的name，再加上&quot;-east&quot;，跟在name这个图的后面</td>
+</tr>
+<tr>
+<td>caption</td>
+<td>“SOFT”</td>
+<td>描述（会显示在图中）</td>
+</tr>
+</tbody>
+</table>
+<h2 id="箭头连接"><a class="markdownIt-Anchor" href="#箭头连接"></a> 箭头连接</h2>
+<p>to_connection( “pool1”, “conv2”)：从哪一个图到哪一个图画个箭头</p>
+<p>参考文献：</p>
+<p>[1]:<a href="https://blog.csdn.net/bug_with_me/article/details/107138400">https://blog.csdn.net/bug_with_me/article/details/107138400</a>, Windows下使用PlotNeuralNet+latex快速绘制深度学习模型图</p>
+]]></content>
+      <categories>
+        <category>学术笔记</category>
+        <category>可视化</category>
+      </categories>
+      <tags>
+        <tag>深度学习可视化</tag>
+        <tag>PlotNeuralNet</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>科研项目技术路线图绘制方法</title>
     <url>/2017/07/27/%E7%A7%91%E7%A0%94%E9%A1%B9%E7%9B%AE%E6%8A%80%E6%9C%AF%E8%B7%AF%E7%BA%BF%E5%9B%BE%E7%BB%98%E5%88%B6%E6%96%B9%E6%B3%95/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><blockquote>
@@ -262,7 +540,6 @@
       </categories>
       <tags>
         <tag>技术路线图</tag>
-        <tag>绘制技巧</tag>
       </tags>
   </entry>
 </search>

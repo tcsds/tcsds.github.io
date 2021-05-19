@@ -15,19 +15,19 @@
         name="viewport"
         content="width=device-width, initial-scale=1, maximum-scale=1"
       />
-      <title>Ahout Me |  图数据科学实验室</title>
+      <title>深度学习绘图工具PlotNeuralNet教程 |  图数据科学实验室</title>
   <meta name="generator" content="hexo-theme-ayer">
       
       <link rel="shortcut icon" href="/favicon.ico" />
        
-<link rel="stylesheet" href="../dist/main.css">
+<link rel="stylesheet" href="../../../../dist/main.css">
 
       <link
         rel="stylesheet"
         href="https://cdn.jsdelivr.net/gh/Shen-Yu/cdn/css/remixicon.min.css"
       />
       
-<link rel="stylesheet" href="../css/custom.css">
+<link rel="stylesheet" href="../../../../css/custom.css">
  
       <script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
        
@@ -73,8 +73,8 @@ var _hmt = _hmt || [];
     <main class="content on">
       <section class="outer">
   <article
-  id="page-"
-  class="article article-type-page"
+  id="post-深度学习绘图工具PlotNeuralNet教程"
+  class="article article-type-post"
   itemscope
   itemprop="blogPost"
   data-scroll-reveal
@@ -84,19 +84,211 @@ var _hmt = _hmt || [];
     <header class="article-header">
        
 <h1 class="article-title sea-center" style="border-left:0" itemprop="name">
-  Ahout Me
+  深度学习绘图工具PlotNeuralNet教程
 </h1>
  
 
       
     </header>
-       
+     
+    <div class="article-meta">
+      <a href="" class="article-date">
+  <time datetime="2021-05-10T11:44:06.000Z" itemprop="datePublished">2021-05-10</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="../../../../categories/%E5%AD%A6%E6%9C%AF%E7%AC%94%E8%AE%B0/">学术笔记</a> / <a class="article-category-link" href="../../../../categories/%E5%AD%A6%E6%9C%AF%E7%AC%94%E8%AE%B0/%E5%8F%AF%E8%A7%86%E5%8C%96/">可视化</a>
+  </div>
+  
+<div class="word_count">
+    <span class="post-time">
+        <span class="post-meta-item-icon">
+            <i class="ri-quill-pen-line"></i>
+            <span class="post-meta-item-text"> 字数统计:</span>
+            <span class="post-count">777</span>
+        </span>
+    </span>
+
+    <span class="post-time">
+        &nbsp; | &nbsp;
+        <span class="post-meta-item-icon">
+            <i class="ri-book-open-line"></i>
+            <span class="post-meta-item-text"> 阅读时长≈</span>
+            <span class="post-count">3 分钟</span>
+        </span>
+    </span>
+</div>
+ 
+    </div>
+      
+    <div class="tocbot"></div>
+
+
+
+
+  
     <div class="article-entry" itemprop="articleBody">
        
-  <p>标题上大言不惭的写上“About Me”，实际上，并不特指某一个人。我们是一个小团队，以纯粹的学术热情，开始数据科学之旅~~</p>
-<p>海内存知己，天涯若比邻。信息时代，时空的“鸿沟”已然被“填平”，欢迎各位朋友联系我们~</p>
-<p><strong>联系人</strong>：唐老师</p>
-<p><strong>Email</strong>： <a href="mailto:tcs@hpu.edu.cn">tcs@hpu.edu.cn</a></p>
+  <h1 id="入门案例"><a class="markdownIt-Anchor" href="#入门案例"></a> 入门案例</h1>
+<blockquote>
+<p>本文参考了[不够优秀][1]</p>
+</blockquote>
+<p>该案例是pyexample中的例子，能够通过 bash …/tikzmake.sh test_simple 直接运行出来，</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> sys</span><br><span class="line">sys.path.append(<span class="string">&#x27;../&#x27;</span>)</span><br><span class="line"><span class="keyword">from</span> pycore.tikzeng <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">from</span> pycore.blocks  <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">arch = [</span><br><span class="line">    to_head( <span class="string">&#x27;..&#x27;</span> ),</span><br><span class="line">    to_cor(),</span><br><span class="line">    to_begin(),</span><br><span class="line">    to_Conv(name=<span class="string">&quot;conv1&quot;</span>, s_filer=<span class="number">512</span>, n_filer=<span class="number">64</span>, offset=<span class="string">&quot;(0,0,0)&quot;</span>, to=<span class="string">&quot;(0,0,0)&quot;</span>, height=<span class="number">64</span>, depth=<span class="number">64</span>, width=<span class="number">2</span>, opacity=<span class="number">0.5</span>，caption=<span class="string">&#x27;conv1&#x27;</span> ),</span><br><span class="line">    to_Pool(name=<span class="string">&quot;pool1&quot;</span>, offset=<span class="string">&quot;(0,0,0)&quot;</span>, to=<span class="string">&quot;(conv1-east)&quot;</span>,caption=<span class="string">&#x27;pool1&#x27;</span>),</span><br><span class="line">    to_Conv(name=<span class="string">&quot;conv2&quot;</span>, s_filer=<span class="number">128</span>, n_filer=<span class="number">64</span>, offset=<span class="string">&quot;(1,0,0)&quot;</span>, to=<span class="string">&quot;(pool1-east)&quot;</span>, height=<span class="number">32</span>, depth=<span class="number">32</span>, width=<span class="number">2</span>,caption=<span class="string">&#x27;conv2&#x27;</span>),</span><br><span class="line">    to_connection(<span class="string">&quot;pool1&quot;</span>, <span class="string">&quot;conv2&quot;</span>), </span><br><span class="line">    to_Pool(name=<span class="string">&quot;pool2&quot;</span>, offset=<span class="string">&quot;(0,0,0)&quot;</span>, to=<span class="string">&quot;(conv2-east)&quot;</span>, height=<span class="number">28</span>, depth=<span class="number">28</span>, width=<span class="number">1</span>, caption=<span class="string">&#x27;pool2&#x27;</span>),</span><br><span class="line">    to_SoftMax(name=<span class="string">&quot;soft1&quot;</span>, s_filer=<span class="number">10</span>, offset=<span class="string">&quot;(3,0,0)&quot;</span>, to=<span class="string">&quot;(pool1-east)&quot;</span>, caption=<span class="string">&quot;SOFT&quot;</span> ),</span><br><span class="line">    to_connection(<span class="string">&quot;pool2&quot;</span>, <span class="string">&quot;soft1&quot;</span>),    </span><br><span class="line">    to_end()</span><br><span class="line">    ]</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span>():</span></span><br><span class="line">    namefile = <span class="built_in">str</span>(sys.argv[<span class="number">0</span>]).split(<span class="string">&#x27;.&#x27;</span>)[<span class="number">0</span>]</span><br><span class="line">    to_generate(arch, namefile+<span class="string">&#x27;.tex&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    main()</span><br></pre></td></tr></table></figure>
+<p>结果如图所示<br>
+<img src="/2021/05/10/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%BB%98%E5%9B%BE%E5%B7%A5%E5%85%B7PlotNeuralNet%E6%95%99%E7%A8%8B/demo.jpg" alt="入门案例"></p>
+<h2 id="卷积层api详解"><a class="markdownIt-Anchor" href="#卷积层api详解"></a> 卷积层api详解</h2>
+<p>to_Conv(name=“conv1”, s_filer=512, n_filer=64, offset=&quot;(0,0,0)&quot;, to=&quot;(0,0,0)&quot;, height=64, depth=64, width=2, caption=‘conv1’ )</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>参数值</th>
+<th>函数的功能</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>name</td>
+<td>“conv1”</td>
+<td>该层的名字</td>
+</tr>
+<tr>
+<td>s_filer(z_label)</td>
+<td>512</td>
+<td>写在左下角的z方向的数字</td>
+</tr>
+<tr>
+<td>n_filer(x_label)</td>
+<td>64</td>
+<td>写在左下角的x方向的数字</td>
+</tr>
+<tr>
+<td>offset(x,y,z)</td>
+<td>(0,0,0)</td>
+<td>和上一个图形在x,y,z方向上的偏移值，若x为1,则图像位于前面1的位置</td>
+</tr>
+<tr>
+<td>to(x,y,z)</td>
+<td>(0,0,0)</td>
+<td>若为(0,0,0)表示第一个图</td>
+</tr>
+<tr>
+<td>height</td>
+<td>64</td>
+<td>图像的高度,若没填，则为上一个图的一半</td>
+</tr>
+<tr>
+<td>depth</td>
+<td>64</td>
+<td>图像的深度,若没填，则为上一个图的一半</td>
+</tr>
+<tr>
+<td>width</td>
+<td>2</td>
+<td>图像的宽度,若没填，则为上一个图的一半</td>
+</tr>
+<tr>
+<td>opacity</td>
+<td>0.5</td>
+<td>图像的透明度</td>
+</tr>
+<tr>
+<td>caption</td>
+<td>2</td>
+<td>卷积层的名称</td>
+</tr>
+</tbody>
+</table>
+<h2 id="池化层api详解"><a class="markdownIt-Anchor" href="#池化层api详解"></a> 池化层api详解</h2>
+<p>to_Pool(name=“pool1”, offset=&quot;(0,0,0)&quot;, to=&quot;(conv1-east)&quot;,caption=‘pool1’)</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>参数值</th>
+<th>函数的功能</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>name</td>
+<td>“pool1”</td>
+<td>该层的名字</td>
+</tr>
+<tr>
+<td>offset(x,y,z)</td>
+<td>(0,0,0)</td>
+<td>和上一个图形在x,y,z方向上的偏移值，若都为0，则和原图像的位置相同</td>
+</tr>
+<tr>
+<td>to(x,y,z)</td>
+<td>“(conv1-east)”</td>
+<td>上一个图的name，再加上&quot;-east&quot;，跟在name这个图的后面</td>
+</tr>
+<tr>
+<td>height</td>
+<td>32</td>
+<td>若没填，则为上一个图的一半</td>
+</tr>
+<tr>
+<td>depth</td>
+<td>32</td>
+<td>若没填，则为上一个图的一半</td>
+</tr>
+<tr>
+<td>width</td>
+<td>1</td>
+<td>若没填，则为上一个图的一半</td>
+</tr>
+<tr>
+<td>opacity</td>
+<td>若为0.5</td>
+<td>透明度</td>
+</tr>
+</tbody>
+</table>
+<h2 id="激活函数-softmax"><a class="markdownIt-Anchor" href="#激活函数-softmax"></a> 激活函数-SoftMax</h2>
+<p>to_SoftMax(name=“soft1”, s_filer=10, offset=&quot;(3,0,0)&quot;, to=&quot;(pool1-east)&quot;, caption=“SOFT” )</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>参数值</th>
+<th>函数的功能</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>name</td>
+<td>“soft1”</td>
+<td>该层的名字</td>
+</tr>
+<tr>
+<td>s_filer(z_label)</td>
+<td>10</td>
+<td>写在左下角的z方向的数字</td>
+</tr>
+<tr>
+<td>offset(x,y,z)</td>
+<td>“(3,0,0)”</td>
+<td>和上一个图形在x,y,z方向上的偏移值，若都为0，则和原图像的位置相同</td>
+</tr>
+<tr>
+<td>to(x,y,z)</td>
+<td>“(pool1-east)”</td>
+<td>上一个图的name，再加上&quot;-east&quot;，跟在name这个图的后面</td>
+</tr>
+<tr>
+<td>caption</td>
+<td>“SOFT”</td>
+<td>描述（会显示在图中）</td>
+</tr>
+</tbody>
+</table>
+<h2 id="箭头连接"><a class="markdownIt-Anchor" href="#箭头连接"></a> 箭头连接</h2>
+<p>to_connection( “pool1”, “conv2”)：从哪一个图到哪一个图画个箭头</p>
+<p>参考文献：</p>
+<p>[1]:<a target="_blank" rel="noopener" href="https://blog.csdn.net/bug_with_me/article/details/107138400">https://blog.csdn.net/bug_with_me/article/details/107138400</a>, Windows下使用PlotNeuralNet+latex快速绘制深度学习模型图</p>
  
       <!-- reward -->
       
@@ -167,15 +359,36 @@ var _hmt = _hmt || [];
     <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://tcsds.github.io/about/" alt="微信分享二维码">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://tcsds.github.io/2021/05/10/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%BB%98%E5%9B%BE%E5%B7%A5%E5%85%B7PlotNeuralNet%E6%95%99%E7%A8%8B/" alt="微信分享二维码">
     </div>
 </div>
 
 <div id="share-mask"></div>  
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../../../tags/PlotNeuralNet/" rel="tag">PlotNeuralNet</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../../../tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%8F%AF%E8%A7%86%E5%8C%96/" rel="tag">深度学习可视化</a></li></ul>
+
     </footer>
   </div>
 
    
+  <nav class="article-nav">
+    
+      <a href="../../19/ContourTransformerNetworkforOne-shotSegmentationofAnatomicalStructures/" class="article-nav-link">
+        <strong class="article-nav-caption">上一篇</strong>
+        <div class="article-nav-title">
+          
+            Contour Transformer Network for One-shot Segmentation of Anatomical Structures
+          
+        </div>
+      </a>
+    
+    
+      <a href="../../../../2017/07/27/%E7%A7%91%E7%A0%94%E9%A1%B9%E7%9B%AE%E6%8A%80%E6%9C%AF%E8%B7%AF%E7%BA%BF%E5%9B%BE%E7%BB%98%E5%88%B6%E6%96%B9%E6%B3%95/" class="article-nav-link">
+        <strong class="article-nav-caption">下一篇</strong>
+        <div class="article-nav-title">科研项目技术路线图绘制方法</div>
+      </a>
+    
+  </nav>
+
    
 <!-- valine评论 -->
 <div id="vcomments-box">
@@ -225,7 +438,8 @@ var _hmt = _hmt || [];
 </style>
 
  
-    
+   
+     
 </article>
 
 </section>
@@ -287,33 +501,33 @@ var _hmt = _hmt || [];
 <nav class="navbar">
   
   <div class="logo">
-    <a href="../index.html"><img src="/images/ayer-side.svg" alt="图数据科学实验室"></a>
+    <a href="../../../../index.html"><img src="/images/ayer-side.svg" alt="图数据科学实验室"></a>
   </div>
   
   <ul class="nav nav-main">
     
     <li class="nav-item">
-      <a class="nav-item-link" href="../index.html">主页</a>
+      <a class="nav-item-link" href="../../../../index.html">主页</a>
     </li>
     
     <li class="nav-item">
-      <a class="nav-item-link" href="../archives">归档</a>
+      <a class="nav-item-link" href="../../../../archives">归档</a>
     </li>
     
     <li class="nav-item">
-      <a class="nav-item-link" href="../categories">分类</a>
+      <a class="nav-item-link" href="../../../../categories">分类</a>
     </li>
     
     <li class="nav-item">
-      <a class="nav-item-link" href="../tags">标签</a>
+      <a class="nav-item-link" href="../../../../tags">标签</a>
     </li>
     
     <li class="nav-item">
-      <a class="nav-item-link" href="../playlist">音乐</a>
+      <a class="nav-item-link" href="../../../../playlist">音乐</a>
     </li>
     
     <li class="nav-item">
-      <a class="nav-item-link" href="../about">关于我</a>
+      <a class="nav-item-link" href="../../../../about">关于我</a>
     </li>
     
   </ul>
@@ -327,7 +541,7 @@ var _hmt = _hmt || [];
       </a>
       
       
-      <a class="nav-item-link" target="_blank" href="../atom.xml" title="RSS Feed">
+      <a class="nav-item-link" target="_blank" href="../../../../atom.xml" title="RSS Feed">
         <i class="ri-rss-line"></i>
       </a>
       
@@ -350,24 +564,40 @@ var _hmt = _hmt || [];
   <div class="reward-box">
     
     <div class="reward-item">
-      <img class="reward-img" src="../images/zhifubao.png">
+      <img class="reward-img" src="../../../../images/zhifubao.png">
       <span class="reward-type">支付宝</span>
     </div>
     
     
     <div class="reward-item">
-      <img class="reward-img" src="../images/weixin.png">
+      <img class="reward-img" src="../../../../images/weixin.png">
       <span class="reward-type">微信</span>
     </div>
     
   </div>
 </div>
     
-<script src="../js/jquery-2.0.3.min.js"></script>
+<script src="../../../../js/jquery-2.0.3.min.js"></script>
  
-<script src="../js/lazyload.min.js"></script>
+<script src="../../../../js/lazyload.min.js"></script>
 
 <!-- Tocbot -->
+ 
+<script src="../../../../js/tocbot.min.js"></script>
+
+<script>
+  tocbot.init({
+    tocSelector: ".tocbot",
+    contentSelector: ".article-entry",
+    headingSelector: "h1, h2, h3, h4, h5, h6",
+    hasInnerContainers: true,
+    scrollSmooth: true,
+    scrollContainer: "main",
+    positionFixedSelector: ".tocbot",
+    positionFixedClass: "is-position-fixed",
+    fixedSidebarOffset: "auto",
+  });
+</script>
 
 <script src="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.js"></script>
 <link
@@ -376,7 +606,7 @@ var _hmt = _hmt || [];
 />
 <script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js"></script>
 
-<script src="../dist/main.js"></script>
+<script src="../../../../dist/main.js"></script>
 
 <!-- ImageViewer -->
  <!-- Root element of PhotoSwipe. Must have class pswp. -->
@@ -521,7 +751,7 @@ var _hmt = _hmt || [];
  
 <!-- busuanzi  -->
  
-<script src="../js/busuanzi-2.3.pure.min.js"></script>
+<script src="../../../../js/busuanzi-2.3.pure.min.js"></script>
  
 <!-- ClickLove -->
 
@@ -531,7 +761,7 @@ var _hmt = _hmt || [];
 
 <!-- CodeCopy -->
  
-<link rel="stylesheet" href="../css/clipboard.css">
+<link rel="stylesheet" href="../../../../css/clipboard.css">
  <script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
 <script>
   function wait(callback, seconds) {

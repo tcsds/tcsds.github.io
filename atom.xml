@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-  <title>数据科学小站</title>
+  <title>图数据科学实验室</title>
   <icon>https://tcsds.github.io/icon.png</icon>
-  <subtitle>数据科学</subtitle>
+  <subtitle>Graph Data Science</subtitle>
   <link href="https://tcsds.github.io/atom.xml" rel="self"/>
   
   <link href="https://tcsds.github.io/"/>
-  <updated>2021-05-09T03:34:10.509Z</updated>
+  <updated>2021-05-19T07:49:32.802Z</updated>
   <id>https://tcsds.github.io/</id>
   
   <author>
@@ -17,11 +17,106 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>Contour Transformer Network for One-shot Segmentation of Anatomical Structures</title>
+    <link href="https://tcsds.github.io/2021/05/19/ContourTransformerNetworkforOne-shotSegmentationofAnatomicalStructures/"/>
+    <id>https://tcsds.github.io/2021/05/19/ContourTransformerNetworkforOne-shotSegmentationofAnatomicalStructures/</id>
+    <published>2021-05-19T07:49:51.364Z</published>
+    <updated>2021-05-19T07:49:32.802Z</updated>
+    
+    
+    <summary type="html">作者及介绍
+论文引用：Lu Y , Zheng K , Li W , et al. Contour Transformer Network for One-shot Segmentation of Anatomical Structures[J]. 2020.
+
+作者单位：University of South Carolina, Columbia, SC 29208, USA；University of
+Rochester, Rochester, NY 14627, USA.
+
+论文出处：https://arxiv.org/abs/2012.01480
+
+ 研究问题
+​ 解剖结构的准确分割是</summary>
+    
+    
+    
+    <category term="文献阅读" scheme="https://tcsds.github.io/categories/%E6%96%87%E7%8C%AE%E9%98%85%E8%AF%BB/"/>
+    
+    <category term="医学图像" scheme="https://tcsds.github.io/categories/%E6%96%87%E7%8C%AE%E9%98%85%E8%AF%BB/%E5%8C%BB%E5%AD%A6%E5%9B%BE%E5%83%8F/"/>
+    
+    
+    <category term="VIT" scheme="https://tcsds.github.io/tags/VIT/"/>
+    
+    <category term="图像分割" scheme="https://tcsds.github.io/tags/%E5%9B%BE%E5%83%8F%E5%88%86%E5%89%B2/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>深度学习绘图工具PlotNeuralNet教程</title>
+    <link href="https://tcsds.github.io/2021/05/10/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%BB%98%E5%9B%BE%E5%B7%A5%E5%85%B7PlotNeuralNet%E6%95%99%E7%A8%8B/"/>
+    <id>https://tcsds.github.io/2021/05/10/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%BB%98%E5%9B%BE%E5%B7%A5%E5%85%B7PlotNeuralNet%E6%95%99%E7%A8%8B/</id>
+    <published>2021-05-10T11:44:06.000Z</published>
+    <updated>2021-05-18T13:49:27.233Z</updated>
+    
+    
+    <summary type="html">入门案例
+本文参考了[不够优秀][1]
+
+该案例是pyexample中的例子，能够通过 bash …/tikzmake.sh test_simple 直接运行出来，
+
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+
+
+import sys
+sys.path.append(&#39;../&#39;)
+from pycore.tikzeng import *
+from pycore.blocks  import *
+
+arch = [
+    to_head( &#39;..&#39; ),
+    to_cor(),
+    to_begi</summary>
+    
+    
+    
+    <category term="学术笔记" scheme="https://tcsds.github.io/categories/%E5%AD%A6%E6%9C%AF%E7%AC%94%E8%AE%B0/"/>
+    
+    <category term="可视化" scheme="https://tcsds.github.io/categories/%E5%AD%A6%E6%9C%AF%E7%AC%94%E8%AE%B0/%E5%8F%AF%E8%A7%86%E5%8C%96/"/>
+    
+    
+    <category term="深度学习可视化" scheme="https://tcsds.github.io/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%8F%AF%E8%A7%86%E5%8C%96/"/>
+    
+    <category term="PlotNeuralNet" scheme="https://tcsds.github.io/tags/PlotNeuralNet/"/>
+    
+  </entry>
+  
+  <entry>
     <title>科研项目技术路线图绘制方法</title>
     <link href="https://tcsds.github.io/2017/07/27/%E7%A7%91%E7%A0%94%E9%A1%B9%E7%9B%AE%E6%8A%80%E6%9C%AF%E8%B7%AF%E7%BA%BF%E5%9B%BE%E7%BB%98%E5%88%B6%E6%96%B9%E6%B3%95/"/>
     <id>https://tcsds.github.io/2017/07/27/%E7%A7%91%E7%A0%94%E9%A1%B9%E7%9B%AE%E6%8A%80%E6%9C%AF%E8%B7%AF%E7%BA%BF%E5%9B%BE%E7%BB%98%E5%88%B6%E6%96%B9%E6%B3%95/</id>
     <published>2017-07-27T13:39:31.000Z</published>
-    <updated>2021-05-09T03:34:10.509Z</updated>
+    <updated>2021-05-18T13:27:39.714Z</updated>
     
     
     <summary type="html">注：本文主要是汇集科学网化柏林、曾路等前辈以及网友的经验，在此表示感谢！
@@ -45,8 +140,6 @@
     
     
     <category term="技术路线图" scheme="https://tcsds.github.io/tags/%E6%8A%80%E6%9C%AF%E8%B7%AF%E7%BA%BF%E5%9B%BE/"/>
-    
-    <category term="绘制技巧" scheme="https://tcsds.github.io/tags/%E7%BB%98%E5%88%B6%E6%8A%80%E5%B7%A7/"/>
     
   </entry>
   
