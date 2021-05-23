@@ -104,7 +104,7 @@ var _hmt = _hmt || [];
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">744</span>
+            <span class="post-count">756</span>
         </span>
     </span>
 
@@ -128,7 +128,7 @@ var _hmt = _hmt || [];
   
     <div class="article-entry" itemprop="articleBody">
        
-  <h1>入门案例</h1>
+  <h1 id="入门案例"><a class="markdownIt-Anchor" href="#入门案例"></a> 入门案例</h1>
 <blockquote>
 <p>本文参考了<a target="_blank" rel="noopener" href="https://blog.csdn.net/bug_with_me/article/details/107138400," title="Windows下使用PlotNeuralNet+latex快速绘制深度学习模型图">不够优秀</a>的博文，在此表示感谢</p>
 </blockquote>
@@ -136,8 +136,8 @@ var _hmt = _hmt || [];
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> sys</span><br><span class="line">sys.path.append(<span class="string">&#x27;../&#x27;</span>)</span><br><span class="line"><span class="keyword">from</span> pycore.tikzeng <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">from</span> pycore.blocks  <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">arch = [</span><br><span class="line">    to_head( <span class="string">&#x27;..&#x27;</span> ),</span><br><span class="line">    to_cor(),</span><br><span class="line">    to_begin(),</span><br><span class="line">    to_Conv(name=<span class="string">&quot;conv1&quot;</span>, s_filer=<span class="number">512</span>, n_filer=<span class="number">64</span>, offset=<span class="string">&quot;(0,0,0)&quot;</span>, to=<span class="string">&quot;(0,0,0)&quot;</span>, height=<span class="number">64</span>, depth=<span class="number">64</span>, width=<span class="number">2</span>, opacity=<span class="number">0.5</span>，caption=<span class="string">&#x27;conv1&#x27;</span> ),</span><br><span class="line">    to_Pool(name=<span class="string">&quot;pool1&quot;</span>, offset=<span class="string">&quot;(0,0,0)&quot;</span>, to=<span class="string">&quot;(conv1-east)&quot;</span>,caption=<span class="string">&#x27;pool1&#x27;</span>),</span><br><span class="line">    to_Conv(name=<span class="string">&quot;conv2&quot;</span>, s_filer=<span class="number">128</span>, n_filer=<span class="number">64</span>, offset=<span class="string">&quot;(1,0,0)&quot;</span>, to=<span class="string">&quot;(pool1-east)&quot;</span>, height=<span class="number">32</span>, depth=<span class="number">32</span>, width=<span class="number">2</span>,caption=<span class="string">&#x27;conv2&#x27;</span>),</span><br><span class="line">    to_connection(<span class="string">&quot;pool1&quot;</span>, <span class="string">&quot;conv2&quot;</span>), </span><br><span class="line">    to_Pool(name=<span class="string">&quot;pool2&quot;</span>, offset=<span class="string">&quot;(0,0,0)&quot;</span>, to=<span class="string">&quot;(conv2-east)&quot;</span>, height=<span class="number">28</span>, depth=<span class="number">28</span>, width=<span class="number">1</span>, caption=<span class="string">&#x27;pool2&#x27;</span>),</span><br><span class="line">    to_SoftMax(name=<span class="string">&quot;soft1&quot;</span>, s_filer=<span class="number">10</span>, offset=<span class="string">&quot;(3,0,0)&quot;</span>, to=<span class="string">&quot;(pool1-east)&quot;</span>, caption=<span class="string">&quot;SOFT&quot;</span> ),</span><br><span class="line">    to_connection(<span class="string">&quot;pool2&quot;</span>, <span class="string">&quot;soft1&quot;</span>),    </span><br><span class="line">    to_end()</span><br><span class="line">    ]</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span>():</span></span><br><span class="line">    namefile = <span class="built_in">str</span>(sys.argv[<span class="number">0</span>]).split(<span class="string">&#x27;.&#x27;</span>)[<span class="number">0</span>]</span><br><span class="line">    to_generate(arch, namefile+<span class="string">&#x27;.tex&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    main()</span><br></pre></td></tr></table></figure>
 <p>结果如图所示<br>
 <img src="/2021/05/10/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%BB%98%E5%9B%BE%E5%B7%A5%E5%85%B7PlotNeuralNet%E6%95%99%E7%A8%8B/demo.jpg" alt="入门案例"></p>
-<h2 id="卷积层api详解">卷积层api详解</h2>
-<p>to_Conv(name=“conv1”, s_filer=512, n_filer=64, offset=“(0,0,0)”, to=“(0,0,0)”, height=64, depth=64, width=2, caption=‘conv1’ )</p>
+<h2 id="卷积层api详解"><a class="markdownIt-Anchor" href="#卷积层api详解"></a> 卷积层api详解</h2>
+<p>to_Conv(name=“conv1”, s_filer=512, n_filer=64, offset=&quot;(0,0,0)&quot;, to=&quot;(0,0,0)&quot;, height=64, depth=64, width=2, caption=‘conv1’ )</p>
 <table>
 <thead>
 <tr>
@@ -199,8 +199,8 @@ var _hmt = _hmt || [];
 </tr>
 </tbody>
 </table>
-<h2 id="池化层api详解">池化层api详解</h2>
-<p>to_Pool(name=“pool1”, offset=“(0,0,0)”, to=“(conv1-east)”,caption=‘pool1’)</p>
+<h2 id="池化层api详解"><a class="markdownIt-Anchor" href="#池化层api详解"></a> 池化层api详解</h2>
+<p>to_Pool(name=“pool1”, offset=&quot;(0,0,0)&quot;, to=&quot;(conv1-east)&quot;,caption=‘pool1’)</p>
 <table>
 <thead>
 <tr>
@@ -247,8 +247,8 @@ var _hmt = _hmt || [];
 </tr>
 </tbody>
 </table>
-<h2 id="激活函数-SoftMax">激活函数-SoftMax</h2>
-<p>to_SoftMax(name=“soft1”, s_filer=10, offset=“(3,0,0)”, to=“(pool1-east)”, caption=“SOFT” )</p>
+<h2 id="激活函数-softmax"><a class="markdownIt-Anchor" href="#激活函数-softmax"></a> 激活函数-SoftMax</h2>
+<p>to_SoftMax(name=“soft1”, s_filer=10, offset=&quot;(3,0,0)&quot;, to=&quot;(pool1-east)&quot;, caption=“SOFT” )</p>
 <table>
 <thead>
 <tr>
@@ -285,7 +285,7 @@ var _hmt = _hmt || [];
 </tr>
 </tbody>
 </table>
-<h2 id="箭头连接">箭头连接</h2>
+<h2 id="箭头连接"><a class="markdownIt-Anchor" href="#箭头连接"></a> 箭头连接</h2>
 <p>to_connection( “pool1”, “conv2”)：从哪一个图到哪一个图画个箭头</p>
  
       <!-- reward -->
@@ -370,11 +370,11 @@ var _hmt = _hmt || [];
    
   <nav class="article-nav">
     
-      <a href="../../19/ContourTransformerNetworkforOne-shotSegmentationofAnatomicalStructures/" class="article-nav-link">
+      <a href="../../19/IncorporatingConvolutionDesignsintoVisualTransformers/" class="article-nav-link">
         <strong class="article-nav-caption">上一篇</strong>
         <div class="article-nav-title">
           
-            Contour Transformer Network for One-shot Segmentation of Anatomical Structures
+            Incorporating Convolution Designs into Visual Transformers
           
         </div>
       </a>

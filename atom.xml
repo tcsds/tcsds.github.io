@@ -6,7 +6,7 @@
   <link href="https://tcsds.github.io/atom.xml" rel="self"/>
   
   <link href="https://tcsds.github.io/"/>
-  <updated>2021-05-20T13:51:22.565Z</updated>
+  <updated>2021-05-23T07:13:42.286Z</updated>
   <id>https://tcsds.github.io/</id>
   
   <author>
@@ -21,7 +21,7 @@
     <link href="https://tcsds.github.io/2021/05/19/ContourTransformerNetworkforOne-shotSegmentationofAnatomicalStructures/"/>
     <id>https://tcsds.github.io/2021/05/19/ContourTransformerNetworkforOne-shotSegmentationofAnatomicalStructures/</id>
     <published>2021-05-19T07:49:51.364Z</published>
-    <updated>2021-05-20T13:51:22.565Z</updated>
+    <updated>2021-05-23T07:13:42.286Z</updated>
     
     
     <summary type="html">作者及介绍
@@ -32,8 +32,8 @@ Rochester, Rochester, NY 14627, USA.
 
 论文出处：https://arxiv.org/abs/2012.01480
 
-研究问题
-​ 解剖结构的准确分割是医</summary>
+ 研究问题
+​ 解剖结构的准确分割是</summary>
     
     
     
@@ -44,7 +44,41 @@ Rochester, Rochester, NY 14627, USA.
     
     <category term="VIT" scheme="https://tcsds.github.io/tags/VIT/"/>
     
-    <category term="图像分割" scheme="https://tcsds.github.io/tags/%E5%9B%BE%E5%83%8F%E5%88%86%E5%89%B2/"/>
+    <category term="医学图像分割" scheme="https://tcsds.github.io/tags/%E5%8C%BB%E5%AD%A6%E5%9B%BE%E5%83%8F%E5%88%86%E5%89%B2/"/>
+    
+    <category term="代晨迪" scheme="https://tcsds.github.io/tags/%E4%BB%A3%E6%99%A8%E8%BF%AA/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Incorporating Convolution Designs into Visual Transformers</title>
+    <link href="https://tcsds.github.io/2021/05/19/IncorporatingConvolutionDesignsintoVisualTransformers/"/>
+    <id>https://tcsds.github.io/2021/05/19/IncorporatingConvolutionDesignsintoVisualTransformers/</id>
+    <published>2021-05-19T02:15:41.000Z</published>
+    <updated>2021-05-23T07:13:09.545Z</updated>
+    
+    
+    <summary type="html">作者：Kun Yuan, Shaopeng Guo, Ziwei Liu, Aojun Zhou, Fengwei Yu, Wei Wu
+
+机构：SenseTime Research &amp; S-Lab, Nanyang Technological University
+
+论文地址：https://arxiv.org/abs/2103.11816
+
+注: 本文主要参考自CSDN社区博主smile909的总结，在此表示感谢！
+
+ 问题来源
+1、得益于建立远程依赖关系和并行训练的能力，Transformer在自然语言处理（NLP）任务中取得巨大成功。最近，一些工作尝试将Transformer应用于计算</summary>
+    
+    
+    
+    <category term="文献阅读" scheme="https://tcsds.github.io/categories/%E6%96%87%E7%8C%AE%E9%98%85%E8%AF%BB/"/>
+    
+    
+    <category term="VIT" scheme="https://tcsds.github.io/tags/VIT/"/>
+    
+    <category term="医学图像分类" scheme="https://tcsds.github.io/tags/%E5%8C%BB%E5%AD%A6%E5%9B%BE%E5%83%8F%E5%88%86%E7%B1%BB/"/>
+    
+    <category term="魏明阳" scheme="https://tcsds.github.io/tags/%E9%AD%8F%E6%98%8E%E9%98%B3/"/>
     
   </entry>
   
@@ -116,15 +150,15 @@ arch = [
     <link href="https://tcsds.github.io/2017/07/27/%E7%A7%91%E7%A0%94%E9%A1%B9%E7%9B%AE%E6%8A%80%E6%9C%AF%E8%B7%AF%E7%BA%BF%E5%9B%BE%E7%BB%98%E5%88%B6%E6%96%B9%E6%B3%95/"/>
     <id>https://tcsds.github.io/2017/07/27/%E7%A7%91%E7%A0%94%E9%A1%B9%E7%9B%AE%E6%8A%80%E6%9C%AF%E8%B7%AF%E7%BA%BF%E5%9B%BE%E7%BB%98%E5%88%B6%E6%96%B9%E6%B3%95/</id>
     <published>2017-07-27T13:39:31.000Z</published>
-    <updated>2021-05-18T13:27:39.714Z</updated>
+    <updated>2021-05-23T07:13:18.357Z</updated>
     
     
     <summary type="html">注：本文主要是汇集科学网化柏林、曾路等前辈以及网友的经验，在此表示感谢！
 
 技术路线图是以图形或表格的形式来表达一个高水准的、综合和集成的战略规划。
 
-技术路线图的结构
-以下内容主要参考曾路等编著的《产业技术路线图原理与制定》[^1]一书部分内容
+ 技术路线图的结构
+以下内容主要参考曾路等编著的《产业技术路线图原理与制定》[1]一书部分内容
 
 技术路线图是以图形或表格的形式来表达一个高水准的、综合的、集成的战略规划与未来前景，其基本结构形式是基于时间的多层表，反映了各要素的组成及其战略功能的实现方式。
 
@@ -140,6 +174,8 @@ arch = [
     
     
     <category term="技术路线图" scheme="https://tcsds.github.io/tags/%E6%8A%80%E6%9C%AF%E8%B7%AF%E7%BA%BF%E5%9B%BE/"/>
+    
+    <category term="唐朝生" scheme="https://tcsds.github.io/tags/%E5%94%90%E6%9C%9D%E7%94%9F/"/>
     
   </entry>
   
