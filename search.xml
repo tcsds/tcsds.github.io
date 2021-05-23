@@ -102,8 +102,8 @@ $$
         <category>医学图像</category>
       </categories>
       <tags>
+        <tag>图像分割</tag>
         <tag>VIT</tag>
-        <tag>医学图像分割</tag>
         <tag>代晨迪</tag>
       </tags>
   </entry>
@@ -237,10 +237,11 @@ x_t^{h+1}&amp;=Concat(x_c^{h},x_p^{l_2})
 ]]></content>
       <categories>
         <category>文献阅读</category>
+        <category>医学图像</category>
       </categories>
       <tags>
         <tag>VIT</tag>
-        <tag>医学图像分类</tag>
+        <tag>图像分类</tag>
         <tag>魏明阳</tag>
       </tags>
   </entry>
@@ -414,6 +415,7 @@ x_t^{h+1}&amp;=Concat(x_c^{h},x_p^{l_2})
       <tags>
         <tag>深度学习可视化</tag>
         <tag>PlotNeuralNet</tag>
+        <tag>唐朝生</tag>
       </tags>
   </entry>
   <entry>
@@ -675,10 +677,11 @@ x_t^{h+1}&amp;=Concat(x_c^{h},x_p^{l_2})
 ]]></content>
       <categories>
         <category>学术笔记</category>
+        <category>课题申请</category>
       </categories>
       <tags>
-        <tag>技术路线图</tag>
         <tag>唐朝生</tag>
+        <tag>技术路线图</tag>
       </tags>
   </entry>
 </search>
