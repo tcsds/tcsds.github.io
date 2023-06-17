@@ -39,9 +39,9 @@
     <category term="综述" scheme="https://tcsds.github.io/categories/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/%E7%BB%BC%E8%BF%B0/"/>
     
     
-    <category term="可解释人工智能" scheme="https://tcsds.github.io/tags/%E5%8F%AF%E8%A7%A3%E9%87%8A%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/"/>
-    
     <category term="towardsdatascience" scheme="https://tcsds.github.io/tags/towardsdatascience/"/>
+    
+    <category term="可解释人工智能" scheme="https://tcsds.github.io/tags/%E5%8F%AF%E8%A7%A3%E9%87%8A%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/"/>
     
   </entry>
   
@@ -59,20 +59,20 @@
 
 
 
-偏差-方差分析
+ 偏差-方差分析
 偏差-方差分析是一个评估机器学习分类器的过程。每个分类器都可能出现高偏差或高方差的问题，这取决于训练的条件。了解这些常见问题并加以预防，可以帮助人们建立更好、更普遍、更高性能的模型。
 
-高偏差（High Bias , 欠拟合）
-当一个分类器高度偏向某种类型的预测（例如，某个类）而不管输入数据的变化时，我们称这种模型存在高偏差问题。例如，如果我们在一个不可线性分离的训练集上训练一个线性模型，那么即使在训练集上，这样的模型也会表现得很差。所以我们将这样的模型称为</summary>
+ 高偏差（High Bias , 欠拟合）
+当一个分类器高度偏向某种类型的预测（例如，某个类）而不管输入数据的变化时，我们称这种模型存在高偏差问题。例如，如果我们在一个不可线性分离的训练集上训练一个线性模型，那么即使在训练集上，这样的模型也会表现得很差。所以我们将这样的模型</summary>
     
     
     
     <category term="机器学习" scheme="https://tcsds.github.io/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"/>
     
     
-    <category term="towardsdatascience" scheme="https://tcsds.github.io/tags/towardsdatascience/"/>
-    
     <category term="模型评估" scheme="https://tcsds.github.io/tags/%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0/"/>
+    
+    <category term="towardsdatascience" scheme="https://tcsds.github.io/tags/towardsdatascience/"/>
     
   </entry>
   
@@ -86,14 +86,14 @@
     
     <summary type="html">本文参考了demonlord1997、糯米鸡呀呀呀呀等人的博文，在此表示感谢！
 
-基本构件
-构件类型
+ 基本构件
+ 构件类型
 基本构件类型和顺序是：
 
  1. \pic, 表示添加层
  2. 指定层的位置： \pic[shift ={(x, y, z)}] at (x, y, z)， 表示：第1个坐标是指相对于第2个坐标的偏移量
  3. 添加具体类型的层，其中，**Box={…}**表示单个层， **RightBandedBox={…}**表示多个层，**Ball={…}**表示层间相加符号⨁\bigoplus⨁
- 4. 添加层间连线，\draw [connection] (层的位置，如vonv1-east,或坐标(</summary>
+ 4. 添加层间连线，\draw [connection] (层的位置，如vonv1-east,或坐</summary>
     
     
     
@@ -120,7 +120,7 @@
     
     <summary type="html">本文参考了不够优秀、Zhanglw882等人的博文，在此表示感谢！
 
-入门案例详解
+ 入门案例详解
 该案例是pyexample中的例子，能够通过 bash …/tikzmake.sh test_simple 直接运行出来，
 
 1
@@ -172,7 +172,7 @@
 
 import sys
 sys.path.append(&#39;../&#39;)
-#pycore.tikzeng是发布者写的python接口，可以直</summary>
+#pycore.tikzeng是发布者写的python接口，可以</summary>
     
     
     
@@ -199,8 +199,8 @@ sys.path.append(&#39;../&#39;)
 
 技术路线图是以图形或表格的形式来表达一个高水准的、综合和集成的战略规划。
 
-技术路线图的结构
-以下内容主要参考曾路等编著的《产业技术路线图原理与制定》[^1]一书部分内容
+ 技术路线图的结构
+以下内容主要参考曾路等编著的《产业技术路线图原理与制定》[1]一书部分内容
 
 技术路线图是以图形或表格的形式来表达一个高水准的、综合的、集成的战略规划与未来前景，其基本结构形式是基于时间的多层表，反映了各要素的组成及其战略功能的实现方式。
 
