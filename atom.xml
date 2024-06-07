@@ -92,7 +92,7 @@
 
  1. \pic, 表示添加层
  2. 指定层的位置： \pic[shift ={(x, y, z)}] at (x, y, z)， 表示：第1个坐标是指相对于第2个坐标的偏移量
- 3. 添加具体类型的层，其中，**Box={…}**表示单个层， **RightBandedBox={…}**表示多个层，**Ball={…}**表示层间相加符号⨁\bigoplus⨁
+ 3. 添加具体类型的层，其中，**Box={…}**表示单个层， **RightBandedBox={…}**表示多个层，**Ball={…}**表示层间相加符号$\bigoplus$
  4. 添加层间连线，\draw [connection] (层的位置，如vonv1-east,或坐标(</summary>
     
     

@@ -158,8 +158,8 @@ var _hmt = _hmt || [];
 <p>效果如下图所示：<br>
 <img src="/2021/05/10/%E9%9D%A2%E5%90%91Python%E7%9A%84PlotNeuralNet%E6%95%99%E7%A8%8B/pool.png" alt="pool1"></p>
 <p>offset、to这两个参数，使用它们可以调整层对应的位置：<br>
-to表示参考坐标，表示x，y，z，to=&quot;(conv1-east)“可以表示在con1层的正东侧(放在平面上理解是右边)，<br>
-通过offset的值设置偏移的距离，to的表示offset所参考坐标位置。比如：offset=”(0,0,0)&quot;,to=&quot;(conv1-east)&quot;</p>
+to表示参考坐标，表示x，y，z，to=“(conv1-east)“可以表示在con1层的正东侧(放在平面上理解是右边)，<br>
+通过offset的值设置偏移的距离，to的表示offset所参考坐标位置。比如：offset=”(0,0,0)”,to=“(conv1-east)”</p>
 <p>测试如下代码：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">to_Conv(<span class="string">&quot;conv1&quot;</span>, <span class="number">512</span>, <span class="number">64</span>, offset=<span class="string">&quot;(0,0,0)&quot;</span>, to=<span class="string">&quot;(0,0,0)&quot;</span>, height=<span class="number">64</span>, depth=<span class="number">64</span>, width=<span class="number">2</span> ),</span><br><span class="line">to_Pool(<span class="string">&quot;pool1&quot;</span>, offset=<span class="string">&quot;(0,0,0)&quot;</span>, to=<span class="string">&quot;(conv1-east)&quot;</span>),</span><br><span class="line"></span><br><span class="line">to_Conv(<span class="string">&quot;conv2&quot;</span>, <span class="number">512</span>, <span class="number">64</span>, offset=<span class="string">&quot;(5,0,0)&quot;</span>, to=<span class="string">&quot;(0,0,0)&quot;</span>, height=<span class="number">64</span>, depth=<span class="number">64</span>, width=<span class="number">2</span> ),</span><br><span class="line">to_Pool(<span class="string">&quot;pool2&quot;</span>, offset=<span class="string">&quot;(5,0,0)&quot;</span>, to=<span class="string">&quot;(conv2-east)&quot;</span>),</span><br></pre></td></tr></table></figure>
 <p>这里创建了依次创建了卷积层conv1、池化层pool1、卷积层conv2、池化层pool2。<br>
@@ -177,7 +177,7 @@ pool2在conv2的正东侧，x方向上偏移offset为5。如下图所示：</p>
 <p>效果如图所示：</p>
 <p><img src="/2021/05/10/%E9%9D%A2%E5%90%91Python%E7%9A%84PlotNeuralNet%E6%95%99%E7%A8%8B/connect_skip.png" alt="层间连接"></p>
 <p>pos的设置，若值大于1，表示向上平移1.25个高度，例如pos=1.25，表示skip这条线,相对于原点到终点的直线，向上平移1.25个高度；若小于1，表示该直线向下平衡若干单位</p>
-<h2 id="添加卷积层和relu层">添加卷积层和Relu层</h2>
+<h2 id="添加卷积层和Relu层">添加卷积层和Relu层</h2>
 <p>to_ConvConvRelu：卷积层+激活函数to_ConvConvRelu。该函数可以绘制2个卷积层和2个Relu层。即：Conv+Relu+Conv_Relu; 也可以只绘制1个卷积层和1个激活层。这里的关键点在于width=(number, number)。若绘制2个卷积层和Relu激活层，则width中的两个数字都不能为空；若只绘制1个激活层和1个Relu激活层，则width中的两个值，其中之一需要设置为0，例如width=(5, 0)。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">to_ConvConvRelu(name=<span class="string">&#x27;conv3&#x27;</span>, s_filer=<span class="number">224</span>, n_filer=(<span class="number">64</span>, <span class="number">64</span>), offset=<span class="string">&quot;(30,0,0)&quot;</span>, to=<span class="string">&quot;(0,0,0)&quot;</span>, width=(<span class="number">5</span>, <span class="number">5</span>), height=<span class="number">120</span>, depth=<span class="number">120</span>,caption=<span class="string">&#x27;ConvRelu3&#x27;</span>),</span><br><span class="line">to_ConvConvRelu(name=<span class="string">&#x27;conv4&#x27;</span>, s_filer=<span class="number">224</span>, n_filer=(<span class="number">64</span>, <span class="number">64</span>), offset=<span class="string">&quot;(43,0,0)&quot;</span>, to=<span class="string">&quot;(0,0,0)&quot;</span>, width=(<span class="number">5</span>, <span class="number">0</span>), height=<span class="number">120</span>, depth=<span class="number">120</span>,caption=<span class="string">&#x27;ConvRelu4&#x27;</span>),</span><br><span class="line">to_ConvConvRelu(<span class="string">&quot;conv5&quot;</span>, s_filer=<span class="number">224</span>, n_filer=(<span class="number">64</span>, <span class="number">64</span>), offset=<span class="string">&quot;(40,0,0)&quot;</span>, to=<span class="string">&quot;(pool2-east)&quot;</span>, height=<span class="number">100</span>, depth=<span class="number">100</span>, width=(<span class="number">4</span>,<span class="number">4</span>),caption=<span class="string">&quot;ConvRelu5&quot;</span> ),</span><br></pre></td></tr></table></figure>
 <p>效果如图所示：</p>
@@ -194,7 +194,7 @@ pool2在conv2的正东侧，x方向上偏移offset为5。如下图所示：</p>
 <p><img src="/2021/05/10/%E9%9D%A2%E5%90%91Python%E7%9A%84PlotNeuralNet%E6%95%99%E7%A8%8B/others.png" alt="其他网络层"></p>
 <h1>函数使用说明</h1>
 <h2 id="卷积层api详解">卷积层api详解</h2>
-<p>to_Conv(name=“conv1”, s_filer=512, n_filer=64, offset=&quot;(0,0,0)&quot;, to=&quot;(0,0,0)&quot;, height=64, depth=64, width=2, caption=‘conv1’ )<br>
+<p>to_Conv(name=“conv1”, s_filer=512, n_filer=64, offset=“(0,0,0)”, to=“(0,0,0)”, height=64, depth=64, width=2, caption=‘conv1’ )<br>
 to_ConvConvRelu的参数含义相同。</p>
 <table>
 <thead>
@@ -258,7 +258,7 @@ to_ConvConvRelu的参数含义相同。</p>
 </tbody>
 </table>
 <h2 id="池化层api详解">池化层api详解</h2>
-<p>to_Pool(name=“pool1”, offset=&quot;(0,0,0)&quot;, to=&quot;(conv1-east)&quot;,caption=‘pool1’)</p>
+<p>to_Pool(name=“pool1”, offset=“(0,0,0)”, to=“(conv1-east)”,caption=‘pool1’)</p>
 <table>
 <thead>
 <tr>
@@ -305,11 +305,11 @@ to_ConvConvRelu的参数含义相同。</p>
 </tr>
 </tbody>
 </table>
-<h2 id="卷积激活函数-to-convconvrelu">卷积激活函数-to_ConvConvRelu</h2>
+<h2 id="卷积激活函数-to-ConvConvRelu">卷积激活函数-to_ConvConvRelu</h2>
 <p>to_ConvConvRelu可以生成<strong>一个或多个convrelu层</strong></p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">to_ConvConvRelu(name=<span class="string">&#x27;conv3&#x27;</span>, s_filer=<span class="number">224</span>, n_filer=(<span class="number">64</span>, <span class="number">64</span>), offset=<span class="string">&quot;(40,0,0)&quot;</span>, to=<span class="string">&quot;(0,0,0)&quot;</span>, width=(<span class="number">2</span>, <span class="number">2</span>), height=<span class="number">120</span>, depth=<span class="number">120</span>,caption=<span class="string">&#x27;ConvRelu3&#x27;</span>),</span><br><span class="line">to_ConvConvRelu(<span class="string">&quot;conv4&quot;</span>, <span class="number">112</span>, (<span class="number">128</span>,<span class="number">128</span>), offset=<span class="string">&quot;(6,0,0)&quot;</span>, to=<span class="string">&quot;(pool2-east)&quot;</span>, height=<span class="number">100</span>, depth=<span class="number">100</span>, width=(<span class="number">4</span>,<span class="number">4</span>),caption=<span class="string">&quot;ConvRelu4&quot;</span> ),</span><br></pre></td></tr></table></figure>
-<h2 id="激活函数-softmax">激活函数-SoftMax</h2>
-<p>to_SoftMax(name=“soft1”, s_filer=10, offset=&quot;(3,0,0)&quot;, to=&quot;(pool1-east)&quot;, caption=“SOFT” )</p>
+<h2 id="激活函数-SoftMax">激活函数-SoftMax</h2>
+<p>to_SoftMax(name=“soft1”, s_filer=10, offset=“(3,0,0)”, to=“(pool1-east)”, caption=“SOFT” )</p>
 <table>
 <thead>
 <tr>
