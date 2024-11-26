@@ -146,7 +146,7 @@ var _hmt = _hmt || [];
 <ol>
 <li><strong>\pic</strong>, 表示添加层</li>
 <li>指定层的位置： \pic[shift  ={(x, y, z)}] at  (x, y, z)， 表示：第1个坐标是指相对于第2个坐标的偏移量</li>
-<li>添加具体类型的层，其中，**Box={…}**表示单个层， **RightBandedBox={…}**表示多个层，**Ball={…}**表示层间相加符号$\bigoplus$</li>
+<li>添加具体类型的层，其中，**Box={…}**表示单个层， **RightBandedBox={…}**表示多个层，**Ball={…}**表示层间相加符号<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>⨁</mo></mrow><annotation encoding="application/x-tex">\bigoplus</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.00001em;vertical-align:-0.25001em;"></span><span class="mop op-symbol small-op" style="position:relative;top:-0.0000050000000000050004em;">⨁</span></span></span></span></li>
 <li>添加层间连线，<strong>\draw [connection]  (<em>层的位置，如vonv1-east,或坐标(x,y,z)</em>)    – node { <em>箭头形状，如\midarrow</em>} (cr2-west)</strong></li>
 <li>自定义层间连线路径，**\path (p4-east) – (cr5-west) coordinate[pos=0.25] (between4_5) **</li>
 </ol>
@@ -204,7 +204,7 @@ var _hmt = _hmt || [];
 <p>PlotNeuralNet默认将图形的深度，也就是<em>n_fliter的数据</em>标注在角上，如下图所示，没有居中，因此，需要对它进行<a target="_blank" rel="noopener" href="https://github.com/demonlord1997/PlotNeuralNet," title="PlotNeuralNet的demonlord1997修改版">修改</a>。</p>
 <p>自定义方法：修改layers文件夹下的Box.sty和RightBandedBox.sty文件。</p>
 <p><img src="/2021/05/31/PlotNeuralNet%E7%9A%84Latex%E8%A7%A3%E6%9E%90%E4%B8%8E%E5%AE%9A%E5%88%B6/zlabel.png" alt="zlabel"></p>
-<h2 id="Box-sty"><strong>Box.sty</strong></h2>
+<h2 id="box-sty"><strong>Box.sty</strong></h2>
 <p>将depthlabel设置中的pos=0改为pos=0.5，将captionlabel中的文本宽度由text width=15改为text width=40，这是因为默认宽度有些小，长文本显示不全。</p>
 <blockquote></blockquote>
 <p><code>\coordinate (a1) at (0 , \y/2 , \z/2);</code><br>
@@ -217,7 +217,7 @@ var _hmt = _hmt || [];
 <blockquote></blockquote>
 <p><code>\path (\LastEastx/2,-\y/2,+\z/2) + (0,-25pt) coordinate (cap)</code><br>
 <code>edge [&quot;\textcolor&#123;black&#125;&#123; \bf \caption&#125;&quot;',captionlabel](cap) ; %Block caption/pic object label</code></p>
-<h2 id="RightBandedBox-sty"><strong>RightBandedBox.sty</strong></h2>
+<h2 id="rightbandedbox-sty"><strong>RightBandedBox.sty</strong></h2>
 <p>RightBandedBox.sty的修改与Box.sty的修改类似。pos=0改为pos=0.5，text width=15改为text width=40</p>
 <blockquote></blockquote>
 <p><code>\coordinate (a1) at (0 , \y/2 , \z/2);</code><br>
@@ -225,12 +225,12 @@ var _hmt = _hmt || [];
 <s>\tikzstyle{depthlabel}=[pos=0,text width=14*\z,text centered,sloped]</s><br>
 <code>\tikzstyle&#123;depthlabel&#125;=[pos=0.5,text width=14*\z,text centered,sloped]</code></p>
 <blockquote></blockquote>
-<p><code>\path (c) edge [&quot;\small\zlabels&quot;',depthlabel](f); %depth label'   </code>\path (b1) edge [“\ylabel”,midway] (a1);  %height label’</p>
+<p><code>\path (c) edge [&quot;\small\zlabels&quot;',depthlabel](f); %depth label'   </code>\path (b1) edge [&quot;\ylabel&quot;,midway] (a1);  %height label’</p>
 <blockquote></blockquote>
 <p><s>\tikzstyle{captionlabel}=[text width=15*\LastEastx/\scale,text centered]</s><br>
 `\tikzstyle{captionlabel}=[text width=40*\LastEastx/\scale,text centered]’</p>
 <blockquote></blockquote>
-<p><code>\path (\LastEastx/2,-\y/2,+\z/2) + (0,-25pt) coordinate (cap)'   </code>edge [“\textcolor{black}{ \bf \caption}”‘,captionlabel] (cap); %Block caption/pic object label’</p>
+<p><code>\path (\LastEastx/2,-\y/2,+\z/2) + (0,-25pt) coordinate (cap)'   </code>edge [&quot;\textcolor{black}{ \bf \caption}&quot;’,captionlabel] (cap); %Block caption/pic object label’</p>
  
       <!-- reward -->
       

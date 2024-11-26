@@ -259,14 +259,14 @@ var _hmt = _hmt || [];
 <p>例如，哪些 XAI 领域被 XAI-CS 引用最多（前 5 名）？</p>
 <p><img src="/2023/01/19/%E5%8F%AF%E8%A7%A3%E9%87%8A%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD(XAI)%E7%9A%84%E6%96%87%E7%8C%AE%E8%B6%8B%E5%8A%BF/1WwQ1mMV8SbWgIbJNEaxZwQ.png" alt="img"></p>
 <p>受到XAI-数学的影响当然是有道理的，但我们也可以看到 XAI-工程、XAI-心理学、XAI-医学和 XAI-商业对 XAI-CS 文献的影响不可忽视。</p>
-<h3 id="CS与其他领域的引用关系的“方向”是什么？">CS与其他领域的引用关系的“方向”是什么？</h3>
+<h3 id="cs与其他领域的引用关系的-方向-是什么？">CS与其他领域的引用关系的“方向”是什么？</h3>
 <p>我们可以将其可视化为加权有向图：下面我们可以看到围绕 CS 的 XAI 字段之间的引用与参考关系——两个字段之间的每对边都被归一化为总和为 100%。两边跨度少于 100 个引用的关系将被忽略。</p>
 <p><img src="/2023/01/19/%E5%8F%AF%E8%A7%A3%E9%87%8A%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD(XAI)%E7%9A%84%E6%96%87%E7%8C%AE%E8%B6%8B%E5%8A%BF/1Qjnhsh5KTDiTT8MFDxvxMQ.png" alt="img"></p>
 <p>该图基本上显示了两个领域中哪个领域更多地被另一个领域所借鉴。我们可以看到，心理学和数学领域的XAI论文被XAI-CS引用的频率比其他领域高。XAI-Engineering/XAI-Medicine大致相当，而对于所有其他领域，这种关系是翻转的–意味着它们更多地被XAI-CS告知，而不是XAI-CS被它们告知。</p>
-<h3 id="XAI-中非-CS-领域之间的引用关系是什么？">XAI 中非 CS 领域之间的引用关系是什么？</h3>
+<h3 id="xai-中非-cs-领域之间的引用关系是什么？">XAI 中非 CS 领域之间的引用关系是什么？</h3>
 <p>和以前一样，我们可以省略 CS 来查看其他配对。该图显示了每个 XAI 领域的前 3 个引用 XAI 领域。来自一个节点的所有出边都被归一化为总和为 100%。对其他字段的引用少于 20 次的字段将被忽略。</p>
 <p><img src="/2023/01/19/%E5%8F%AF%E8%A7%A3%E9%87%8A%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD(XAI)%E7%9A%84%E6%96%87%E7%8C%AE%E8%B6%8B%E5%8A%BF/1E0SGBmnbRAtY1ETXAXELSQ.png" alt="img"></p>
-<h3 id="哪些-XAI-领域对非-XAI-文献的影响最大？">哪些 XAI 领域对非 XAI 文献的影响最大？</h3>
+<h3 id="哪些-xai-领域对非-xai-文献的影响最大？">哪些 XAI 领域对非 XAI 文献的影响最大？</h3>
 <p>如果我们将集合之外的论文定义为非 XAI 论文，则该图显示了 XAI 领域的排名，按非 XAI 引用占该 XAI 领域所有引用的百分比。它基本上显示了哪些领域最经常为非 XAI 文献提供信息。 （引用少于 100 次的字段被忽略）。</p>
 <p><img src="/2023/01/19/%E5%8F%AF%E8%A7%A3%E9%87%8A%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD(XAI)%E7%9A%84%E6%96%87%E7%8C%AE%E8%B6%8B%E5%8A%BF/0dekBBbHgyf5mF9xX-1674130753993-68.png" alt="img"></p>
 <p>例如，XAI-Biology相对来说经常被非XAI文献引用，而XAI-Philosophy则相反，它似乎相对来说更经常被XAI引用。</p>
@@ -282,11 +282,11 @@ var _hmt = _hmt || [];
 <p><img src="/2023/01/19/%E5%8F%AF%E8%A7%A3%E9%87%8A%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD(XAI)%E7%9A%84%E6%96%87%E7%8C%AE%E8%B6%8B%E5%8A%BF/16-MIXRKS6giv7sJz9Nq4mg.png" alt="img"></p>
 <p><img src="/2023/01/19/%E5%8F%AF%E8%A7%A3%E9%87%8A%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD(XAI)%E7%9A%84%E6%96%87%E7%8C%AE%E8%B6%8B%E5%8A%BF/1KbcsQoXyXuVBuGT5aDZqkw.png" alt="img"></p>
 <p>我们可以问的其他问题是：</p>
-<h2 id="被本领域以外的论文引用最多的-XAI-论文有哪些？">被本领域以外的论文引用最多的 XAI 论文有哪些？</h2>
+<h2 id="被本领域以外的论文引用最多的-xai-论文有哪些？">被本领域以外的论文引用最多的 XAI 论文有哪些？</h2>
 <p>换句话说，哪些论文在他们的领域之外“突破”了？</p>
 <p><img src="/2023/01/19/%E5%8F%AF%E8%A7%A3%E9%87%8A%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD(XAI)%E7%9A%84%E6%96%87%E7%8C%AE%E8%B6%8B%E5%8A%BF/1f8wCTtWlzwLuW3e_arjCqA.png" alt="img"></p>
 <p><img src="/2023/01/19/%E5%8F%AF%E8%A7%A3%E9%87%8A%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD(XAI)%E7%9A%84%E6%96%87%E7%8C%AE%E8%B6%8B%E5%8A%BF/13gt61856PFagKzI4qPE_Fg.png" alt="img"></p>
-<h2 id="特定领域的哪些-XAI-论文在该领域被引用最多？">特定领域的哪些 XAI 论文在该领域被引用最多？</h2>
+<h2 id="特定领域的哪些-xai-论文在该领域被引用最多？">特定领域的哪些 XAI 论文在该领域被引用最多？</h2>
 <p><img src="/2023/01/19/%E5%8F%AF%E8%A7%A3%E9%87%8A%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD(XAI)%E7%9A%84%E6%96%87%E7%8C%AE%E8%B6%8B%E5%8A%BF/1Bcjb81Aqt_2KutNmFy6PAg.png" alt="img"></p>
 <h1>结论</h1>
 <p>XAI 研究正在大规模地围绕特定术语进行融合，这使得根据经验观察趋势成为可能。虽然检索过程有一些局限性和偏见，但可以在某种程度上解释它们（例如，通过承认检索偏向 CS，并看到在相反方向上克服这种偏见的趋势）。</p>
