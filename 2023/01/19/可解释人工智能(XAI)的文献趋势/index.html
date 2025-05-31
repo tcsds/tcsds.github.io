@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+
+
+<html lang="zh-CN">
+  
+
+    <head>
+      <meta charset="utf-8" />
+       
+      <meta name="keywords" content="数据科学" />
+       
+      <meta name="description" content="面向图数据的人工智能研究" />
+      
+      <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1, maximum-scale=1"
+      />
+      <title>可解释人工智能 (XAI) 文献的趋势 |  图数据科学实验室</title>
+  <meta name="generator" content="hexo-theme-ayer">
+      
+      <link rel="shortcut icon" href="/favicon.ico" />
+       
+<link rel="stylesheet" href="../../../../dist/main.css">
+
+      <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/Shen-Yu/cdn/css/remixicon.min.css"
+      />
+      
+<link rel="stylesheet" href="../../../../css/custom.css">
+ 
+      <script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+       
+
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-103389953-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+
+
+ 
+<script>
+var _hmt = _hmt || [];
+(function() {
+	var hm = document.createElement("script");
+	hm.src = "https://hm.baidu.com/hm.js?8e2e80642e4c93347fbaa1e33f7017b9";
+	var s = document.getElementsByTagName("script")[0]; 
+	s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+      <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-bulma@5.0.1/bulma.min.css"
+      />
+      <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.19/dist/sweetalert2.min.js"></script>
+
+      <!-- mermaid -->
+      
+      <script src="https://cdn.jsdelivr.net/npm/mermaid@8.9.2/dist/mermaid.min.js"></script>
+      
+      <style>
+        .swal2-styled.swal2-confirm {
+          font-size: 1.6rem;
+        }
+      </style>
+    <link rel="alternate" href="atom.xml" title="图数据科学实验室" type="application/atom+xml">
+<link href="https://cdn.bootcss.com/KaTeX/0.11.1/katex.min.css" rel="stylesheet" /></head>
+  </html>
+</html>
+
+
+<body>
+  <div id="app">
+    
+      
+    <main class="content on">
+      <section class="outer">
+  <article
+  id="post-可解释人工智能(XAI)的文献趋势"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h1 class="article-title sea-center" style="border-left:0" itemprop="name">
+  可解释人工智能 (XAI) 文献的趋势
+</h1>
+ 
+
+      
+    </header>
+     
+    <div class="article-meta">
+      <a href="" class="article-date">
+  <time datetime="2023-01-19T11:26:06.000Z" itemprop="datePublished">2023-01-19</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="../../../../categories/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/">人工智能</a> / <a class="article-category-link" href="../../../../categories/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/%E7%BB%BC%E8%BF%B0/">综述</a>
+  </div>
+  
+<div class="word_count">
+    <span class="post-time">
+        <span class="post-meta-item-icon">
+            <i class="ri-quill-pen-line"></i>
+            <span class="post-meta-item-text"> 字数统计:</span>
+            <span class="post-count">3.6k</span>
+        </span>
+    </span>
+
+    <span class="post-time">
+        &nbsp; | &nbsp;
+        <span class="post-meta-item-icon">
+            <i class="ri-book-open-line"></i>
+            <span class="post-meta-item-text"> 阅读时长≈</span>
+            <span class="post-count">12 分钟</span>
+        </span>
+    </span>
+</div>
+ 
+    </div>
+      
+    <div class="tocbot"></div>
+
+
+
+
+  
+    <div class="article-entry" itemprop="articleBody">
+       
+  <p>本文源于<a target="_blank" rel="noopener" href="https://medium.com/@alonjacovi/trends-in-explainable-ai-xai-literature-a1db485e871," title="rends in Explainable AI (XAI) Literature">Alon Jacovi</a>的博文</p>
+<p>这是一份关于 XAI-Scholar 的报告，是Alon Jacovi收集的 XAI* 论文合集，以及作者从中得出的一些有趣的趋势和见解。这是此处 Arxiv 报告的<a target="_blank" rel="noopener" href="https://arxiv.org/abs/2301.05433," title="Trends in Explainable AI (XAI) Literature">非正式版本</a>。重现代码和数据可在这个 github 存储库中获得。该集合基于使用此 Python API 的 SemanticScholar 数据库。</p>
+<p>*对于 XAI，我指的是研究文章的相对包容性定义，这些文章讨论了现代人工智能系统中解释/解释的发展、实施或实践（无论它们是否这样称呼自己）。这个定义与我在各种精选的 XAI 论文、研讨会和 XAI 期刊问题中观察到的最常见定义一致。</p>
+<p>近年来，XAI 研究已经开始达到这样的规模：(1) 难以通过人工测量掌握； (2) 足够大，可以看到整体经验和统计趋势。我的目标是收集大量格式良好的 XAI 论文，以使这种实证分析成为可能。下面的分析可以作为概念证明，说明可以用它做什么。作者个人的动机是研究 XAI 的多学科性，但还有许多其他可能的用途。</p>
+<p>与类似领域相比，XAI 研究具有多种特性，使其难以从整体上观察：</p>
+<ol>
+<li>
+<p>它涉及到的学科非常多，在许多不同领域都有不可忽视的社区，这些社区不经常互动或共享领域的研究。</p>
+</li>
+<li>
+<p>论文用来自称 XAI 研究的术语并不是 XAI 独有的（例如，“xai”和“Xai Xai”是研究中出现的具有多重意义的名称），而且这个术语比 XAI 的研究历史更长。</p>
+</li>
+<li>
+<p>“XAI 研究”论文最流行的定义通常包括那些不自称为 XAI 的论文，只要它们试图解释 AI 技术。</p>
+</li>
+</ol>
+<h2 id="一些发现"><a class="markdownIt-Anchor" href="#一些发现"></a> 一些发现：</h2>
+<ol>
+<li>XAI 研究在 2016 年、2018 年和 2021 年（尤其是 2021 年）在计算机科学之外出现了最大的“扩张”增长峰值。</li>
+<li>随着时间的推移，由传统上发表在两个或更多不同研究领域的作者撰写的论文的相对比例明显增加。</li>
+<li>CS 与不同的 XAI 领域有不同的引用关系。例如，XAI-CS 引用 XAI-Psychology 的频率高于反之亦然，但 XAI-CS 和 XAI-Medicine 的关系则相反。这种影响的“方向”显示了当前文献中哪些领域经常提到/被哪些其他领域提到。</li>
+<li>XAI 领域之间的差异在于它们涉及非 XAI 研究的频率。比例最高的是XAI-Biology、XAI-Engineering和XAI-Law——而比例最低的是XAI-Psychology、XAI-Business和XAI-Philosophy，它们的影响往往更多地延伸到其他XAI文献。</li>
+<li>论文之间的引用行为在不同领域之间存在显着差异。例如，XAI-Philosophy 引用的top-cited Philosophy 论文与XAI-CS 引用的Philosophy 论文明显不同，等等。不出所料，领域外的引用往往集中在该领域的少数论文，但“突破”其领域传统界限的论文并不总是该领域被引用次数最多的论文。</li>
+<li>例如，该集合可以通过查看哪些 XAI 论文对其领域外或 XAI 之外的论文最具影响力来充当论文发现引擎；或者特定领域的哪些非 XAI 论文对另一个领域的 XAI 最有用。 arxiv 报告和 github 存储库中有很多示例，但我也会在此处包含一些示例。</li>
+</ol>
+<h1 id="收集方法"><a class="markdownIt-Anchor" href="#收集方法"></a> 收集方法</h1>
+<h2 id="第一步关键词搜索"><a class="markdownIt-Anchor" href="#第一步关键词搜索"></a> 第一步：关键词搜索</h2>
+<p>我在 SemanticScholar 查询中搜索了以下关键字，并使用论文标题 + 摘要使用精确匹配来过滤它们。<br>
+关键词是：“xai”、“(xai)”、“hcxai”、“explainability”、“interpretability”、“explainable ai”、“explainable artificial intelligence”、“interpretable ml”、“interpretable machine learning”、“interpretable模型”、“特征归因”、“特征重要性”、“全局解释”、“局部解释”、“局部解释”、“全局解释”、“模型解释”、“模型解释”、“显着性”、“反事实解释” ”。(<code>The keywords are: *“ xai “, “(xai)”, “hcxai”, “explainability”, “interpretability”, “explainable ai”, “explainable artificial intelligence”, “interpretable ml”, “interpretable machine learning”, “interpretable model”, “feature attribution”, “feature importance”, “global explanation”, “local explanation”, “local interpretation”, “global interpretation”, “model explanation”, “model interpretation”, “saliency”, “counterfactual explanation”.*</code>)</p>
+<p>这组关键字实际上是相当保守的（最初我从一个更大的列表开始），但即使使用这个保守的集合，不幸的是，1-keyword-match 过滤导致许多非 XAI 论文因各种原因被检索——所以我只包括论文匹配 2 个或更多唯一关键字。 100 篇论文的随机样本通过人工检查产生了 99% 的精度（一篇论文在摘要中提到关键词只是作为相邻研究的动机）。</p>
+<p>基于关键字的搜索检索到 3101 篇论文。</p>
+<h2 id="第二步人工搜集"><a class="markdownIt-Anchor" href="#第二步人工搜集"></a> 第二步：人工搜集</h2>
+<p>我从以下精选列表中获取了论文：</p>
+<ol>
+<li><a target="_blank" rel="noopener" href="https://xainlp2020.github.io/xainlp/table"><em>https://xainlp2020.github.io/xainlp/tabl</em></a><em>e</em></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/hbaniecki/adversarial-explainable-ai"><em>https://github.com/hbaniecki/adversarial-explainable-ai</em></a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/SinaMohseni/Awesome-XAI-Evaluation"><em>https://github.com/SinaMohseni/Awesome-XAI-Evaluation</em></a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/wangyongjie-ntu/Awesome-explainable-AI"><em>https://github.com/wangyongjie-ntu/Awesome-explainable-AI</em></a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/pbiecek/xai_resources"><em>https://github.com/pbiecek/xai_resources</em></a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/lopusz/awesome-interpretable-machine-learning"><em>https://github.com/lopusz/awesome-interpretable-machine-learning</em></a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/rehmanzafar/xai-iml-sota"><em>https://github.com/rehmanzafar/xai-iml-sota</em></a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/kevinmcareavey/chai-xai"><em>https://github.com/kevinmcareavey/chai-xai</em></a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/feifeife/All-about-XAI"><em>https://github.com/feifeife/All-about-XAI</em></a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/samzabdiel/XAI"><em>https://github.com/samzabdiel/XAI</em></a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/AstraZeneca/awesome-explainable-graph-reasoning"><em>https://github.com/AstraZeneca/awesome-explainable-graph-reasoning</em></a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/anguyen8/XAI-papers"><em>https://github.com/anguyen8/XAI-papers</em></a></li>
+</ol>
+<p>然后使用带模糊匹配的 SemanticScholar API 按标题搜索它们。这使 766 篇论文增加到 3867 篇论文。</p>
+<h2 id="第三步带有手动过滤的引文树扩展"><a class="markdownIt-Anchor" href="#第三步带有手动过滤的引文树扩展"></a> 第三步：带有手动过滤的引文树扩展</h2>
+<p>我从步骤 1-2 的论文集中取出了前 2000 篇被引用最多的论文，并从中手动选择了关于 XAI 的论文。</p>
+<p>这使 648 篇论文增加到 4515 篇论文。</p>
+<h2 id="第-4-步-带自动过滤的引文树扩展"><a class="markdownIt-Anchor" href="#第-4-步-带自动过滤的引文树扩展"></a> 第 4 步： 带自动过滤的引文树扩展</h2>
+<p>在上面的每个步骤 1-3 之后，我检索了所收集论文的所有引文和参考文献，并通过 2-keyword-match 方法过滤它们。我以递归方式执行此操作，直到不再添加新论文为止。</p>
+<p>总共增加了 709 篇论文，总数达到 5224 篇。</p>
+<h2 id="第-5-步-人工质量检查"><a class="markdownIt-Anchor" href="#第-5-步-人工质量检查"></a> 第 5 步 ：人工质量检查</h2>
+<p>最后，我试探性地浏览了数据集，发现了 25 篇归因错误的论文。删除它们使最终数量减少到 5199 篇论文。</p>
+<h2 id="总结"><a class="markdownIt-Anchor" href="#总结"></a> 总结</h2>
+<p>第 1 步和第 4 步基于关键字自动过滤，其作用是根据最近流行的术语检索自我识别为 XAI 的论文。第 2 步和第 3 步基于不限于特定关键字的手动过滤，其作用是检索在 XAI 术语收敛之前发表的论文，以及未自我识别为 XAI 但被社区认为是 XAI 的论文。</p>
+<h2 id="收集到的论文合集"><a class="markdownIt-Anchor" href="#收集到的论文合集"></a> 收集到的论文合集</h2>
+<p>最终合集有5199篇论文。<br>
+每篇论文都有：</p>
+<ul>
+<li><em>The SemanticScholar ID and URL</em></li>
+<li><em>Title</em></li>
+<li><em>Abstract</em></li>
+<li><em>Authors</em></li>
+<li><em>Number of citations</em></li>
+<li><em>Number of references</em></li>
+<li><em>Year</em></li>
+<li><em>Venue</em></li>
+<li><em>Field of study</em></li>
+<li><em>SemanticScholar’s “tldr” summary</em></li>
+</ul>
+<p>每篇论文的以下数据也可以分别从 SemanticScholar 中检索：</p>
+<ul>
+<li>参考文献列表</li>
+<li>引文列表</li>
+<li>SemanticScholar 的嵌入向量</li>
+</ul>
+<p>数据的最终大小为 19 MB。从 SemanticScholar 检索参考和引用后，完整数据的大小约为 950 MB。<br>
+这是跨研究领域的分布：</p>
+<p><img src="/2023/01/19/%E5%8F%AF%E8%A7%A3%E9%87%8A%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD(XAI)%E7%9A%84%E6%96%87%E7%8C%AE%E8%B6%8B%E5%8A%BF/1AmdTnrOreooBK-shQNjIVg-1674130652423-55.webp" alt="img"></p>
+<p>考虑到易读性，不含CS的分布：</p>
+<p><img src="/2023/01/19/%E5%8F%AF%E8%A7%A3%E9%87%8A%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD(XAI)%E7%9A%84%E6%96%87%E7%8C%AE%E8%B6%8B%E5%8A%BF/1epaBhPwWwuK3YlhRU2nteA-1674130722009-65.webp" alt="img"></p>
+<h2 id="不足之处"><a class="markdownIt-Anchor" href="#不足之处"></a> 不足之处</h2>
+<ol>
+<li>不用说，这里的检索是有偏见的：第 1 步和第 4 步偏向于特定术语，第 2 步和第 3 步偏向于 CS 和数学中有影响力/高引用的论文。</li>
+<li>SemanticScholar 有噪声数据——不要指望完美的格式。有些论文缺少摘要；部分论文字段错误；地点名称不一致（即，有多个字符串指的是同一个地点）；缺少引文/参考文献、作者等。这是少数，但也不容忽视。</li>
+<li>低于100% 精确度——我尽力了，但一些非 XAI 论文可能漏掉了。从我做的抽样来看，你可以期待非常高的精度，但不是 100%。</li>
+<li>显然，这个集合远没有达到 100% 的召回率。根据我非常有偏见和轶事的观察，我估计截至 2022 年 12 月 31 日，XAI 文献的“真实”主体大约是这个集合的 x1.5 到 x2——所以总共有大约 8k 到 10k 篇论文。遗漏的论文可能早于术语开始融合的时间，或者由于步骤 2-3 优先考虑高被引论文而导致引用量较低。</li>
+<li>该集合在 2022 年 12 月的一段时间内被检索，但有些场馆似乎从出版日期到论文集/Semantic Scholar 出现有所延迟——因此对增长趋势的观察可能要将 2022 年视为部分年份（我没有任何证据表明这个问题有多大或多小）。</li>
+</ol>
+<p>在使用集合时，请依靠您自己的判断来决定观察到的趋势是否可以克服基于这些限制的误差范围。</p>
+<h1 id="研究结果"><a class="markdownIt-Anchor" href="#研究结果"></a> 研究结果</h1>
+<h2 id="增长趋势"><a class="markdownIt-Anchor" href="#增长趋势"></a> 增长趋势</h2>
+<p>首先，XAI 通常显示出相对的年度增长——但这种增长在很大程度上是由计算机科学控制的（它显示出相同的增长趋势）。</p>
+<p><img src="/2023/01/19/%E5%8F%AF%E8%A7%A3%E9%87%8A%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD(XAI)%E7%9A%84%E6%96%87%E7%8C%AE%E8%B6%8B%E5%8A%BF/14tKfXYQq639KcbXAnsvd9A.png" alt="img"></p>
+<p>限制了非CS 论文揭示了不同的增长趋势。例如，XAI-Medicine 呈指数级增长，尤其是在 2016 年、2018 年和 2021 年的相对增长较大。</p>
+<p><img src="/2023/01/19/%E5%8F%AF%E8%A7%A3%E9%87%8A%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD(XAI)%E7%9A%84%E6%96%87%E7%8C%AE%E8%B6%8B%E5%8A%BF/1fZmByOHxPBjVwu85WW2qng.png" alt="img"></p>
+<p>在控制非医学和非 CS 论文时，这些趋势也成立。</p>
+<p><img src="/2023/01/19/%E5%8F%AF%E8%A7%A3%E9%87%8A%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD(XAI)%E7%9A%84%E6%96%87%E7%8C%AE%E8%B6%8B%E5%8A%BF/1NCoYhCgvf0m5_SDIJv8F-w.png" alt="img"></p>
+<p>总体而言，XAI 似乎在 2016 年、2018 年和 2021 年向“非中心”领域进行了最大的扩张。</p>
+<h2 id="合作趋势"><a class="markdownIt-Anchor" href="#合作趋势"></a> 合作趋势</h2>
+<p>我们可以通过将作者的“领域”定义为他们大部分论文的领域（通过 SemanticScholar 单独检索）来查看研究领域变量与作者-论文图之间的相互作用。<br>
+然后我们可以统计合作的次数。</p>
+<p>我们可以将此网络可视化为加权无向图。边的权重是所有论文中至少有一个合作的百分比（低于 5% 的边缘被忽略）。</p>
+<p><img src="/2023/01/19/%E5%8F%AF%E8%A7%A3%E9%87%8A%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD(XAI)%E7%9A%84%E6%96%87%E7%8C%AE%E8%B6%8B%E5%8A%BF/1R6CRDAgPYGQitIwDX9slVw.png" alt="img"></p>
+<p>和以前一样，由于 CS 扭曲了整个尺度，我们可以在没有 CS 的情况下查看同一张图，以获得其他场配对的细粒度视图（省略了低于 3% 的边）：</p>
+<p><img src="/2023/01/19/%E5%8F%AF%E8%A7%A3%E9%87%8A%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD(XAI)%E7%9A%84%E6%96%87%E7%8C%AE%E8%B6%8B%E5%8A%BF/1oQJlVgzmlCF2kFsacZE59Q.png" alt="img"></p>
+<p>当然，我们可以检查合作的增长趋势。该图显示了所有年度论文中合作论文的年度数量：</p>
+<p><img src="/2023/01/19/%E5%8F%AF%E8%A7%A3%E9%87%8A%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD(XAI)%E7%9A%84%E6%96%87%E7%8C%AE%E8%B6%8B%E5%8A%BF/12nMfXKNdm5IN7q6Mrx-ARA.png" alt="img"></p>
+<p>很难在这张图中看到，但如果我们绘制合作论文的百分比，我们可以看到随时间的比例增长：</p>
+<p><img src="/2023/01/19/%E5%8F%AF%E8%A7%A3%E9%87%8A%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD(XAI)%E7%9A%84%E6%96%87%E7%8C%AE%E8%B6%8B%E5%8A%BF/1P2bfDHAWEi39ApwLD3XUvA.png" alt="img"></p>
+<p>如果我们将 2016 年视为异常值，传统上在不同领域发表论文的作者合作的论文比例会逐渐增加。</p>
+<h2 id="引文趋势"><a class="markdownIt-Anchor" href="#引文趋势"></a> 引文趋势</h2>
+<p>最后，我们可以检查研究领域变量和引用参考图之间的交互作用。</p>
+<p>最容易分析的趋势是围绕 CS，因为所有领域都与 CS 有显着的引用关系。</p>
+<p>例如，哪些 XAI 领域被 XAI-CS 引用最多（前 5 名）？</p>
+<p><img src="/2023/01/19/%E5%8F%AF%E8%A7%A3%E9%87%8A%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD(XAI)%E7%9A%84%E6%96%87%E7%8C%AE%E8%B6%8B%E5%8A%BF/1WwQ1mMV8SbWgIbJNEaxZwQ.png" alt="img"></p>
+<p>受到XAI-数学的影响当然是有道理的，但我们也可以看到 XAI-工程、XAI-心理学、XAI-医学和 XAI-商业对 XAI-CS 文献的影响不可忽视。</p>
+<h3 id="cs与其他领域的引用关系的方向是什么"><a class="markdownIt-Anchor" href="#cs与其他领域的引用关系的方向是什么"></a> CS与其他领域的引用关系的“方向”是什么？</h3>
+<p>我们可以将其可视化为加权有向图：下面我们可以看到围绕 CS 的 XAI 字段之间的引用与参考关系——两个字段之间的每对边都被归一化为总和为 100%。两边跨度少于 100 个引用的关系将被忽略。</p>
+<p><img src="/2023/01/19/%E5%8F%AF%E8%A7%A3%E9%87%8A%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD(XAI)%E7%9A%84%E6%96%87%E7%8C%AE%E8%B6%8B%E5%8A%BF/1Qjnhsh5KTDiTT8MFDxvxMQ.png" alt="img"></p>
+<p>该图基本上显示了两个领域中哪个领域更多地被另一个领域所借鉴。我们可以看到，心理学和数学领域的XAI论文被XAI-CS引用的频率比其他领域高。XAI-Engineering/XAI-Medicine大致相当，而对于所有其他领域，这种关系是翻转的–意味着它们更多地被XAI-CS告知，而不是XAI-CS被它们告知。</p>
+<h3 id="xai-中非-cs-领域之间的引用关系是什么"><a class="markdownIt-Anchor" href="#xai-中非-cs-领域之间的引用关系是什么"></a> XAI 中非 CS 领域之间的引用关系是什么？</h3>
+<p>和以前一样，我们可以省略 CS 来查看其他配对。该图显示了每个 XAI 领域的前 3 个引用 XAI 领域。来自一个节点的所有出边都被归一化为总和为 100%。对其他字段的引用少于 20 次的字段将被忽略。</p>
+<p><img src="/2023/01/19/%E5%8F%AF%E8%A7%A3%E9%87%8A%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD(XAI)%E7%9A%84%E6%96%87%E7%8C%AE%E8%B6%8B%E5%8A%BF/1E0SGBmnbRAtY1ETXAXELSQ.png" alt="img"></p>
+<h3 id="哪些-xai-领域对非-xai-文献的影响最大"><a class="markdownIt-Anchor" href="#哪些-xai-领域对非-xai-文献的影响最大"></a> 哪些 XAI 领域对非 XAI 文献的影响最大？</h3>
+<p>如果我们将集合之外的论文定义为非 XAI 论文，则该图显示了 XAI 领域的排名，按非 XAI 引用占该 XAI 领域所有引用的百分比。它基本上显示了哪些领域最经常为非 XAI 文献提供信息。 （引用少于 100 次的字段被忽略）。</p>
+<p><img src="/2023/01/19/%E5%8F%AF%E8%A7%A3%E9%87%8A%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD(XAI)%E7%9A%84%E6%96%87%E7%8C%AE%E8%B6%8B%E5%8A%BF/0dekBBbHgyf5mF9xX-1674130753993-68.png" alt="img"></p>
+<p>例如，XAI-Biology相对来说经常被非XAI文献引用，而XAI-Philosophy则相反，它似乎相对来说更经常被XAI引用。</p>
+<h1 id="论文层面的引文趋势和论文发现"><a class="markdownIt-Anchor" href="#论文层面的引文趋势和论文发现"></a> 论文层面的引文趋势和论文发现</h1>
+<p>最后，我们可以在个别论文的层面上看一下引用行为。</p>
+<p>例如，当XAI-CS引用哲学时，他们是在引用各种各样的论文，还是在引用少数精选的论文？</p>
+<p><img src="/2023/01/19/%E5%8F%AF%E8%A7%A3%E9%87%8A%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD(XAI)%E7%9A%84%E6%96%87%E7%8C%AE%E8%B6%8B%E5%8A%BF/1ofxh6LedA5quqE6za2JaRg.png" alt="img"></p>
+<p>被XAI-CS引用最多的10篇哲学论文控制了这些领域之间32%的引文。我们可以通过查看XAI-CS对每个领域的论文引用的论文分布熵来更普遍地检查这一点。</p>
+<p><img src="/2023/01/19/%E5%8F%AF%E8%A7%A3%E9%87%8A%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD(XAI)%E7%9A%84%E6%96%87%E7%8C%AE%E8%B6%8B%E5%8A%BF/1A9mwW3-wMYbe6G5DL9j5tA.webp" alt="img"></p>
+<p>正如我们预期的那样，我们可以在这里看到哲学有一个相对峰值的分布。顺便说一句，如果你很好奇——XAI-CS 的“法律”引用绝大多数由一篇论文（“可计算算法”）控制，引用率为 44% 😃</p>
+<p><img src="/2023/01/19/%E5%8F%AF%E8%A7%A3%E9%87%8A%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD(XAI)%E7%9A%84%E6%96%87%E7%8C%AE%E8%B6%8B%E5%8A%BF/1qPHPjeH2xgLjn0VP2r-7nQ.png" alt="img"></p>
+<p>为了说明问题，下面是另一个关于心理学和CS的场景。</p>
+<p><img src="/2023/01/19/%E5%8F%AF%E8%A7%A3%E9%87%8A%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD(XAI)%E7%9A%84%E6%96%87%E7%8C%AE%E8%B6%8B%E5%8A%BF/16-MIXRKS6giv7sJz9Nq4mg.png" alt="img"></p>
+<p><img src="/2023/01/19/%E5%8F%AF%E8%A7%A3%E9%87%8A%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD(XAI)%E7%9A%84%E6%96%87%E7%8C%AE%E8%B6%8B%E5%8A%BF/1KbcsQoXyXuVBuGT5aDZqkw.png" alt="img"></p>
+<p>我们可以问的其他问题是：</p>
+<h2 id="被本领域以外的论文引用最多的-xai-论文有哪些"><a class="markdownIt-Anchor" href="#被本领域以外的论文引用最多的-xai-论文有哪些"></a> 被本领域以外的论文引用最多的 XAI 论文有哪些？</h2>
+<p>换句话说，哪些论文在他们的领域之外“突破”了？</p>
+<p><img src="/2023/01/19/%E5%8F%AF%E8%A7%A3%E9%87%8A%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD(XAI)%E7%9A%84%E6%96%87%E7%8C%AE%E8%B6%8B%E5%8A%BF/1f8wCTtWlzwLuW3e_arjCqA.png" alt="img"></p>
+<p><img src="/2023/01/19/%E5%8F%AF%E8%A7%A3%E9%87%8A%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD(XAI)%E7%9A%84%E6%96%87%E7%8C%AE%E8%B6%8B%E5%8A%BF/13gt61856PFagKzI4qPE_Fg.png" alt="img"></p>
+<h2 id="特定领域的哪些-xai-论文在该领域被引用最多"><a class="markdownIt-Anchor" href="#特定领域的哪些-xai-论文在该领域被引用最多"></a> 特定领域的哪些 XAI 论文在该领域被引用最多？</h2>
+<p><img src="/2023/01/19/%E5%8F%AF%E8%A7%A3%E9%87%8A%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD(XAI)%E7%9A%84%E6%96%87%E7%8C%AE%E8%B6%8B%E5%8A%BF/1Bcjb81Aqt_2KutNmFy6PAg.png" alt="img"></p>
+<h1 id="结论"><a class="markdownIt-Anchor" href="#结论"></a> 结论</h1>
+<p>XAI 研究正在大规模地围绕特定术语进行融合，这使得根据经验观察趋势成为可能。虽然检索过程有一些局限性和偏见，但可以在某种程度上解释它们（例如，通过承认检索偏向 CS，并看到在相反方向上克服这种偏见的趋势）。</p>
+ 
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <div class="declare">
+      <ul class="post-copyright">
+        <li>
+          <i class="ri-copyright-line"></i>
+          <strong>版权声明： </strong>
+          
+          本博客所有文章除特别声明外，著作权归作者所有。转载请注明出处！
+          
+        </li>
+      </ul>
+    </div>
+    
+    <footer class="article-footer">
+       
+<div class="share-btn">
+      <span class="share-sns share-outer">
+        <i class="ri-share-forward-line"></i>
+        分享
+      </span>
+      <div class="share-wrap">
+        <i class="arrow"></i>
+        <div class="share-icons">
+          
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="ri-weibo-fill"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="ri-wechat-fill"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="ri-qq-fill"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="ri-douban-line"></i>
+          </a>
+          <!-- <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a> -->
+          
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="ri-facebook-circle-fill"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="ri-twitter-fill"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="ri-google-fill"></i>
+          </a>
+        </div>
+      </div>
+</div>
+
+<div class="wx-share-modal">
+    <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://tcsds.github.io/2023/01/19/%E5%8F%AF%E8%A7%A3%E9%87%8A%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD(XAI)%E7%9A%84%E6%96%87%E7%8C%AE%E8%B6%8B%E5%8A%BF/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div id="share-mask"></div>  
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../../../tags/towardsdatascience/" rel="tag">towardsdatascience</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../../../tags/%E5%8F%AF%E8%A7%A3%E9%87%8A%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/" rel="tag">可解释人工智能</a></li></ul>
+
+    </footer>
+  </div>
+
+   
+  <nav class="article-nav">
+    
+      <a href="../../../../2025/04/19/%E5%8C%BB%E5%AD%A6%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86SCI%E6%9C%9F%E5%88%8A/" class="article-nav-link">
+        <strong class="article-nav-caption">上一篇</strong>
+        <div class="article-nav-title">
+          
+            医学图像处理SCI期刊
+          
+        </div>
+      </a>
+    
+    
+      <a href="../%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%88%86%E7%B1%BB%E7%9A%84%E8%AF%84%E4%BC%B0/" class="article-nav-link">
+        <strong class="article-nav-caption">下一篇</strong>
+        <div class="article-nav-title">机器学习分类的评估</div>
+      </a>
+    
+  </nav>
+
+   
+<!-- valine评论 -->
+<div id="vcomments-box">
+  <div id="vcomments"></div>
+</div>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js"></script>
+<script>
+  new Valine({
+    el: "#vcomments",
+    app_id: "U0I96P0Wt6FGcfboCjpouXE7-gzGzoHsz",
+    app_key: "oNYyWjG0vf67jnY7BjKw7kYm",
+    path: window.location.pathname,
+    avatar: "monsterid",
+    placeholder: "给我的文章加点评论吧~",
+    recordIP: true,
+  });
+  const infoEle = document.querySelector("#vcomments .info");
+  if (infoEle && infoEle.childNodes && infoEle.childNodes.length > 0) {
+    infoEle.childNodes.forEach(function (item) {
+      item.parentNode.removeChild(item);
+    });
+  }
+</script>
+<style>
+  #vcomments-box {
+    padding: 5px 30px;
+  }
+
+  @media screen and (max-width: 800px) {
+    #vcomments-box {
+      padding: 5px 0px;
+    }
+  }
+
+  #vcomments-box #vcomments {
+    background-color: #fff;
+  }
+
+  .v .vlist .vcard .vh {
+    padding-right: 20px;
+  }
+
+  .v .vlist .vcard {
+    padding-left: 10px;
+  }
+</style>
+
+ 
+   
+     
+</article>
+
+</section>
+      <footer class="footer">
+  <div class="outer">
+    <ul>
+      <li>
+        Copyrights &copy;
+        2017-2025
+        <i class="ri-heart-fill heart_icon"></i> 善良的右行
+      </li>
+    </ul>
+    <ul>
+      <li>
+        
+      </li>
+    </ul>
+    <ul>
+      <li>
+        
+        
+        <span>
+  <span><i class="ri-user-3-fill"></i>访问人数:<span id="busuanzi_value_site_uv"></span></span>
+  <span class="division">|</span>
+  <span><i class="ri-eye-fill"></i>浏览次数:<span id="busuanzi_value_page_pv"></span></span>
+</span>
+        
+      </li>
+    </ul>
+    <ul>
+      
+    </ul>
+    <ul>
+      
+    </ul>
+    <ul>
+      <li>
+        <!-- cnzz统计 -->
+        
+        <script type="text/javascript" src=''></script>
+        
+      </li>
+    </ul>
+  </div>
+</footer>    
+    </main>
+    <div class="float_btns">
+      <div class="totop" id="totop">
+  <i class="ri-arrow-up-line"></i>
+</div>
+
+<div class="todark" id="todark">
+  <i class="ri-moon-line"></i>
+</div>
+
+    </div>
+    <aside class="sidebar on">
+      <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+  <div class="logo">
+    <a href="../../../../index.html"><img src="/images/ayer2.png" alt="图数据科学实验室"></a>
+  </div>
+  
+  <ul class="nav nav-main">
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="../../../../news">新闻</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="../../../../index.html">主页</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="../../../../projects">项目</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="../../../../articles">论文</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="../../../../prizes">获奖</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="../../../../competition">竞赛</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="../../../../archives">归档</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="../../../../categories">分类</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="../../../../aboutme">团队</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="../../../../tags">标签</a>
+    </li>
+    
+  </ul>
+</nav>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      
+      <a class="nav-item-link nav-item-search"  title="搜索">
+        <i class="ri-search-line"></i>
+      </a>
+      
+      
+      <a class="nav-item-link" target="_blank" href="../../../../atom.xml" title="RSS Feed">
+        <i class="ri-rss-line"></i>
+      </a>
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+    </aside>
+    <div id="mask"></div>
+
+<!-- #reward -->
+<div id="reward">
+  <span class="close"><i class="ri-close-line"></i></span>
+  <p class="reward-p"><i class="ri-cup-line"></i>请我喝杯咖啡吧~</p>
+  <div class="reward-box">
+    
+    <div class="reward-item">
+      <img class="reward-img" src="../../../../images/zhifubao.png">
+      <span class="reward-type">支付宝</span>
+    </div>
+    
+    
+    <div class="reward-item">
+      <img class="reward-img" src="../../../../images/weixin.png">
+      <span class="reward-type">微信</span>
+    </div>
+    
+  </div>
+</div>
+    
+<script src="../../../../js/jquery-3.6.0.min.js"></script>
+ 
+<script src="../../../../js/lazyload.min.js"></script>
+
+<!-- Tocbot -->
+ 
+<script src="../../../../js/tocbot.min.js"></script>
+
+<script>
+  tocbot.init({
+    tocSelector: ".tocbot",
+    contentSelector: ".article-entry",
+    headingSelector: "h1, h2, h3, h4, h5, h6",
+    hasInnerContainers: true,
+    scrollSmooth: true,
+    scrollContainer: "main",
+    positionFixedSelector: ".tocbot",
+    positionFixedClass: "is-position-fixed",
+    fixedSidebarOffset: "auto",
+  });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.js"></script>
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.css"
+/>
+<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js"></script>
+
+<script src="../../../../dist/main.js"></script>
+
+<!-- ImageViewer -->
+ <!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" style="display:none" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css">
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"></script>
+
+<script>
+    function viewer_init() {
+        let pswpElement = document.querySelectorAll('.pswp')[0];
+        let $imgArr = document.querySelectorAll(('.article-entry img:not(.reward-img)'))
+
+        $imgArr.forEach(($em, i) => {
+            $em.onclick = () => {
+                // slider展开状态
+                // todo: 这样不好，后面改成状态
+                if (document.querySelector('.left-col.show')) return
+                let items = []
+                $imgArr.forEach(($em2, i2) => {
+                    let img = $em2.getAttribute('data-idx', i2)
+                    let src = $em2.getAttribute('data-target') || $em2.getAttribute('src')
+                    let title = $em2.getAttribute('alt')
+                    // 获得原图尺寸
+                    const image = new Image()
+                    image.src = src
+                    items.push({
+                        src: src,
+                        w: image.width || $em2.width,
+                        h: image.height || $em2.height,
+                        title: title
+                    })
+                })
+                var gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, {
+                    index: parseInt(i)
+                });
+                gallery.init()
+            }
+        })
+    }
+    viewer_init()
+</script> 
+<!-- MathJax -->
+ <script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+      tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+  });
+
+  MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for(i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+  });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.6/unpacked/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script>
+  var ayerConfig = {
+    mathjax: true,
+  };
+</script>
+
+<!-- Katex -->
+ 
+    
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css">
+        <script src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/auto-render.min.js"></script>
+        
+    
+ 
+<!-- busuanzi  -->
+ 
+<script src="../../../../js/busuanzi-2.3.pure.min.js"></script>
+ 
+<!-- ClickLove -->
+
+<!-- ClickBoom1 -->
+
+<!-- ClickBoom2 -->
+
+<!-- CodeCopy -->
+ 
+<link rel="stylesheet" href="../../../../css/clipboard.css">
+ <script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
+<script>
+  function wait(callback, seconds) {
+    var timelag = null;
+    timelag = window.setTimeout(callback, seconds);
+  }
+  !function (e, t, a) {
+    var initCopyCode = function(){
+      var copyHtml = '';
+      copyHtml += '<button class="btn-copy" data-clipboard-snippet="">';
+      copyHtml += '<i class="ri-file-copy-2-line"></i><span>COPY</span>';
+      copyHtml += '</button>';
+      $(".highlight .code pre").before(copyHtml);
+      $(".article pre code").before(copyHtml);
+      var clipboard = new ClipboardJS('.btn-copy', {
+        target: function(trigger) {
+          return trigger.nextElementSibling;
+        }
+      });
+      clipboard.on('success', function(e) {
+        let $btn = $(e.trigger);
+        $btn.addClass('copied');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('ri-file-copy-2-line');
+        $icon.addClass('ri-checkbox-circle-line');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPIED';
+        
+        wait(function () { // 等待两秒钟后恢复
+          $icon.removeClass('ri-checkbox-circle-line');
+          $icon.addClass('ri-file-copy-2-line');
+          $span[0].innerText = 'COPY';
+        }, 2000);
+      });
+      clipboard.on('error', function(e) {
+        e.clearSelection();
+        let $btn = $(e.trigger);
+        $btn.addClass('copy-failed');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('ri-file-copy-2-line');
+        $icon.addClass('ri-time-line');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPY FAILED';
+        
+        wait(function () { // 等待两秒钟后恢复
+          $icon.removeClass('ri-time-line');
+          $icon.addClass('ri-file-copy-2-line');
+          $span[0].innerText = 'COPY';
+        }, 2000);
+      });
+    }
+    initCopyCode();
+  }(window, document);
+</script>
+ 
+<!-- CanvasBackground -->
+
+<script>
+  if (window.mermaid) {
+    mermaid.initialize({ theme: "forest" });
+  }
+</script>
+
+
+    
+    <div id="music">
+    
+    
+    
+    <iframe frameborder="no" border="1" marginwidth="0" marginheight="0" width="200" height="86"
+        src="//music.163.com/outchain/player?type=2&id=28907016&auto=1&height=66"></iframe>
+</div>
+
+<style>
+    #music {
+        position: fixed;
+        right: 15px;
+        bottom: 0;
+        z-index: 998;
+    }
+</style>
+    
+    
+
+  </div>
+</body>
+
+</html>

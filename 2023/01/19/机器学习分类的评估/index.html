@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+
+
+<html lang="zh-CN">
+  
+
+    <head>
+      <meta charset="utf-8" />
+       
+      <meta name="keywords" content="数据科学" />
+       
+      <meta name="description" content="面向图数据的人工智能研究" />
+      
+      <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1, maximum-scale=1"
+      />
+      <title>机器学习分类的评估 |  图数据科学实验室</title>
+  <meta name="generator" content="hexo-theme-ayer">
+      
+      <link rel="shortcut icon" href="/favicon.ico" />
+       
+<link rel="stylesheet" href="../../../../dist/main.css">
+
+      <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/Shen-Yu/cdn/css/remixicon.min.css"
+      />
+      
+<link rel="stylesheet" href="../../../../css/custom.css">
+ 
+      <script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+       
+
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-103389953-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+
+
+ 
+<script>
+var _hmt = _hmt || [];
+(function() {
+	var hm = document.createElement("script");
+	hm.src = "https://hm.baidu.com/hm.js?8e2e80642e4c93347fbaa1e33f7017b9";
+	var s = document.getElementsByTagName("script")[0]; 
+	s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+      <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-bulma@5.0.1/bulma.min.css"
+      />
+      <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.19/dist/sweetalert2.min.js"></script>
+
+      <!-- mermaid -->
+      
+      <script src="https://cdn.jsdelivr.net/npm/mermaid@8.9.2/dist/mermaid.min.js"></script>
+      
+      <style>
+        .swal2-styled.swal2-confirm {
+          font-size: 1.6rem;
+        }
+      </style>
+    <link rel="alternate" href="atom.xml" title="图数据科学实验室" type="application/atom+xml">
+<link href="https://cdn.bootcss.com/KaTeX/0.11.1/katex.min.css" rel="stylesheet" /></head>
+  </html>
+</html>
+
+
+<body>
+  <div id="app">
+    
+      
+    <main class="content on">
+      <section class="outer">
+  <article
+  id="post-机器学习分类的评估"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h1 class="article-title sea-center" style="border-left:0" itemprop="name">
+  机器学习分类的评估
+</h1>
+ 
+
+      
+    </header>
+     
+    <div class="article-meta">
+      <a href="" class="article-date">
+  <time datetime="2023-01-19T02:26:06.000Z" itemprop="datePublished">2023-01-19</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="../../../../categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a>
+  </div>
+  
+<div class="word_count">
+    <span class="post-time">
+        <span class="post-meta-item-icon">
+            <i class="ri-quill-pen-line"></i>
+            <span class="post-meta-item-text"> 字数统计:</span>
+            <span class="post-count">2.9k</span>
+        </span>
+    </span>
+
+    <span class="post-time">
+        &nbsp; | &nbsp;
+        <span class="post-meta-item-icon">
+            <i class="ri-book-open-line"></i>
+            <span class="post-meta-item-text"> 阅读时长≈</span>
+            <span class="post-count">9 分钟</span>
+        </span>
+    </span>
+</div>
+ 
+    </div>
+      
+    <div class="tocbot"></div>
+
+
+
+
+  
+    <div class="article-entry" itemprop="articleBody">
+       
+  <p>本文源于<a target="_blank" rel="noopener" href="https://towardsdatascience.com/evaluation-of-machine-learning-classifiers-3912e7f5cf74," title="Evaluation of Machine Learning Classifiers">J. Rafid Siddiqui</a>博士的博客</p>
+<p>偏差-方差分析、正则化、性能指标的解释以及谐波分类器的实现</p>
+<p><img src="/2023/01/19/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%88%86%E7%B1%BB%E7%9A%84%E8%AF%84%E4%BC%B0/14NqIWicEK49QMvnButf4Yw.png" alt="Figure 1: A depiction of Results from a Bias-Variance Analysis"></p>
+<h1 id="偏差-方差分析"><a class="markdownIt-Anchor" href="#偏差-方差分析"></a> 偏差-方差分析</h1>
+<p>偏差-方差分析是一个评估机器学习分类器的过程。每个分类器都可能出现高偏差或高方差的问题，这取决于训练的条件。了解这些常见问题并加以预防，可以帮助人们建立更好、更普遍、更高性能的模型。</p>
+<h2 id="高偏差high-bias-欠拟合"><a class="markdownIt-Anchor" href="#高偏差high-bias-欠拟合"></a> 高偏差（<strong>High Bias</strong> , 欠拟合）</h2>
+<p>当一个分类器高度偏向某种类型的预测（例如，某个类）而不管输入数据的变化时，我们称这种模型存在高偏差问题。例如，如果我们在一个不可线性分离的训练集上训练一个线性模型，那么即使在训练集上，这样的模型也会表现得很差。所以我们将这样的模型称为欠拟合模型，因为它没有完全捕获数据集的结构。这种欠拟合问题的示例如下图所示。</p>
+<p><img src="/2023/01/19/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%88%86%E7%B1%BB%E7%9A%84%E8%AF%84%E4%BC%B0/19d2d7Ra4bPevQL3uD-Cm8Q.png" alt="Figure 2: An Example of a model suffering from an Underfitting Problem "></p>
+<p>您可能已经注意到，这样的模型在训练集和测试集上都表现不佳。这是因为模型没有配备足够的参数来处理数据中的非线性。这也可能意味着没有足够的数据。在样本量太小而无法训练的情况下，模型不会收敛到最佳点，结果模型会出现欠拟合问题。</p>
+<h2 id="高方差high-variance-过拟合"><a class="markdownIt-Anchor" href="#高方差high-variance-过拟合"></a> 高方差（<strong>High Variance</strong>, 过拟合）</h2>
+<p>训练机器学习分类器时的另一个常见问题发生在模型在训练集上表现良好时，但是，当它在与已经训练过的示例集不同的示例集上进行测试时，其性能会显着下降。此问题称为高方差或过拟合问题。之所以这样命名，是因为该模型在预测输出中具有高方差。换句话说，模型无法处理给定类别的输入样本中的方差，它不会为给定类别生成稳定的预测，而是为同一类别生成不同的预测。这种过度拟合问题的示例如下图所示。</p>
+<p><img src="/2023/01/19/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%88%86%E7%B1%BB%E7%9A%84%E8%AF%84%E4%BC%B0/1723KFsOjFzxD9srFV7qEpA.png" alt="Figure 3: An Example of a model suffering from an Overfitting Problem"></p>
+<h2 id="学习曲线learning-curves-诊断"><a class="markdownIt-Anchor" href="#学习曲线learning-curves-诊断"></a> 学习曲线（<strong>Learning Curves</strong>， 诊断）</h2>
+<p>既然您知道什么是高偏差和高方差问题，您可能想知道如何才能发现模型存在哪个问题。在示例中的二维数据中，我们可以很容易地通过绘制数据和分类器的决策边界来肉眼看到，但是，当数据是多维时，这样做是不可行的。因此，需要一种通用的诊断方法来找到确切的问题。学习曲线就是这样一种标准，可以用来找出问题的类型。更具体地说，我们绘制了从训练集中随机抽取的一组数据实例的目标函数值。然后我们迭代地增加样本数量，并不断绘制新数据样本集的目标函数值。这为我们提供了模型在训练集上的行为方式的曲线。除了训练集，我们还使用交叉验证集来验证性能。除了训练测试拆分之外，我们还创建了一个单独的数据拆分，并将其称为交叉验证集。然后在训练阶段执行所有参数调整和评估，并与该交叉验证集进行比较。我们也重复上述绘制交叉验证集学习曲线的过程。这种学习曲线的示例结果如图 4 所示。</p>
+<p><img src="/2023/01/19/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%88%86%E7%B1%BB%E7%9A%84%E8%AF%84%E4%BC%B0/1FIbf-9YyI2oJzYF9L9L1FQ.png" alt="Figure 4: An Example of Learning Curves for Underfitting, Overfitting and Best Fitting respectively "></p>
+<p>如果我们观察学习曲线，我们将看到当两条曲线（即 Jₜ 和 Jcᵥ）不收敛时，我们遇到了欠拟合问题，这意味着模型没有学到任何东西并且不会在训练中准确分类和测试数据。然而，当我们看到训练数据上的曲线 Jₜ 显示出明显的收敛而交叉验证集 (Jcᵥ) 的曲线显示出发散时，我们就会遇到过拟合问题。训练集和交叉验证集的最终成本值之间的差距越大，模型遭受过度拟合问题的可能性就越大，并且它对新示例的作用比对已有示例的作用更大受过训练。在最佳拟合的情况下，两条曲线都会收敛，这表明模型是平衡的，并且对训练和测试示例都适用。需要注意的是，在复杂的数据集中，两条曲线可能不会收敛到绝对零，并且两条曲线之间可能会有一个小的差距，但是，这不会是一个显着的差距，并且与绝对收敛点的距离不应该是太多了。</p>
+<h1 id="解决方案"><a class="markdownIt-Anchor" href="#解决方案"></a> 解决方案</h1>
+<h2 id="使用更好的数据"><a class="markdownIt-Anchor" href="#使用更好的数据"></a> 使用更好的数据</h2>
+<p>构建机器学习模型时的大多数问题都源于不良数据。如果数据集太小、噪音太大和/或包含矛盾/误导性数据点，那么最好的做法是找到更好的数据。与其他类相比，不平衡且某个类的实例较少的数据集也会导致过度拟合问题。在出现过度拟合问题的情况下，如果问题是由于缺乏数据引起的，则增加数据的大小可以解决问题。如果问题是由于数据不平衡引起的，则对数据进行规范化和分层也会有所帮助。</p>
+<h2 id="正则化"><a class="markdownIt-Anchor" href="#正则化"></a> 正则化</h2>
+<p>处理过拟合问题的一种方法是在目标函数中引入正则化项，这将使约束条件放松一些，从而适应数据的可变性。更具体地说，我们可以在目标函数中增加一个项（例如，权重的L1/L2准则），这将导致对训练集中由于噪声而出现的轻微偏差点的惩罚减少。在下图中可以看到这种正则化的一个例子。</p>
+<p><img src="/2023/01/19/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%88%86%E7%B1%BB%E7%9A%84%E8%AF%84%E4%BC%B0/1lp6Y37sEHzk8buy7Zgnk0w.png" alt="Figure 5: An Example of Effect of using Regularization for solving Overfitting problem"></p>
+<p>如果我们观察正则化对分类边界的影响，我们会注意到它扩大了分类边界，从而允许容纳噪声点，否则这些点会因决策边界狭窄而被错误分类。然而，这可能会以降低训练集的性能为代价，如图上 所示。因此，这是一个选择问题，由参数 Lambda 控制该参数决定了在构建分类器时要给正则化项多少权重。在保持数据大小不变的情况下，通过绘制训练集和交叉验证集的学习曲线与Lambda参数的变化，也可以了解Lambda的最佳值。</p>
+<h2 id="构建更好的特征空间"><a class="markdownIt-Anchor" href="#构建更好的特征空间"></a> 构建更好的特征空间</h2>
+<p>在有些情况下，问题的产生是由于不良/不充分的特征空间。在这种情况下，我们必须构建一个更好的特征空间。例如，如果出现欠拟合的问题，如我们前面描述的问题（即非线性数据集上的线性分类器），就必须增加特征的数量和类型。我们可以在图3中看到增加更多特征（即三次多项式模型）的结果。该模型在对训练集进行分类时变得很好，因此，解决了欠拟合的问题。然而，我们也看到，它开始受到过拟合问题的困扰，对某些数据样本来说，变得过于局限。我们在前面的章节中也讨论了如何缓解过拟合问题。然而，在某些情况下，简单地改变特征空间到一个更合适的特征空间，可以大幅提高性能，并可以提供一个更通用的模型，甚至对未见过的数据也能稳健地工作。如果我们仔细观察数据，我们应该看到它是一个重复的模式，我们可以用谐波分类器为它建模。事实上，如果我们用一个谐波分类器（例如正弦波）来建模，我们可以得到一个对任何新样本都有效的模型，从而为我们提供一个通用的解决方案。图6中显示了一个在数据上拟合的谐波分类器的例子。正如我们所看到的，它不仅只用一个周期来学习和分类训练集，而且对任何数量的周期都是稳健的。</p>
+<p><img src="/2023/01/19/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%88%86%E7%B1%BB%E7%9A%84%E8%AF%84%E4%BC%B0/1hk0EUwO18bvNsWHvA8DzIg.png" alt="img"></p>
+<h1 id="性能指标"><a class="markdownIt-Anchor" href="#性能指标"></a> 性能指标</h1>
+<p><img src="/2023/01/19/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%88%86%E7%B1%BB%E7%9A%84%E8%AF%84%E4%BC%B0/1yg-heoGpvawX135W0hKHgg.png" alt="img"></p>
+<p>一旦训练了分类器，就需要一种衡量标准来确定分类性能有多好。可以有多种指标可用于此类性能评估。准确性是许多任务的常用指标。但是，当数据集不平衡时，这是一个不好的指标。如果数据集只有某个类的几个实例，则准确性将高度偏向多数类。在这种情况下，必须使用不同的指标。如上图所示，我们通过计算分类标签的频率构建了一组指标，例如真阳性率 (TPR) 和假阳性率 (FPR)。 TPR（召回率/灵敏度）衡量分类器对正类（即第 1 类）的预测精度，FPR 衡量分类器对负类（即第 0 类）的预测性能。在高召回率/TPR 和低 FPR 之间总是存在权衡。例如，如果我们以对象检测器/分类器为例，那么 TPR 会告诉我们检测器在显示的对象中正确找到对象的频率，而 FPR 会测量在没有对象时错误检测到对象的频率现场。</p>
+<p>此外，分类器的性能在很大程度上取决于用于将点分类为类别的概率的阈值。例如，在二元分类器的情况下，我们可以对输出概率使用阈值（例如 0.5），并根据输出概率的值将点分类为 0 类或 1 类。然而，0.5 是一个任意值，并且在不同的分类场景中有所不同。因此，为了找到最佳阈值——分类器性能达到最大值的阈值，可以将阈值从 0 变为 1 并观察性能指标（例如 TPR、FPR 等）。此过程称为接受者操作特征分析 (ROC)，通过绘制 ROC 曲线来执行。通过在改变分类器的阈值的同时绘制 FPR 与 TPR 的关系来获得 ROC 曲线。这种曲线下的面积提供了性能的衡量标准（即，面积越大，分类性能越好）。无技能分类器（即返回随机类或常量类作为预测输出的分类器）被绘制为对角线。任何接近无技能分类器的输出曲线都被认为是没有分类能力的坏分类器。一个完美的分类器由左上角的方形曲线表示。此类 ROC 曲线的示例输出如下图所示。</p>
+<p><img src="/2023/01/19/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%88%86%E7%B1%BB%E7%9A%84%E8%AF%84%E4%BC%B0/1-yt12nC3-4ODOecjv--ltg.png" alt="img"></p>
+<p>除了 ROC 曲线之外，还有另一个指标称为“Precision-Recall”曲线。它是通过绘制 TPR 与 Precision/PPV（阳性预测值）的对比图获得的。精度衡量分类的正确性。如果我们使用之前的对象检测类比，那么精度衡量的是分类器将对象正确分类到它检测到的对象中的频率。与 TPR vs FPR 相同，TPR 和 Precision 之间存在权衡。高 TPR 可能会以精度损失为代价。 Precision-Recall 曲线对于不平衡数据特别有用。 Precision-Recall 的解释类似于 ROC 曲线，但是，完美的分类器性能位于右上角，No-Skill 分类器（例如多数分类器或随机分类器）显示为 0.5 附近的一条平线。</p>
+ 
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <div class="declare">
+      <ul class="post-copyright">
+        <li>
+          <i class="ri-copyright-line"></i>
+          <strong>版权声明： </strong>
+          
+          本博客所有文章除特别声明外，著作权归作者所有。转载请注明出处！
+          
+        </li>
+      </ul>
+    </div>
+    
+    <footer class="article-footer">
+       
+<div class="share-btn">
+      <span class="share-sns share-outer">
+        <i class="ri-share-forward-line"></i>
+        分享
+      </span>
+      <div class="share-wrap">
+        <i class="arrow"></i>
+        <div class="share-icons">
+          
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="ri-weibo-fill"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="ri-wechat-fill"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="ri-qq-fill"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="ri-douban-line"></i>
+          </a>
+          <!-- <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a> -->
+          
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="ri-facebook-circle-fill"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="ri-twitter-fill"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="ri-google-fill"></i>
+          </a>
+        </div>
+      </div>
+</div>
+
+<div class="wx-share-modal">
+    <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://tcsds.github.io/2023/01/19/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%88%86%E7%B1%BB%E7%9A%84%E8%AF%84%E4%BC%B0/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div id="share-mask"></div>  
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../../../tags/towardsdatascience/" rel="tag">towardsdatascience</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../../../tags/%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0/" rel="tag">模型评估</a></li></ul>
+
+    </footer>
+  </div>
+
+   
+  <nav class="article-nav">
+    
+      <a href="../%E5%8F%AF%E8%A7%A3%E9%87%8A%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD(XAI)%E7%9A%84%E6%96%87%E7%8C%AE%E8%B6%8B%E5%8A%BF/" class="article-nav-link">
+        <strong class="article-nav-caption">上一篇</strong>
+        <div class="article-nav-title">
+          
+            可解释人工智能 (XAI) 文献的趋势
+          
+        </div>
+      </a>
+    
+    
+      <a href="../../../../2021/05/31/PlotNeuralNet%E7%9A%84Latex%E8%A7%A3%E6%9E%90%E4%B8%8E%E5%AE%9A%E5%88%B6/" class="article-nav-link">
+        <strong class="article-nav-caption">下一篇</strong>
+        <div class="article-nav-title">PlotNeuralNet的Latex解析与定制</div>
+      </a>
+    
+  </nav>
+
+   
+<!-- valine评论 -->
+<div id="vcomments-box">
+  <div id="vcomments"></div>
+</div>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js"></script>
+<script>
+  new Valine({
+    el: "#vcomments",
+    app_id: "U0I96P0Wt6FGcfboCjpouXE7-gzGzoHsz",
+    app_key: "oNYyWjG0vf67jnY7BjKw7kYm",
+    path: window.location.pathname,
+    avatar: "monsterid",
+    placeholder: "给我的文章加点评论吧~",
+    recordIP: true,
+  });
+  const infoEle = document.querySelector("#vcomments .info");
+  if (infoEle && infoEle.childNodes && infoEle.childNodes.length > 0) {
+    infoEle.childNodes.forEach(function (item) {
+      item.parentNode.removeChild(item);
+    });
+  }
+</script>
+<style>
+  #vcomments-box {
+    padding: 5px 30px;
+  }
+
+  @media screen and (max-width: 800px) {
+    #vcomments-box {
+      padding: 5px 0px;
+    }
+  }
+
+  #vcomments-box #vcomments {
+    background-color: #fff;
+  }
+
+  .v .vlist .vcard .vh {
+    padding-right: 20px;
+  }
+
+  .v .vlist .vcard {
+    padding-left: 10px;
+  }
+</style>
+
+ 
+   
+     
+</article>
+
+</section>
+      <footer class="footer">
+  <div class="outer">
+    <ul>
+      <li>
+        Copyrights &copy;
+        2017-2025
+        <i class="ri-heart-fill heart_icon"></i> 善良的右行
+      </li>
+    </ul>
+    <ul>
+      <li>
+        
+      </li>
+    </ul>
+    <ul>
+      <li>
+        
+        
+        <span>
+  <span><i class="ri-user-3-fill"></i>访问人数:<span id="busuanzi_value_site_uv"></span></span>
+  <span class="division">|</span>
+  <span><i class="ri-eye-fill"></i>浏览次数:<span id="busuanzi_value_page_pv"></span></span>
+</span>
+        
+      </li>
+    </ul>
+    <ul>
+      
+    </ul>
+    <ul>
+      
+    </ul>
+    <ul>
+      <li>
+        <!-- cnzz统计 -->
+        
+        <script type="text/javascript" src=''></script>
+        
+      </li>
+    </ul>
+  </div>
+</footer>    
+    </main>
+    <div class="float_btns">
+      <div class="totop" id="totop">
+  <i class="ri-arrow-up-line"></i>
+</div>
+
+<div class="todark" id="todark">
+  <i class="ri-moon-line"></i>
+</div>
+
+    </div>
+    <aside class="sidebar on">
+      <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+  <div class="logo">
+    <a href="../../../../index.html"><img src="/images/ayer2.png" alt="图数据科学实验室"></a>
+  </div>
+  
+  <ul class="nav nav-main">
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="../../../../news">新闻</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="../../../../index.html">主页</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="../../../../projects">项目</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="../../../../articles">论文</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="../../../../prizes">获奖</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="../../../../competition">竞赛</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="../../../../archives">归档</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="../../../../categories">分类</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="../../../../aboutme">团队</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="../../../../tags">标签</a>
+    </li>
+    
+  </ul>
+</nav>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      
+      <a class="nav-item-link nav-item-search"  title="搜索">
+        <i class="ri-search-line"></i>
+      </a>
+      
+      
+      <a class="nav-item-link" target="_blank" href="../../../../atom.xml" title="RSS Feed">
+        <i class="ri-rss-line"></i>
+      </a>
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+    </aside>
+    <div id="mask"></div>
+
+<!-- #reward -->
+<div id="reward">
+  <span class="close"><i class="ri-close-line"></i></span>
+  <p class="reward-p"><i class="ri-cup-line"></i>请我喝杯咖啡吧~</p>
+  <div class="reward-box">
+    
+    <div class="reward-item">
+      <img class="reward-img" src="../../../../images/zhifubao.png">
+      <span class="reward-type">支付宝</span>
+    </div>
+    
+    
+    <div class="reward-item">
+      <img class="reward-img" src="../../../../images/weixin.png">
+      <span class="reward-type">微信</span>
+    </div>
+    
+  </div>
+</div>
+    
+<script src="../../../../js/jquery-3.6.0.min.js"></script>
+ 
+<script src="../../../../js/lazyload.min.js"></script>
+
+<!-- Tocbot -->
+ 
+<script src="../../../../js/tocbot.min.js"></script>
+
+<script>
+  tocbot.init({
+    tocSelector: ".tocbot",
+    contentSelector: ".article-entry",
+    headingSelector: "h1, h2, h3, h4, h5, h6",
+    hasInnerContainers: true,
+    scrollSmooth: true,
+    scrollContainer: "main",
+    positionFixedSelector: ".tocbot",
+    positionFixedClass: "is-position-fixed",
+    fixedSidebarOffset: "auto",
+  });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.js"></script>
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.css"
+/>
+<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js"></script>
+
+<script src="../../../../dist/main.js"></script>
+
+<!-- ImageViewer -->
+ <!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" style="display:none" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css">
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"></script>
+
+<script>
+    function viewer_init() {
+        let pswpElement = document.querySelectorAll('.pswp')[0];
+        let $imgArr = document.querySelectorAll(('.article-entry img:not(.reward-img)'))
+
+        $imgArr.forEach(($em, i) => {
+            $em.onclick = () => {
+                // slider展开状态
+                // todo: 这样不好，后面改成状态
+                if (document.querySelector('.left-col.show')) return
+                let items = []
+                $imgArr.forEach(($em2, i2) => {
+                    let img = $em2.getAttribute('data-idx', i2)
+                    let src = $em2.getAttribute('data-target') || $em2.getAttribute('src')
+                    let title = $em2.getAttribute('alt')
+                    // 获得原图尺寸
+                    const image = new Image()
+                    image.src = src
+                    items.push({
+                        src: src,
+                        w: image.width || $em2.width,
+                        h: image.height || $em2.height,
+                        title: title
+                    })
+                })
+                var gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, {
+                    index: parseInt(i)
+                });
+                gallery.init()
+            }
+        })
+    }
+    viewer_init()
+</script> 
+<!-- MathJax -->
+ <script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+      tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+  });
+
+  MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for(i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+  });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.6/unpacked/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script>
+  var ayerConfig = {
+    mathjax: true,
+  };
+</script>
+
+<!-- Katex -->
+ 
+    
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css">
+        <script src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/auto-render.min.js"></script>
+        
+    
+ 
+<!-- busuanzi  -->
+ 
+<script src="../../../../js/busuanzi-2.3.pure.min.js"></script>
+ 
+<!-- ClickLove -->
+
+<!-- ClickBoom1 -->
+
+<!-- ClickBoom2 -->
+
+<!-- CodeCopy -->
+ 
+<link rel="stylesheet" href="../../../../css/clipboard.css">
+ <script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
+<script>
+  function wait(callback, seconds) {
+    var timelag = null;
+    timelag = window.setTimeout(callback, seconds);
+  }
+  !function (e, t, a) {
+    var initCopyCode = function(){
+      var copyHtml = '';
+      copyHtml += '<button class="btn-copy" data-clipboard-snippet="">';
+      copyHtml += '<i class="ri-file-copy-2-line"></i><span>COPY</span>';
+      copyHtml += '</button>';
+      $(".highlight .code pre").before(copyHtml);
+      $(".article pre code").before(copyHtml);
+      var clipboard = new ClipboardJS('.btn-copy', {
+        target: function(trigger) {
+          return trigger.nextElementSibling;
+        }
+      });
+      clipboard.on('success', function(e) {
+        let $btn = $(e.trigger);
+        $btn.addClass('copied');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('ri-file-copy-2-line');
+        $icon.addClass('ri-checkbox-circle-line');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPIED';
+        
+        wait(function () { // 等待两秒钟后恢复
+          $icon.removeClass('ri-checkbox-circle-line');
+          $icon.addClass('ri-file-copy-2-line');
+          $span[0].innerText = 'COPY';
+        }, 2000);
+      });
+      clipboard.on('error', function(e) {
+        e.clearSelection();
+        let $btn = $(e.trigger);
+        $btn.addClass('copy-failed');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('ri-file-copy-2-line');
+        $icon.addClass('ri-time-line');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPY FAILED';
+        
+        wait(function () { // 等待两秒钟后恢复
+          $icon.removeClass('ri-time-line');
+          $icon.addClass('ri-file-copy-2-line');
+          $span[0].innerText = 'COPY';
+        }, 2000);
+      });
+    }
+    initCopyCode();
+  }(window, document);
+</script>
+ 
+<!-- CanvasBackground -->
+
+<script>
+  if (window.mermaid) {
+    mermaid.initialize({ theme: "forest" });
+  }
+</script>
+
+
+    
+    <div id="music">
+    
+    
+    
+    <iframe frameborder="no" border="1" marginwidth="0" marginheight="0" width="200" height="86"
+        src="//music.163.com/outchain/player?type=2&id=28907016&auto=1&height=66"></iframe>
+</div>
+
+<style>
+    #music {
+        position: fixed;
+        right: 15px;
+        bottom: 0;
+        z-index: 998;
+    }
+</style>
+    
+    
+
+  </div>
+</body>
+
+</html>
