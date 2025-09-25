@@ -98,9 +98,9 @@ TitleImpact factorBrain10.870Journal of Neuroscience7.869Cerebral Cortex7.463Neu
     <category term="综述" scheme="https://tcsds.github.io/categories/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/%E7%BB%BC%E8%BF%B0/"/>
     
     
-    <category term="可解释人工智能" scheme="https://tcsds.github.io/tags/%E5%8F%AF%E8%A7%A3%E9%87%8A%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/"/>
-    
     <category term="towardsdatascience" scheme="https://tcsds.github.io/tags/towardsdatascience/"/>
+    
+    <category term="可解释人工智能" scheme="https://tcsds.github.io/tags/%E5%8F%AF%E8%A7%A3%E9%87%8A%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/"/>
     
   </entry>
   
@@ -129,9 +129,9 @@ TitleImpact factorBrain10.870Journal of Neuroscience7.869Cerebral Cortex7.463Neu
     <category term="机器学习" scheme="https://tcsds.github.io/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"/>
     
     
-    <category term="towardsdatascience" scheme="https://tcsds.github.io/tags/towardsdatascience/"/>
-    
     <category term="模型评估" scheme="https://tcsds.github.io/tags/%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0/"/>
+    
+    <category term="towardsdatascience" scheme="https://tcsds.github.io/tags/towardsdatascience/"/>
     
   </entry>
   
