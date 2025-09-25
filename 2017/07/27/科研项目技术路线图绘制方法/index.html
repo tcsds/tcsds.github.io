@@ -1,0 +1,960 @@
+<!DOCTYPE html>
+
+
+<html lang="zh-CN">
+  
+
+    <head>
+      <meta charset="utf-8" />
+       
+      <meta name="keywords" content="数据科学" />
+       
+      <meta name="description" content="面向图数据的人工智能研究" />
+      
+      <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1, maximum-scale=1"
+      />
+      <title>科研项目技术路线图绘制方法 |  图数据科学实验室</title>
+  <meta name="generator" content="hexo-theme-ayer">
+      
+      <link rel="shortcut icon" href="/favicon.ico" />
+       
+<link rel="stylesheet" href="../../../../dist/main.css">
+
+      <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/Shen-Yu/cdn/css/remixicon.min.css"
+      />
+      
+<link rel="stylesheet" href="../../../../css/custom.css">
+ 
+      <script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+       
+
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-103389953-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+
+
+ 
+<script>
+var _hmt = _hmt || [];
+(function() {
+	var hm = document.createElement("script");
+	hm.src = "https://hm.baidu.com/hm.js?8e2e80642e4c93347fbaa1e33f7017b9";
+	var s = document.getElementsByTagName("script")[0]; 
+	s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+      <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-bulma@5.0.1/bulma.min.css"
+      />
+      <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.19/dist/sweetalert2.min.js"></script>
+
+      <!-- mermaid -->
+      
+      <script src="https://cdn.jsdelivr.net/npm/mermaid@8.9.2/dist/mermaid.min.js"></script>
+      
+      <style>
+        .swal2-styled.swal2-confirm {
+          font-size: 1.6rem;
+        }
+      </style>
+    <link rel="alternate" href="atom.xml" title="图数据科学实验室" type="application/atom+xml">
+<link href="https://cdn.bootcss.com/KaTeX/0.11.1/katex.min.css" rel="stylesheet" /></head>
+  </html>
+</html>
+
+
+<body>
+  <div id="app">
+    
+      
+    <main class="content on">
+      <section class="outer">
+  <article
+  id="post-科研项目技术路线图绘制方法"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h1 class="article-title sea-center" style="border-left:0" itemprop="name">
+  科研项目技术路线图绘制方法
+</h1>
+ 
+
+      
+    </header>
+     
+    <div class="article-meta">
+      <a href="" class="article-date">
+  <time datetime="2017-07-27T13:39:31.000Z" itemprop="datePublished">2017-07-27</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="../../../../categories/%E5%AD%A6%E6%9C%AF%E7%AC%94%E8%AE%B0/">学术笔记</a> / <a class="article-category-link" href="../../../../categories/%E5%AD%A6%E6%9C%AF%E7%AC%94%E8%AE%B0/%E8%AF%BE%E9%A2%98%E7%94%B3%E8%AF%B7/">课题申请</a>
+  </div>
+  
+<div class="word_count">
+    <span class="post-time">
+        <span class="post-meta-item-icon">
+            <i class="ri-quill-pen-line"></i>
+            <span class="post-meta-item-text"> 字数统计:</span>
+            <span class="post-count">4.4k</span>
+        </span>
+    </span>
+
+    <span class="post-time">
+        &nbsp; | &nbsp;
+        <span class="post-meta-item-icon">
+            <i class="ri-book-open-line"></i>
+            <span class="post-meta-item-text"> 阅读时长≈</span>
+            <span class="post-count">14 分钟</span>
+        </span>
+    </span>
+</div>
+ 
+    </div>
+      
+    <div class="tocbot"></div>
+
+
+
+
+  
+    <div class="article-entry" itemprop="articleBody">
+       
+  <blockquote>
+<p>注：本文主要是汇集科学网<a target="_blank" rel="noopener" href="http://blog.sciencenet.cn/blog-91591-489613.html" title="学术论文中流程图与系统结构图的绘制原则与方法">化柏林</a>、<a target="_blank" rel="noopener" href="https://book.douban.com/subject/2986663/" title="曾路,孙永明 .  产业技术路线图原理与制定[M].广东: 华南理工大学出版社,2007">曾路</a>等前辈以及网友的经验，在此表示感谢！</p>
+</blockquote>
+<p>技术路线图是以图形或表格的形式来表达一个高水准的、综合和集成的战略规划。</p>
+<h1 id="技术路线图的结构"><a class="markdownIt-Anchor" href="#技术路线图的结构"></a> 技术路线图的结构</h1>
+<p>以下内容主要参考曾路等编著的《产业技术路线图原理与制定》<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup>一书部分内容</p>
+<p>技术路线图是以图形或表格的形式来表达一个高水准的、综合的、集成的战略规划与未来前景，其基本结构形式是基于时间的多层表，反映了各要素的组成及其战略功能的实现方式。</p>
+<p><img src="/2017/07/27/%E7%A7%91%E7%A0%94%E9%A1%B9%E7%9B%AE%E6%8A%80%E6%9C%AF%E8%B7%AF%E7%BA%BF%E5%9B%BE%E7%BB%98%E5%88%B6%E6%96%B9%E6%B3%95/%E5%9B%BE11-1.jpg" alt="图11-1"></p>
+<p>虽然技术路线图可以采用不同的形式，但是它们都是为了回答三个简单的问题：①我们去向何方？②我们处于何种状态？③我们如何达到目的？</p>
+<p>多层路线图格式可以概括性地阐述一定范围的层和亚层标题下的战略主题。可以标识三个宽层（集成子层主题），该格式能够形成集成方法，并应用于不同技术。</p>
+<ol>
+<li>技术路线图顶层是关于组织期望的目的（知道为什么），以及目的的影响因素（趋势和驱动因素）。通常，在公司层面上，该路线图层包括外部和内部期望（市场和商业需求）。</li>
+<li>路线图的中间层是关于通过什么原理实现目的。通常，在公司层面上，该路线图层包括产品、服务和运作，反映实际的“知道是什么”，直接与业务内容相关。</li>
+<li>路线图的底层是包括技术在内的相关资源，通过调配和集成这些资源以开发出将资源转化为产品的转换机制（知道如何实现）。</li>
+</ol>
+<p><img src="/2017/07/27/%E7%A7%91%E7%A0%94%E9%A1%B9%E7%9B%AE%E6%8A%80%E6%9C%AF%E8%B7%AF%E7%BA%BF%E5%9B%BE%E7%BB%98%E5%88%B6%E6%96%B9%E6%B3%95/%E5%9B%BE11-2.jpg" alt="通用的技术路线图形式" title="通用的技术路线图形式"></p>
+<p>归纳起来，技术路线图是技术与市场两方面因素的结合</p>
+<p><img src="/2017/07/27/%E7%A7%91%E7%A0%94%E9%A1%B9%E7%9B%AE%E6%8A%80%E6%9C%AF%E8%B7%AF%E7%BA%BF%E5%9B%BE%E7%BB%98%E5%88%B6%E6%96%B9%E6%B3%95/%E5%9B%BE11-3.jpg" alt="技术路线图的战略集成" title="技术路线图的战略集成"></p>
+<h1 id="技术路线图的类型"><a class="markdownIt-Anchor" href="#技术路线图的类型"></a> 技术路线图的类型</h1>
+<p>路线图可以有各种不同的形式，它们可以归纳为两个大的分类层面：</p>
+<p><img src="/2017/07/27/%E7%A7%91%E7%A0%94%E9%A1%B9%E7%9B%AE%E6%8A%80%E6%9C%AF%E8%B7%AF%E7%BA%BF%E5%9B%BE%E7%BB%98%E5%88%B6%E6%96%B9%E6%B3%95/%E5%9B%BE11-4-1620530754957.jpg" alt="技术路线图的模式" title="技术路线图的模式"></p>
+<h2 id="按目标划分的技术路线图类型"><a class="markdownIt-Anchor" href="#按目标划分的技术路线图类型"></a> 按目标划分的技术路线图类型</h2>
+<h3 id="产品规划"><a class="markdownIt-Anchor" href="#产品规划"></a> 产品规划</h3>
+<p>这是迄今为止最常见的一种技术路线图，它涉及将技术应用于制造的产品，往往涉及不止一代产品。下图所示的是菲利浦公司的一个产品规划路线图，这种方法已经得到广泛应用。</p>
+<p><img src="/2017/07/27/%E7%A7%91%E7%A0%94%E9%A1%B9%E7%9B%AE%E6%8A%80%E6%9C%AF%E8%B7%AF%E7%BA%BF%E5%9B%BE%E7%BB%98%E5%88%B6%E6%96%B9%E6%B3%95/%E5%9B%BE11-5-1620530758059.jpg" alt="产品规划路线图" title="产品规划路线图"></p>
+<h3 id="服务能力规划"><a class="markdownIt-Anchor" href="#服务能力规划"></a> 服务／能力规划</h3>
+<p>这种类型的技术路线图更适用于以服务为基础的企业，它注重的是技术怎样支持组织能力。下图所示的是英国皇家邮政( Royal mall)公司的路线图，基于最初的T-Plan的应用，用来研究技术开发对业务的影响。这个路线图注重组织的能力，将其看作是连接技术和业务（而不是产品）之间的桥梁。</p>
+<p><img src="/2017/07/27/%E7%A7%91%E7%A0%94%E9%A1%B9%E7%9B%AE%E6%8A%80%E6%9C%AF%E8%B7%AF%E7%BA%BF%E5%9B%BE%E7%BB%98%E5%88%B6%E6%96%B9%E6%B3%95/%E5%9B%BE11-6-1620530760530.jpg" alt="服务／能力规划路线图" title="服务／能力规划路线图"></p>
+<h3 id="战略规划"><a class="markdownIt-Anchor" href="#战略规划"></a> 战略规划</h3>
+<p>这种类型的技术路线图适用于一般的战略评估，它支持不同机遇或风险的评估，通常是业务层次的评估。下图所示的是利用T-Plan来支持战略业务规划。这种路线图注重未来业务前景的设计，包括市场、业务、产品、技术、技能、文化等，通过未来前景与目前形势的比较来发现差距，并探索适当的战略来弥补这种差距。</p>
+<p><img src="/2017/07/27/%E7%A7%91%E7%A0%94%E9%A1%B9%E7%9B%AE%E6%8A%80%E6%9C%AF%E8%B7%AF%E7%BA%BF%E5%9B%BE%E7%BB%98%E5%88%B6%E6%96%B9%E6%B3%95/%E5%9B%BE11-7-1620530763913.jpg" alt="战略规划路线图" title="战略规划路线图"></p>
+<h3 id="长期规划"><a class="markdownIt-Anchor" href="#长期规划"></a> 长期规划</h3>
+<p>这种类型的路线图用于支持长期规划，可以扩大规划的视野。这类路线图往往在部门或国家层次执行（前瞻），而且可以成为一个组织的“雷达”，用以识别潜在的破坏性技术 和市场。下图所示的美国集成制造技术路线图，它注重信息系统，它说明技术开发会怎样汇聚成“信息推动的严密的企业”——“天然的金块或者理想目标”。</p>
+<p><img src="/2017/07/27/%E7%A7%91%E7%A0%94%E9%A1%B9%E7%9B%AE%E6%8A%80%E6%9C%AF%E8%B7%AF%E7%BA%BF%E5%9B%BE%E7%BB%98%E5%88%B6%E6%96%B9%E6%B3%95/%E5%9B%BE11-8-1620530860361.jpg" alt="长期规划路线图" title="长期规划路线图"></p>
+<h3 id="知识产权规划"><a class="markdownIt-Anchor" href="#知识产权规划"></a> 知识产权规划</h3>
+<p>这种类型的路线图使知识产权和知识管理计划与企业的目标协调一致。下图所示的是爱丁堡大学人工智能应用部制定的路线图，使这些组织可以看到自己所拥有的关键的知识产权，以及这些知识产权与技能、技术和满足未来市场需要所需的能力之间的联系。</p>
+<p><img src="/2017/07/27/%E7%A7%91%E7%A0%94%E9%A1%B9%E7%9B%AE%E6%8A%80%E6%9C%AF%E8%B7%AF%E7%BA%BF%E5%9B%BE%E7%BB%98%E5%88%B6%E6%96%B9%E6%B3%95/%E5%9B%BE11-9-1620530859603.jpg" alt="知识产权规划路线图" title="知识产权规划路线图"></p>
+<h3 id="项目规划"><a class="markdownIt-Anchor" href="#项目规划"></a> 项目规划</h3>
+<p>这种类型的路线图注重战略的实施，而且与项目规划（如研发项目）有着比较直接的关联。下图所示的是美国国家航空航天局“起源”计划中的一个路线图，其目的是探索宇宙和宇宙中的生命是怎样发展的。这个特殊的路线图注重下一代天文望远镜开发计划的管理，它说明了技术开发与项目阶段和重要转折点之间的关系。</p>
+<p><img src="/2017/07/27/%E7%A7%91%E7%A0%94%E9%A1%B9%E7%9B%AE%E6%8A%80%E6%9C%AF%E8%B7%AF%E7%BA%BF%E5%9B%BE%E7%BB%98%E5%88%B6%E6%96%B9%E6%B3%95/%E5%9B%BE11-10-1620530858661.jpg" alt="项目规划路线图" title="项目规划路线图"></p>
+<h3 id="过程规划"><a class="markdownIt-Anchor" href="#过程规划"></a> 过程规划</h3>
+<p>这种类型的路线图可以支持知识的管理，因而强调某一个特定的过程领域（如新产品开发）。下图所示的是利用T-Plan制定的支持产品规划的路线图，它强调的是促进有效的新产品开发与采用所需知识的流动，同时融合了技术和商业观点。</p>
+<p><img src="/2017/07/27/%E7%A7%91%E7%A0%94%E9%A1%B9%E7%9B%AE%E6%8A%80%E6%9C%AF%E8%B7%AF%E7%BA%BF%E5%9B%BE%E7%BB%98%E5%88%B6%E6%96%B9%E6%B3%95/%E5%9B%BE11-11-1620530855991.jpg" alt="过程规划路线图" title="过程规划路线图"></p>
+<h3 id="综合规划"><a class="markdownIt-Anchor" href="#综合规划"></a> 综合规划</h3>
+<p>这种类型的路线图注重技术的整合与（或）演变，涉及不同的技术怎样在产品和系统内部结合，或者怎样形成新技术（往往没有明确表示时间维度）。下图所示的是美国国家航空航天局的一个路线图，它与下一代天文望远镜开发计划的管理有关，它注重技术流动，说明技术怎样进入测试和验证系统以利于科学使命的完成。</p>
+<p><img src="/2017/07/27/%E7%A7%91%E7%A0%94%E9%A1%B9%E7%9B%AE%E6%8A%80%E6%9C%AF%E8%B7%AF%E7%BA%BF%E5%9B%BE%E7%BB%98%E5%88%B6%E6%96%B9%E6%B3%95/%E5%9B%BE11-12-1620530854834.jpg" alt="综合规划路线图" title="综合规划路线图"></p>
+<h2 id="按格式划分的技术路线图类型"><a class="markdownIt-Anchor" href="#按格式划分的技术路线图类型"></a> 按格式划分的技术路线图类型</h2>
+<h3 id="多层次型"><a class="markdownIt-Anchor" href="#多层次型"></a> 多层次型</h3>
+<p>这是技术路线图中一种最常见的格式，有许多层次，包括子层次或者亚层次，如技术、产品和市场。这种技术路线图可以用来研究每一个层次内部的演变以及各层次之间的相互依赖，它有助于促进技术与产品、服务和商业系统的融合。下图所示的是飞利浦公司的一个路线图，它有助于产品和工艺与未来产品功能的开发相结合。</p>
+<p><img src="/2017/07/27/%E7%A7%91%E7%A0%94%E9%A1%B9%E7%9B%AE%E6%8A%80%E6%9C%AF%E8%B7%AF%E7%BA%BF%E5%9B%BE%E7%BB%98%E5%88%B6%E6%96%B9%E6%B3%95/%E5%9B%BE11-13-1620530852024.jpg" alt="多层次型技术路线图" title="多层次型技术路线图"></p>
+<h3 id="条型"><a class="markdownIt-Anchor" href="#条型"></a> 条型</h3>
+<p>许多技术路线图用每个层次或子层次的一组条形图表示。这种图的优点是可以简化和统一所需的产出，便于促进交流和有助于路线图制定软件的开发。下图所示的是摩托罗拉公司的一个路线图，它与汽车无线电产品的特征和技术有关。</p>
+<p><img src="/2017/07/27/%E7%A7%91%E7%A0%94%E9%A1%B9%E7%9B%AE%E6%8A%80%E6%9C%AF%E8%B7%AF%E7%BA%BF%E5%9B%BE%E7%BB%98%E5%88%B6%E6%96%B9%E6%B3%95/%E5%9B%BE11-14-1620530851091.jpg" alt="条形规划路线图" title="条形规划路线图"></p>
+<h3 id="表格型"><a class="markdownIt-Anchor" href="#表格型"></a> 表格型</h3>
+<p>在某些情况下，整个技术路线图或技术路线图中的各个层次用表格来表示。这种类型的路线图尤其适于绩效容易量化的情况，或者各种活动集中在某些特定的时间段发生的情况。下图所示的是一个表格型的路线图，它既包括产品维度，也包括技术绩效维度。</p>
+<p><img src="/2017/07/27/%E7%A7%91%E7%A0%94%E9%A1%B9%E7%9B%AE%E6%8A%80%E6%9C%AF%E8%B7%AF%E7%BA%BF%E5%9B%BE%E7%BB%98%E5%88%B6%E6%96%B9%E6%B3%95/%E5%9B%BE11-15-1620530849416.jpg" alt="./科研项目技术路线图绘制方法/表格型技术路线图" title="表格型技术路线图"></p>
+<h3 id="图解型"><a class="markdownIt-Anchor" href="#图解型"></a> 图解型</h3>
+<p>在产品或技术绩效可以量化的情况下，技术路线图就可以用简单的图来表示，通常每个子层次用一个图表示。这种类型的图有时被称之为经验曲线，它与技术的S曲线有密切的关系。图1-20说明了产品和技术是怎样共同演变的。</p>
+<h3 id="绘画型"><a class="markdownIt-Anchor" href="#绘画型"></a> 绘画型</h3>
+<p>有些技术路线图利用比较有创造性的绘画来交流技术整合情况和计划，利用一些隐喻来支持要实现的目标（如树型）。下图所示的是夏普（Sharp）公司的一个技术路线图，它与产品和系列产品的开发有关，其基础是一系列液晶显示技术。</p>
+<p><img src="/2017/07/27/%E7%A7%91%E7%A0%94%E9%A1%B9%E7%9B%AE%E6%8A%80%E6%9C%AF%E8%B7%AF%E7%BA%BF%E5%9B%BE%E7%BB%98%E5%88%B6%E6%96%B9%E6%B3%95/%E5%9B%BE11-17-1620530840301.jpg" alt="绘画型（树型）规划路线图" title="绘画型（树型）规划路线图"></p>
+<h3 id="流程图"><a class="markdownIt-Anchor" href="#流程图"></a> 流程图</h3>
+<p>绘画型技术路线图的一种特殊类型是流程图，它一般用来把目标、行动和结果联系起来。图1-22所示的是美国国家航空航天局的一个路线图，它说明了组织的远景设想可以与其使命、基本的科学问题、主要的商业领域、近中远期目标以及对美国国家优先任务的贡献联系起来。</p>
+<p><img src="/2017/07/27/%E7%A7%91%E7%A0%94%E9%A1%B9%E7%9B%AE%E6%8A%80%E6%9C%AF%E8%B7%AF%E7%BA%BF%E5%9B%BE%E7%BB%98%E5%88%B6%E6%96%B9%E6%B3%95/%E5%9B%BE11-18-1620530837593.jpg" alt="流程图式技术路线图" title="流程图式技术路线图"></p>
+<h3 id="单层次型"><a class="markdownIt-Anchor" href="#单层次型"></a> 单层次型</h3>
+<p>这种类型的技术路线图是多层次型的一部分，它的重点是多层次路线图中的一个层次。这种类型的路线图尽管不太复杂，但它也有缺点，即通常不能表现出各层次之间的关联。摩托罗拉的路线图是单层次路线图的一个例子，它重点强调了与产品及其特征相关的技术演变（其他的文献支持了路线图矩阵，而且可以利用软件将路线图的各个层次联系起来）。</p>
+<h3 id="文本型"><a class="markdownIt-Anchor" href="#文本型"></a> 文本型</h3>
+<p>有些技术路线图完全或多数是文本，描述的是较常见的技术路线图中所包括的内容（往往附于文本报告内）。大卫·普罗贝所观察到的技术路线图有上述多种格式类型，部分归因于缺乏关于其构成的、明确的和公认的标准或协议。不过，人们认为，这也说明了需要从商业目标、信息的现有来源，以及可利用的资源和预期的用途等方面对方法进行调整，以便适应具体情况。路线图并不总是完全符合上述的某个类型，就目的和格式而言，技术路线图可能会包括多种类型中的要素，因而形成混合型。</p>
+<p>最常见的一种表现形式为多层式产品技术路线图，下图所示。该路线图强调“市场拉动”作用，产品开发必须满足“市场需求”并以此为驱动力实现资源整合与技术集成。</p>
+<p><img src="/2017/07/27/%E7%A7%91%E7%A0%94%E9%A1%B9%E7%9B%AE%E6%8A%80%E6%9C%AF%E8%B7%AF%E7%BA%BF%E5%9B%BE%E7%BB%98%E5%88%B6%E6%96%B9%E6%B3%95/%E5%9B%BE11-19-1620530833556.jpg" alt="多层式产品技术路线图" title="多层式产品技术路线图"></p>
+<p>在充分了解技术路线图的格式以及制定路线图的目的后，选择产业自身发展需要的路线图形式，可以参考样板，也可以自主开发。</p>
+<h1 id="技术路线图的的步骤"><a class="markdownIt-Anchor" href="#技术路线图的的步骤"></a> 技术路线图的的步骤</h1>
+<h2 id="选择技术路线图类型"><a class="markdownIt-Anchor" href="#选择技术路线图类型"></a> 选择技术路线图类型</h2>
+<p>产业技术路线图的制定代表一种有效的集成方法，包括支持技术、管理和规划的集成。在充分了解技术路线图的格式以及制定路线图的目的后，选择产业自身发展需要的路线图形式，可以参考样板，也可以自主开发。</p>
+<p><img src="/2017/07/27/%E7%A7%91%E7%A0%94%E9%A1%B9%E7%9B%AE%E6%8A%80%E6%9C%AF%E8%B7%AF%E7%BA%BF%E5%9B%BE%E7%BB%98%E5%88%B6%E6%96%B9%E6%B3%95/%E5%9B%BE11-20-1620530831794.jpg" alt="技术路线图类型" title="技术路线图类型"></p>
+<h2 id="绘制技术路线图步骤"><a class="markdownIt-Anchor" href="#绘制技术路线图步骤"></a> 绘制技术路线图步骤</h2>
+<h3 id="绘制研发需求技术路线图"><a class="markdownIt-Anchor" href="#绘制研发需求技术路线图"></a> 绘制研发需求技术路线图</h3>
+<p>根据各种研发需求并依据时间节点（近期、中期和长期）进行分组，在各种研发需求之间建立有效的连接。如下图所示，可以预测出研发结果，也可以明确地显示出政府资助、产业开发和企业研究的优先顺序。</p>
+<p><img src="/2017/07/27/%E7%A7%91%E7%A0%94%E9%A1%B9%E7%9B%AE%E6%8A%80%E6%9C%AF%E8%B7%AF%E7%BA%BF%E5%9B%BE%E7%BB%98%E5%88%B6%E6%96%B9%E6%B3%95/%E5%9B%BE11-21-1620530829463.jpg" alt="研发需求技术路线图" title="研发需求技术路线图"></p>
+<p>在绘制研发需求技术路线图的过程中，要在每个项目标注上专家判定的优先级别，并对不同时间范畴的研发需求作出判断，以便为各个层面的研发投入提供指引。如果项目间存在关联关系，还可建立不同层面研发需求之间的关联关系，并标识出来</p>
+<h3 id="绘制优先研发需求技术路线图"><a class="markdownIt-Anchor" href="#绘制优先研发需求技术路线图"></a> 绘制优先研发需求技术路线图</h3>
+<p>优先研发需求项目往往是制约产业发展的最关键的技术壁垒，认真研究其攻关过程中可能存在的风险、利润影响因素和研发时间节点，有利于各研发主体在决策时高度关注这些问题，以便更有效地开展科研组织工作。</p>
+<p><img src="/2017/07/27/%E7%A7%91%E7%A0%94%E9%A1%B9%E7%9B%AE%E6%8A%80%E6%9C%AF%E8%B7%AF%E7%BA%BF%E5%9B%BE%E7%BB%98%E5%88%B6%E6%96%B9%E6%B3%95/%E5%9B%BE11-22-1620530826907.jpg" alt="优先研发需求技术路线图格式" title="优先研发需求技术路线图格式"></p>
+<h3 id="绘制优先研发需求风险-利润路线图"><a class="markdownIt-Anchor" href="#绘制优先研发需求风险-利润路线图"></a> 绘制优先研发需求风险-利润路线图</h3>
+<p>将筛选出的优先研发需求项目置于以风险程度为横轴、以利润率为纵轴的坐标系。通过该坐标系，可以看到每一个优先项目与风险和利润间的相关程度，为科技主管部门或者产业联盟领导在项目立项、科研经费的投入等方面作出科学判断提供依据。</p>
+<p><img src="/2017/07/27/%E7%A7%91%E7%A0%94%E9%A1%B9%E7%9B%AE%E6%8A%80%E6%9C%AF%E8%B7%AF%E7%BA%BF%E5%9B%BE%E7%BB%98%E5%88%B6%E6%96%B9%E6%B3%95/%E5%9B%BE11-23-1620530824440.jpg" alt="优先研发需求风险-利润路线图的格式" title="优先研发需求风险-利润路线图的格式"></p>
+<p>在绘制风险路线图的过程中，要对每个项目标注上专家判定的优先级别。</p>
+<h3 id="绘制技术发展模式路线图"><a class="markdownIt-Anchor" href="#绘制技术发展模式路线图"></a> 绘制技术发展模式路线图</h3>
+<p>将筛选出的优先研发需求项目按技术发展模式分为自主研发、技术合作、技术引进等三种模式，并在项目注释表的备注栏中分别标明国外已解决、国外可能先解决、国外仍然未解决等情况。在国外已解决的关键技术上要标注出国别及其技术成熟程度；国外可能先解决的问题，要预测和标注出解决的时间节点；国外仍然未解决的问题，也要标注出解决的时间节点和可能的机构组织，以便今后跟踪国际先进技术发展的趋势。</p>
+<p><img src="/2017/07/27/%E7%A7%91%E7%A0%94%E9%A1%B9%E7%9B%AE%E6%8A%80%E6%9C%AF%E8%B7%AF%E7%BA%BF%E5%9B%BE%E7%BB%98%E5%88%B6%E6%96%B9%E6%B3%95/%E5%9B%BE11-24-1620530822167.jpg" alt="技术发展模式路线图的格式" title="技术发展模式路线图的格式"></p>
+<h3 id="绘制综合技术路线图"><a class="markdownIt-Anchor" href="#绘制综合技术路线图"></a> 绘制综合技术路线图</h3>
+<p>在可能的情况下，将几张技术路线图综合起来，绘制出综合技术路线图，并且与资源等要素有机地链接起来，以便能够了解产业技术路线图的全貌。链接过程中要注意技术的整合与演变。</p>
+<h3 id="完成技术路线图报告"><a class="markdownIt-Anchor" href="#完成技术路线图报告"></a> 完成技术路线图报告</h3>
+<p>在绘制完成技术路线图后，总结产业技术路线图的整个绘制过程，尤其是完成过程中所收集到的资料、运用的方法、制定的组织机制等，按照要求，完成产业技术路线图报告。</p>
+<h1 id="绘制图形的原则"><a class="markdownIt-Anchor" href="#绘制图形的原则"></a> <strong>绘制图形的原则</strong></h1>
+<ol>
+<li>图类同图，异类异图。同类型的图框用同一种符号表示，不同类型的图框用不同的符号表示，数据、流程、工具、方法等需要区分；</li>
+<li>整齐划一。同类型的图框大小尽量统一，均匀分布，并且能够对齐，我一般使用绘图工具里的居中对齐，纵（横）向分布；</li>
+<li>居中优先。文字字体统一，大小一致，居中显示</li>
+<li>—箭指中间。箭头指向框图的中间</li>
+<li>大字串联。绘图的逻辑用大号字体串联。</li>
+</ol>
+<h1 id="绘制图形的快速技巧"><a class="markdownIt-Anchor" href="#绘制图形的快速技巧"></a> <strong>绘制图形的快速技巧</strong></h1>
+<p>绘画需要花很多的时间，所以如何快带绘图是我们需要考虑的一个问题。对于提高绘图速度，我一般使用以下方法：</p>
+<ol>
+<li><strong>先调格式后复制</strong>。充分运用Ctrl+C和Ctrl+V，同一类型的图框应先把格式调好（如字体、居中、文本框上下左右边距等）以后，再复制。</li>
+<li><strong>定好首尾用分布</strong>。同样类型的框图再复制好以后，更改里面的内容文字，把第一个框图和最后一个框图的位置确定好，然后使用自动排列功能，包括横纵向分布与对齐等。箭头等符号也是一样。一般的图形几分钟就能画好了。</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th style="text-align:center"><img src="/2017/07/27/%E7%A7%91%E7%A0%94%E9%A1%B9%E7%9B%AE%E6%8A%80%E6%9C%AF%E8%B7%AF%E7%BA%BF%E5%9B%BE%E7%BB%98%E5%88%B6%E6%96%B9%E6%B3%95/%E5%9B%BE1-1620530810556.jpg" alt="基于NLP的知识抽取系统架构图" title="基于NLP的知识抽取系统架构图"></th>
+<th style="text-align:center"><img src="/2017/07/27/%E7%A7%91%E7%A0%94%E9%A1%B9%E7%9B%AE%E6%8A%80%E6%9C%AF%E8%B7%AF%E7%BA%BF%E5%9B%BE%E7%BB%98%E5%88%B6%E6%96%B9%E6%B3%95/%E5%9B%BE2-1620530812922.jpg" alt="文献计量分析研究的处理流程" title="文献计量分析研究的处理流程"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">(a)<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup></td>
+<td style="text-align:center">(b)<sup class="footnote-ref"><a href="#fn3" id="fnref3">[3]</a></sup></td>
+</tr>
+<tr>
+<td style="text-align:center"><img src="/2017/07/27/%E7%A7%91%E7%A0%94%E9%A1%B9%E7%9B%AE%E6%8A%80%E6%9C%AF%E8%B7%AF%E7%BA%BF%E5%9B%BE%E7%BB%98%E5%88%B6%E6%96%B9%E6%B3%95/%E5%9B%BE3-1620530808538.jpg" alt="基于情报转化模型的科技情报工作实例图3" title="基于情报转化模型的科技情报工作实例图"></td>
+<td style="text-align:center"><img src="/2017/07/27/%E7%A7%91%E7%A0%94%E9%A1%B9%E7%9B%AE%E6%8A%80%E6%9C%AF%E8%B7%AF%E7%BA%BF%E5%9B%BE%E7%BB%98%E5%88%B6%E6%96%B9%E6%B3%95/%E5%9B%BE4-1620530815375.jpg" alt="基于IPO的搜索引擎发展趋势图" title="基于IPO的搜索引擎发展趋势图"></td>
+</tr>
+<tr>
+<td style="text-align:center">©<sup class="footnote-ref"><a href="#fn4" id="fnref4">[4]</a></sup></td>
+<td style="text-align:center">(d)<sup class="footnote-ref"><a href="#fn5" id="fnref5">[5]</a></sup></td>
+</tr>
+</tbody>
+</table>
+<h1 id="课题技术路线图示例"><a class="markdownIt-Anchor" href="#课题技术路线图示例"></a> 课题技术路线图示例</h1>
+<blockquote>
+<p>注：以下示例图来源于<a target="_blank" rel="noopener" href="http://www.dxy.cn/bbs/topic/37100532" title="国基各领域技术路线图大全100份！！！绝对HOLD住专家">丁香园</a>。</p>
+</blockquote>
+<h2 id="经典的流程图"><a class="markdownIt-Anchor" href="#经典的流程图"></a> 经典的流程图</h2>
+<p>以各种流程图模块组合表述课题研究方法步骤</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center"><img src="/2017/07/27/%E7%A7%91%E7%A0%94%E9%A1%B9%E7%9B%AE%E6%8A%80%E6%9C%AF%E8%B7%AF%E7%BA%BF%E5%9B%BE%E7%BB%98%E5%88%B6%E6%96%B9%E6%B3%95/%E5%9B%BE5-1-1620530804305.jpg" alt="流程图模块组合" title="流程图模块组合_示例1"></th>
+<th style="text-align:center"><img src="/2017/07/27/%E7%A7%91%E7%A0%94%E9%A1%B9%E7%9B%AE%E6%8A%80%E6%9C%AF%E8%B7%AF%E7%BA%BF%E5%9B%BE%E7%BB%98%E5%88%B6%E6%96%B9%E6%B3%95/%E5%9B%BE5-2-1620530802715.jpg" alt="流程图模块组合" title="流程图模块组合_示例2"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">(a)</td>
+<td style="text-align:center">(b)</td>
+</tr>
+</tbody>
+</table>
+<h2 id="方框线条"><a class="markdownIt-Anchor" href="#方框线条"></a> 方框+线条</h2>
+<p>这类流程图主要用线段+方框的形式，指向性非常明确</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center"><img src="/2017/07/27/%E7%A7%91%E7%A0%94%E9%A1%B9%E7%9B%AE%E6%8A%80%E6%9C%AF%E8%B7%AF%E7%BA%BF%E5%9B%BE%E7%BB%98%E5%88%B6%E6%96%B9%E6%B3%95/%E5%9B%BE6-1-1620530798041.jpg" alt="方框+线条" title="方框+线条_示例1"></th>
+<th style="text-align:center"><img src="/2017/07/27/%E7%A7%91%E7%A0%94%E9%A1%B9%E7%9B%AE%E6%8A%80%E6%9C%AF%E8%B7%AF%E7%BA%BF%E5%9B%BE%E7%BB%98%E5%88%B6%E6%96%B9%E6%B3%95/%E5%9B%BE6-2-1620530800994.jpg" alt="方框+线条" title="方框+线条_示例2"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">(a)</td>
+<td style="text-align:center">(b)</td>
+</tr>
+</tbody>
+</table>
+<h2 id="文字虚实线条"><a class="markdownIt-Anchor" href="#文字虚实线条"></a> 文字+虚实线条</h2>
+<p>这类流程图主要用虚实线条+文字，看起来纯粹，清爽</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center"><img src="/2017/07/27/%E7%A7%91%E7%A0%94%E9%A1%B9%E7%9B%AE%E6%8A%80%E6%9C%AF%E8%B7%AF%E7%BA%BF%E5%9B%BE%E7%BB%98%E5%88%B6%E6%96%B9%E6%B3%95/%E5%9B%BE7-1-1620530786582.jpg" alt="文字+虚实线条" title="文字+虚实线条_示例1"></th>
+<th style="text-align:center"><img src="/2017/07/27/%E7%A7%91%E7%A0%94%E9%A1%B9%E7%9B%AE%E6%8A%80%E6%9C%AF%E8%B7%AF%E7%BA%BF%E5%9B%BE%E7%BB%98%E5%88%B6%E6%96%B9%E6%B3%95/%E5%9B%BE7-2-1620530785068.jpg" alt="文字+虚实线条" title="文字+虚实线条_示例2"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">(a)</td>
+<td style="text-align:center">(b)</td>
+</tr>
+</tbody>
+</table>
+<h2 id="文字方框线条"><a class="markdownIt-Anchor" href="#文字方框线条"></a> 文字+方框+线条</h2>
+<p>这类流程图主要用箭头指向连接文字和方框，文字和方框分别表示不同意义，表述更加明晰</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center"><img src="/2017/07/27/%E7%A7%91%E7%A0%94%E9%A1%B9%E7%9B%AE%E6%8A%80%E6%9C%AF%E8%B7%AF%E7%BA%BF%E5%9B%BE%E7%BB%98%E5%88%B6%E6%96%B9%E6%B3%95/%E5%9B%BE8-1-1620530791652.jpg" alt="文字+方框+线条" title="文字+方框+线条_示例1"></th>
+<th style="text-align:center"><img src="/2017/07/27/%E7%A7%91%E7%A0%94%E9%A1%B9%E7%9B%AE%E6%8A%80%E6%9C%AF%E8%B7%AF%E7%BA%BF%E5%9B%BE%E7%BB%98%E5%88%B6%E6%96%B9%E6%B3%95/%E5%9B%BE8-2-1620530783543.jpg" alt="文字+方框+线条" title="文字+方框+线条_示例2"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">(a)</td>
+<td style="text-align:center">(b)</td>
+</tr>
+</tbody>
+</table>
+<h2 id="方框图形线条"><a class="markdownIt-Anchor" href="#方框图形线条"></a> 方框+图形+线条</h2>
+<p>这类流程图主要用箭头指向连接文字和方框，同时又把相关理论、可能产生的结果等以图形的形式加入到流程图中，能使评审专家更加明确的知道申请人在项目研究中所运用的科学原理和技术手段，有利于形象化地理解申请人的研究思路和具体实现方法。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center"><img src="/2017/07/27/%E7%A7%91%E7%A0%94%E9%A1%B9%E7%9B%AE%E6%8A%80%E6%9C%AF%E8%B7%AF%E7%BA%BF%E5%9B%BE%E7%BB%98%E5%88%B6%E6%96%B9%E6%B3%95/%E5%9B%BE9-1.jpg" alt="方框+线条+线条" title="方框+线条+线条_示例1"></th>
+<th style="text-align:center"><img src="/2017/07/27/%E7%A7%91%E7%A0%94%E9%A1%B9%E7%9B%AE%E6%8A%80%E6%9C%AF%E8%B7%AF%E7%BA%BF%E5%9B%BE%E7%BB%98%E5%88%B6%E6%96%B9%E6%B3%95/%E5%9B%BE9-2.jpg" alt="方框+线条+线条" title="方框+线条+线条_示例2"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">(a)</td>
+<td style="text-align:center">(b)</td>
+</tr>
+<tr>
+<td style="text-align:center"><img src="/2017/07/27/%E7%A7%91%E7%A0%94%E9%A1%B9%E7%9B%AE%E6%8A%80%E6%9C%AF%E8%B7%AF%E7%BA%BF%E5%9B%BE%E7%BB%98%E5%88%B6%E6%96%B9%E6%B3%95/%E5%9B%BE9-3-1620530780511.jpg" alt="方框+线条+线条" title="方框+线条+线条_示例3"></td>
+<td style="text-align:center"><img src="/2017/07/27/%E7%A7%91%E7%A0%94%E9%A1%B9%E7%9B%AE%E6%8A%80%E6%9C%AF%E8%B7%AF%E7%BA%BF%E5%9B%BE%E7%BB%98%E5%88%B6%E6%96%B9%E6%B3%95/%E5%9B%BE9-4-1620530775202.jpg" alt="方框+线条+线条" title="方框+线条+线条_示例4"></td>
+</tr>
+<tr>
+<td style="text-align:center">©</td>
+<td style="text-align:center">(d)</td>
+</tr>
+</tbody>
+</table>
+<h2 id="图形线条"><a class="markdownIt-Anchor" href="#图形线条"></a> 图形+线条</h2>
+<p>这类流程图直接以图形表示所运用原理、结果，用线条表示应用的步骤，配以适当的文字，表述更加形象和直观，但是，由于图形结果的专业性强，对评审专家要求更高，必须是<strong>小同行类型的专家</strong>，否则难以理解申请人的意图，不利于项目申请。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center"><img src="/2017/07/27/%E7%A7%91%E7%A0%94%E9%A1%B9%E7%9B%AE%E6%8A%80%E6%9C%AF%E8%B7%AF%E7%BA%BF%E5%9B%BE%E7%BB%98%E5%88%B6%E6%96%B9%E6%B3%95/%E5%9B%BE10-1-1620530770889.jpg" alt="图形+线条" title="图形+线条_示例1"></th>
+<th style="text-align:center"><img src="/2017/07/27/%E7%A7%91%E7%A0%94%E9%A1%B9%E7%9B%AE%E6%8A%80%E6%9C%AF%E8%B7%AF%E7%BA%BF%E5%9B%BE%E7%BB%98%E5%88%B6%E6%96%B9%E6%B3%95/%E5%9B%BE10-2-1620530768778.jpg" alt="图形+线条" title="图形+线条_示例2"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">(a)</td>
+<td style="text-align:center">(b)</td>
+</tr>
+</tbody>
+</table>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p>曾路,孙永明 .  产业技术路线图原理与制定[M].广东: 华南理工大学出版社,2007 <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn2" class="footnote-item"><p>化柏林.基于NLP的知识抽取系统架构研究[J].现代图书情报技术,2007,10:38-41 <a href="#fnref2" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn3" class="footnote-item"><p>化柏林. 文献计量分析研究的分类与处理流程[J].情报科学，2007，9：1332-1336 <a href="#fnref3" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn4" class="footnote-item"><p>郑彦宁, 化柏林. 关于数据、信息、知识与情报转化关系的探讨[J].情报理论与实践, 2011,7:1-4 <a href="#fnref4" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn5" class="footnote-item"><p>化柏林.从IPO分析未来的搜索引擎[J].情报学报，2006，(1)：351-355 <a href="#fnref5" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
+ 
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <div class="declare">
+      <ul class="post-copyright">
+        <li>
+          <i class="ri-copyright-line"></i>
+          <strong>版权声明： </strong>
+          
+          本博客所有文章除特别声明外，著作权归作者所有。转载请注明出处！
+          
+        </li>
+      </ul>
+    </div>
+    
+    <footer class="article-footer">
+       
+<div class="share-btn">
+      <span class="share-sns share-outer">
+        <i class="ri-share-forward-line"></i>
+        分享
+      </span>
+      <div class="share-wrap">
+        <i class="arrow"></i>
+        <div class="share-icons">
+          
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="ri-weibo-fill"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="ri-wechat-fill"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="ri-qq-fill"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="ri-douban-line"></i>
+          </a>
+          <!-- <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a> -->
+          
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="ri-facebook-circle-fill"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="ri-twitter-fill"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="ri-google-fill"></i>
+          </a>
+        </div>
+      </div>
+</div>
+
+<div class="wx-share-modal">
+    <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://tcsds.github.io/2017/07/27/%E7%A7%91%E7%A0%94%E9%A1%B9%E7%9B%AE%E6%8A%80%E6%9C%AF%E8%B7%AF%E7%BA%BF%E5%9B%BE%E7%BB%98%E5%88%B6%E6%96%B9%E6%B3%95/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div id="share-mask"></div>  
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../../../tags/%E5%94%90%E6%9C%9D%E7%94%9F/" rel="tag">唐朝生</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../../../tags/%E6%8A%80%E6%9C%AF%E8%B7%AF%E7%BA%BF%E5%9B%BE/" rel="tag">技术路线图</a></li></ul>
+
+    </footer>
+  </div>
+
+   
+  <nav class="article-nav">
+    
+      <a href="../../../../2021/05/10/%E9%9D%A2%E5%90%91Python%E7%9A%84PlotNeuralNet%E6%95%99%E7%A8%8B/" class="article-nav-link">
+        <strong class="article-nav-caption">上一篇</strong>
+        <div class="article-nav-title">
+          
+            面向Python的PlotNeuralNet教程
+          
+        </div>
+      </a>
+    
+    
+  </nav>
+
+   
+<!-- valine评论 -->
+<div id="vcomments-box">
+  <div id="vcomments"></div>
+</div>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js"></script>
+<script>
+  new Valine({
+    el: "#vcomments",
+    app_id: "U0I96P0Wt6FGcfboCjpouXE7-gzGzoHsz",
+    app_key: "oNYyWjG0vf67jnY7BjKw7kYm",
+    path: window.location.pathname,
+    avatar: "monsterid",
+    placeholder: "给我的文章加点评论吧~",
+    recordIP: true,
+  });
+  const infoEle = document.querySelector("#vcomments .info");
+  if (infoEle && infoEle.childNodes && infoEle.childNodes.length > 0) {
+    infoEle.childNodes.forEach(function (item) {
+      item.parentNode.removeChild(item);
+    });
+  }
+</script>
+<style>
+  #vcomments-box {
+    padding: 5px 30px;
+  }
+
+  @media screen and (max-width: 800px) {
+    #vcomments-box {
+      padding: 5px 0px;
+    }
+  }
+
+  #vcomments-box #vcomments {
+    background-color: #fff;
+  }
+
+  .v .vlist .vcard .vh {
+    padding-right: 20px;
+  }
+
+  .v .vlist .vcard {
+    padding-left: 10px;
+  }
+</style>
+
+ 
+   
+     
+</article>
+
+</section>
+      <footer class="footer">
+  <div class="outer">
+    <ul>
+      <li>
+        Copyrights &copy;
+        2017-2025
+        <i class="ri-heart-fill heart_icon"></i> 善良的右行
+      </li>
+    </ul>
+    <ul>
+      <li>
+        
+      </li>
+    </ul>
+    <ul>
+      <li>
+        
+        
+        <span>
+  <span><i class="ri-user-3-fill"></i>访问人数:<span id="busuanzi_value_site_uv"></span></span>
+  <span class="division">|</span>
+  <span><i class="ri-eye-fill"></i>浏览次数:<span id="busuanzi_value_page_pv"></span></span>
+</span>
+        
+      </li>
+    </ul>
+    <ul>
+      
+    </ul>
+    <ul>
+      
+    </ul>
+    <ul>
+      <li>
+        <!-- cnzz统计 -->
+        
+        <script type="text/javascript" src=''></script>
+        
+      </li>
+    </ul>
+  </div>
+</footer>    
+    </main>
+    <div class="float_btns">
+      <div class="totop" id="totop">
+  <i class="ri-arrow-up-line"></i>
+</div>
+
+<div class="todark" id="todark">
+  <i class="ri-moon-line"></i>
+</div>
+
+    </div>
+    <aside class="sidebar on">
+      <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+  <div class="logo">
+    <a href="../../../../index.html"><img src="/images/ayer2.png" alt="图数据科学实验室"></a>
+  </div>
+  
+  <ul class="nav nav-main">
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="../../../../news">新闻</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="../../../../index.html">主页</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="../../../../projects">项目</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="../../../../articles">论文</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="../../../../prizes">获奖</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="../../../../competition">竞赛</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="../../../../archives">归档</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="../../../../categories">分类</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="../../../../aboutme">团队</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="../../../../tags">标签</a>
+    </li>
+    
+  </ul>
+</nav>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      
+      <a class="nav-item-link nav-item-search"  title="搜索">
+        <i class="ri-search-line"></i>
+      </a>
+      
+      
+      <a class="nav-item-link" target="_blank" href="../../../../atom.xml" title="RSS Feed">
+        <i class="ri-rss-line"></i>
+      </a>
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+    </aside>
+    <div id="mask"></div>
+
+<!-- #reward -->
+<div id="reward">
+  <span class="close"><i class="ri-close-line"></i></span>
+  <p class="reward-p"><i class="ri-cup-line"></i>请我喝杯咖啡吧~</p>
+  <div class="reward-box">
+    
+    <div class="reward-item">
+      <img class="reward-img" src="../../../../images/zhifubao.png">
+      <span class="reward-type">支付宝</span>
+    </div>
+    
+    
+    <div class="reward-item">
+      <img class="reward-img" src="../../../../images/weixin.png">
+      <span class="reward-type">微信</span>
+    </div>
+    
+  </div>
+</div>
+    
+<script src="../../../../js/jquery-3.6.0.min.js"></script>
+ 
+<script src="../../../../js/lazyload.min.js"></script>
+
+<!-- Tocbot -->
+ 
+<script src="../../../../js/tocbot.min.js"></script>
+
+<script>
+  tocbot.init({
+    tocSelector: ".tocbot",
+    contentSelector: ".article-entry",
+    headingSelector: "h1, h2, h3, h4, h5, h6",
+    hasInnerContainers: true,
+    scrollSmooth: true,
+    scrollContainer: "main",
+    positionFixedSelector: ".tocbot",
+    positionFixedClass: "is-position-fixed",
+    fixedSidebarOffset: "auto",
+  });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.js"></script>
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.css"
+/>
+<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js"></script>
+
+<script src="../../../../dist/main.js"></script>
+
+<!-- ImageViewer -->
+ <!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" style="display:none" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css">
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"></script>
+
+<script>
+    function viewer_init() {
+        let pswpElement = document.querySelectorAll('.pswp')[0];
+        let $imgArr = document.querySelectorAll(('.article-entry img:not(.reward-img)'))
+
+        $imgArr.forEach(($em, i) => {
+            $em.onclick = () => {
+                // slider展开状态
+                // todo: 这样不好，后面改成状态
+                if (document.querySelector('.left-col.show')) return
+                let items = []
+                $imgArr.forEach(($em2, i2) => {
+                    let img = $em2.getAttribute('data-idx', i2)
+                    let src = $em2.getAttribute('data-target') || $em2.getAttribute('src')
+                    let title = $em2.getAttribute('alt')
+                    // 获得原图尺寸
+                    const image = new Image()
+                    image.src = src
+                    items.push({
+                        src: src,
+                        w: image.width || $em2.width,
+                        h: image.height || $em2.height,
+                        title: title
+                    })
+                })
+                var gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, {
+                    index: parseInt(i)
+                });
+                gallery.init()
+            }
+        })
+    }
+    viewer_init()
+</script> 
+<!-- MathJax -->
+ <script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+      tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+  });
+
+  MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for(i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+  });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.6/unpacked/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script>
+  var ayerConfig = {
+    mathjax: true,
+  };
+</script>
+
+<!-- Katex -->
+ 
+    
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css">
+        <script src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/auto-render.min.js"></script>
+        
+    
+ 
+<!-- busuanzi  -->
+ 
+<script src="../../../../js/busuanzi-2.3.pure.min.js"></script>
+ 
+<!-- ClickLove -->
+
+<!-- ClickBoom1 -->
+
+<!-- ClickBoom2 -->
+
+<!-- CodeCopy -->
+ 
+<link rel="stylesheet" href="../../../../css/clipboard.css">
+ <script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
+<script>
+  function wait(callback, seconds) {
+    var timelag = null;
+    timelag = window.setTimeout(callback, seconds);
+  }
+  !function (e, t, a) {
+    var initCopyCode = function(){
+      var copyHtml = '';
+      copyHtml += '<button class="btn-copy" data-clipboard-snippet="">';
+      copyHtml += '<i class="ri-file-copy-2-line"></i><span>COPY</span>';
+      copyHtml += '</button>';
+      $(".highlight .code pre").before(copyHtml);
+      $(".article pre code").before(copyHtml);
+      var clipboard = new ClipboardJS('.btn-copy', {
+        target: function(trigger) {
+          return trigger.nextElementSibling;
+        }
+      });
+      clipboard.on('success', function(e) {
+        let $btn = $(e.trigger);
+        $btn.addClass('copied');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('ri-file-copy-2-line');
+        $icon.addClass('ri-checkbox-circle-line');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPIED';
+        
+        wait(function () { // 等待两秒钟后恢复
+          $icon.removeClass('ri-checkbox-circle-line');
+          $icon.addClass('ri-file-copy-2-line');
+          $span[0].innerText = 'COPY';
+        }, 2000);
+      });
+      clipboard.on('error', function(e) {
+        e.clearSelection();
+        let $btn = $(e.trigger);
+        $btn.addClass('copy-failed');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('ri-file-copy-2-line');
+        $icon.addClass('ri-time-line');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPY FAILED';
+        
+        wait(function () { // 等待两秒钟后恢复
+          $icon.removeClass('ri-time-line');
+          $icon.addClass('ri-file-copy-2-line');
+          $span[0].innerText = 'COPY';
+        }, 2000);
+      });
+    }
+    initCopyCode();
+  }(window, document);
+</script>
+ 
+<!-- CanvasBackground -->
+
+<script>
+  if (window.mermaid) {
+    mermaid.initialize({ theme: "forest" });
+  }
+</script>
+
+
+    
+    <div id="music">
+    
+    
+    
+    <iframe frameborder="no" border="1" marginwidth="0" marginheight="0" width="200" height="86"
+        src="//music.163.com/outchain/player?type=2&id=28907016&auto=1&height=66"></iframe>
+</div>
+
+<style>
+    #music {
+        position: fixed;
+        right: 15px;
+        bottom: 0;
+        z-index: 998;
+    }
+</style>
+    
+    
+
+  </div>
+</body>
+
+</html>

@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+
+
+<html lang="zh-CN">
+  
+
+    <head>
+      <meta charset="utf-8" />
+       
+      <meta name="keywords" content="数据科学" />
+       
+      <meta name="description" content="面向图数据的人工智能研究" />
+      
+      <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1, maximum-scale=1"
+      />
+      <title>PlotNeuralNet的Latex解析与定制 |  图数据科学实验室</title>
+  <meta name="generator" content="hexo-theme-ayer">
+      
+      <link rel="shortcut icon" href="/favicon.ico" />
+       
+<link rel="stylesheet" href="../../../../dist/main.css">
+
+      <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/Shen-Yu/cdn/css/remixicon.min.css"
+      />
+      
+<link rel="stylesheet" href="../../../../css/custom.css">
+ 
+      <script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+       
+
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-103389953-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+
+
+ 
+<script>
+var _hmt = _hmt || [];
+(function() {
+	var hm = document.createElement("script");
+	hm.src = "https://hm.baidu.com/hm.js?8e2e80642e4c93347fbaa1e33f7017b9";
+	var s = document.getElementsByTagName("script")[0]; 
+	s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+      <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-bulma@5.0.1/bulma.min.css"
+      />
+      <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.19/dist/sweetalert2.min.js"></script>
+
+      <!-- mermaid -->
+      
+      <script src="https://cdn.jsdelivr.net/npm/mermaid@8.9.2/dist/mermaid.min.js"></script>
+      
+      <style>
+        .swal2-styled.swal2-confirm {
+          font-size: 1.6rem;
+        }
+      </style>
+    <link rel="alternate" href="atom.xml" title="图数据科学实验室" type="application/atom+xml">
+<link href="https://cdn.bootcss.com/KaTeX/0.11.1/katex.min.css" rel="stylesheet" /></head>
+  </html>
+</html>
+
+
+<body>
+  <div id="app">
+    
+      
+    <main class="content on">
+      <section class="outer">
+  <article
+  id="post-PlotNeuralNet的Latex解析与定制"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h1 class="article-title sea-center" style="border-left:0" itemprop="name">
+  PlotNeuralNet的Latex解析与定制
+</h1>
+ 
+
+      
+    </header>
+     
+    <div class="article-meta">
+      <a href="" class="article-date">
+  <time datetime="2021-05-31T11:05:06.000Z" itemprop="datePublished">2021-05-31</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="../../../../categories/%E7%A7%91%E7%A0%94%E5%B7%A5%E5%85%B7/">科研工具</a> / <a class="article-category-link" href="../../../../categories/%E7%A7%91%E7%A0%94%E5%B7%A5%E5%85%B7/%E5%8F%AF%E8%A7%86%E5%8C%96/">可视化</a>
+  </div>
+  
+<div class="word_count">
+    <span class="post-time">
+        <span class="post-meta-item-icon">
+            <i class="ri-quill-pen-line"></i>
+            <span class="post-meta-item-text"> 字数统计:</span>
+            <span class="post-count">1.9k</span>
+        </span>
+    </span>
+
+    <span class="post-time">
+        &nbsp; | &nbsp;
+        <span class="post-meta-item-icon">
+            <i class="ri-book-open-line"></i>
+            <span class="post-meta-item-text"> 阅读时长≈</span>
+            <span class="post-count">9 分钟</span>
+        </span>
+    </span>
+</div>
+ 
+    </div>
+      
+    <div class="tocbot"></div>
+
+
+
+
+  
+    <div class="article-entry" itemprop="articleBody">
+       
+  <p>本文参考了<a target="_blank" rel="noopener" href="https://demonlord1997.github.io/2020/07/03/PlotNeuralNet%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E/," title="PlotNeuralNet个性化定制与使用说明">demonlord1997</a>、<a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_41892813/article/details/106157933," title="卷积神经网络画图神器PlotNeuralNet（基于Latex）使用记录">糯米鸡呀呀呀呀</a>等人的博文，在此表示感谢！</p>
+<h1 id="基本构件"><a class="markdownIt-Anchor" href="#基本构件"></a> 基本构件</h1>
+<h2 id="构件类型"><a class="markdownIt-Anchor" href="#构件类型"></a> 构件类型</h2>
+<p>基本构件类型和顺序是：</p>
+<ol>
+<li><strong>\pic</strong>, 表示添加层</li>
+<li>指定层的位置： \pic[shift  ={(x, y, z)}] at  (x, y, z)， 表示：第1个坐标是指相对于第2个坐标的偏移量</li>
+<li>添加具体类型的层，其中，**Box={…}**表示单个层， **RightBandedBox={…}**表示多个层，**Ball={…}**表示层间相加符号<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>⨁</mo></mrow><annotation encoding="application/x-tex">\bigoplus</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.00001em;vertical-align:-0.25001em;"></span><span class="mop op-symbol small-op" style="position:relative;top:-0.0000050000000000050004em;">⨁</span></span></span></span></li>
+<li>添加层间连线，<strong>\draw [connection]  (<em>层的位置，如vonv1-east,或坐标(x,y,z)</em>)    – node { <em>箭头形状，如\midarrow</em>} (cr2-west)</strong></li>
+<li>自定义层间连线路径，**\path (p4-east) – (cr5-west) coordinate[pos=0.25] (between4_5) **</li>
+</ol>
+<h2 id="层的类型"><a class="markdownIt-Anchor" href="#层的类型"></a> 层的类型</h2>
+<p>网络中层包括：layer, block 和 unit。</p>
+<p>在绘制网络层时，要在指定层的类型</p>
+<p>其中，layer是单个网络层，对应的配置文件是layers文件夹下的<strong>Box.sty</strong>，在绘图时，所用的命令是：</p>
+<figure class="highlight latex"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&#123;Box                =&#123;</span><br><span class="line">           name    =...,</span><br><span class="line">           caption =  ...,</span><br><span class="line">           xlabel  = ...,</span><br><span class="line">           ylabel  = ...,</span><br><span class="line">           fill    = ...,</span><br><span class="line">           opacity = ...,</span><br><span class="line">           height  = ...,width= ...,depth= ...,</span><br><span class="line">                   &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>其中，以下语句是绘图时常用的，其中，<strong>\subimport{…/layers/}{init}</strong>，表示layer文件夹下的init文件，因此，这一句的具体写法要结合当前tex文件所在位置。**\def\ReLUColor{rgb:red,1;black,0.3}**是自定义的ReLU层的颜色，可以根据需要自己调整。</p>
+<figure class="highlight latex"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">\documentclass</span>[border=15pt, multi, tikz]&#123;standalone&#125;</span><br><span class="line"><span class="keyword">\usepackage</span>&#123;import&#125;</span><br><span class="line"><span class="keyword">\subimport</span>&#123;../layers/&#125;&#123;init&#125;</span><br><span class="line"><span class="keyword">\usetikzlibrary</span>&#123;positioning&#125;</span><br><span class="line"><span class="keyword">\usetikzlibrary</span>&#123;3d&#125; <span class="comment">%for including external image </span></span><br><span class="line"></span><br><span class="line"><span class="keyword">\def</span><span class="keyword">\ReLUColor</span>&#123;rgb:red,1;black,0.3&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">\begin</span>&#123;document&#125;</span><br><span class="line"><span class="keyword">\begin</span>&#123;tikzpicture&#125;</span><br><span class="line"><span class="keyword">\tikzstyle</span>&#123;connection&#125;=[ultra thick,every node/.style=&#123;sloped,allow upside down&#125;,draw=<span class="keyword">\edgecolor</span>,opacity=0.7]</span><br><span class="line"></span><br><span class="line"><span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span></span><br><span class="line"><span class="comment">% 这部分添加绘图命令</span></span><br><span class="line"><span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span></span><br><span class="line"><span class="keyword">\end</span>&#123;tikzpicture&#125;</span><br><span class="line"><span class="keyword">\end</span>&#123;document&#125;</span><br></pre></td></tr></table></figure>
+<p>可以看到，图中标签“深度”的位置没有居中，需要自行设置，具体设置方法见下文自定义配置。</p>
+<h3 id="单个layer"><a class="markdownIt-Anchor" href="#单个layer"></a> 单个layer</h3>
+<p>单个layer要在shift后指定<strong>Box</strong>，可以通过fill指定填充的颜色，<code>height=..,width=...,depth=...</code>指定图片的高、宽和深。</p>
+<ul>
+<li>
+<p><code>[shift   =&#123;(0,0,0)&#125;]  at  (0,0,0) </code>表示第1个坐标是指相对于第2个坐标的偏移量。</p>
+</li>
+<li>
+<p>name   =score16,% 表示该层的名称</p>
+</li>
+<li>
+<p>caption= 标题, %表示该层的标题</p>
+</li>
+<li>
+<p><code>xlabel =&#123;&#123; "宽度： 显示的是s\_filer的值",  &#125;&#125;</code>,  无论是中文还是英文，只能显示第1个位置的字符;同时，要在s后加转义符\：s\_filer。xlabel的值是数组形式，即(x,y,z,…),在<strong>Box</strong>中只显示第1个值,即<strong>x</strong>。如果是在&quot;RightBandedBox&quot;,则可以显示多个值。</p>
+</li>
+<li>
+<p><code>ylabel =&#123;&#123;高度 &#125;&#125;</code>, 加不加引号，似无影响；这里可以显示多个字符;ylabel在神经网络架构中一般不显示</p>
+</li>
+<li>
+<p><code>zlabel = 深度</code>, ： 显示的是n_filer的值, 加不加{}，似无影响；这里可以显示多个字符</p>
+</li>
+<li>
+<p>opacity表示透明度</p>
+</li>
+</ul>
+<p>“”</p>
+<figure class="highlight latex"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">\documentclass</span>[border=15pt, multi, tikz]&#123;standalone&#125;</span><br><span class="line"><span class="keyword">\usepackage</span>[UTF8]&#123;ctex&#125; <span class="comment">%显示中文</span></span><br><span class="line"><span class="keyword">\usepackage</span>&#123;import&#125;</span><br><span class="line"><span class="keyword">\subimport</span>&#123;../layers/&#125;&#123;init&#125;</span><br><span class="line"><span class="keyword">\usetikzlibrary</span>&#123;positioning&#125;</span><br><span class="line"><span class="keyword">\usetikzlibrary</span>&#123;3d&#125; <span class="comment">%for including external image </span></span><br><span class="line"></span><br><span class="line"><span class="keyword">\def</span><span class="keyword">\ReLUColor</span>&#123;rgb:red,1;black,0.3&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">\begin</span>&#123;document&#125;</span><br><span class="line"><span class="keyword">\begin</span>&#123;tikzpicture&#125;</span><br><span class="line"><span class="keyword">\tikzstyle</span>&#123;connection&#125;=[ultra thick,every node/.style=&#123;sloped,allow upside down&#125;,draw=<span class="keyword">\edgecolor</span>,opacity=0.7]</span><br><span class="line"></span><br><span class="line"><span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span></span><br><span class="line"><span class="comment">%% Draw Layer Blocks</span></span><br><span class="line"><span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span></span><br><span class="line"></span><br><span class="line"><span class="comment">% one layer for a conv or BN or ReLU layer, etc</span></span><br><span class="line"><span class="keyword">\pic</span>[shift         =&#123;(5,0,0)&#125;] at  (0,0,0) <span class="comment">% 第1个坐标是指相对于第2个坐标的偏移量</span></span><br><span class="line">    &#123;</span><br><span class="line">        Box        =&#123;</span><br><span class="line">            name   =conv,<span class="comment">% 表示该层的名称 </span></span><br><span class="line">            caption= 标题, <span class="comment">%表示该层的标题</span></span><br><span class="line">            xlabel =&#123;&#123; &quot;宽度： 显示的是s<span class="keyword">\_</span>filer的值&quot;,  &#125;&#125;, <span class="comment">% 无论是中文还是英文，只能显示第1个位置的字符;同时，要在s后加转义符\</span></span><br><span class="line">            ylabel =&#123;&#123;高度 &#125;&#125;, <span class="comment">% 加不加引号，似无影响；这里可以显示多个字符;ylabel在神经网络架构中一般不显示</span></span><br><span class="line">            zlabel = 深度： 显示的是n<span class="keyword">\_</span>filer的值, <span class="comment">% 加不加&#123;&#125;，似无影响；这里可以显示多个字符</span></span><br><span class="line">            fill   =<span class="keyword">\ReLUColor</span>,</span><br><span class="line">            opacity = 0.2,</span><br><span class="line">            height=64,width=30,depth=45</span><br><span class="line">                    &#125;</span><br><span class="line">    &#125;; </span><br><span class="line"><span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span></span><br><span class="line"><span class="keyword">\end</span>&#123;tikzpicture&#125;</span><br><span class="line"><span class="keyword">\end</span>&#123;document&#125;</span><br></pre></td></tr></table></figure>
+<p>效果如图所示：</p>
+<p><img src="/2021/05/31/PlotNeuralNet%E7%9A%84Latex%E8%A7%A3%E6%9E%90%E4%B8%8E%E5%AE%9A%E5%88%B6/layer.png" alt="layer"></p>
+<h3 id="layer组合"><a class="markdownIt-Anchor" href="#layer组合"></a> layer组合</h3>
+<p>多个layer的组合，有2种方法实现。</p>
+<ol>
+<li>在shift后使用<strong>RightBandedBox</strong>，此外，layer的名称和层数，是通过<strong>xlabel</strong>和<strong>width</strong>进行设定。例如：<code>xlabel=&#123;&#123;"32","64", "128"&#125;&#125;， ···，width=&#123;2,2,4&#125;</code>。xlabel和width的值是数组形式，即(x,y,z,…)，数组内的数值个数决定了有多少个层。</li>
+<li>通过多个<strong>Box</strong>，使多个单层layer成为layers的组合。</li>
+</ol>
+<p>例如：</p>
+<figure class="highlight latex"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">\pic</span>[shift=&#123;(5,0,0)&#125;] at (0,0,0) </span><br><span class="line">    &#123;RightBandedBox=&#123;</span><br><span class="line">            name=cr1,</span><br><span class="line">            caption=使用RightBandedBox,</span><br><span class="line">            xlabel=&#123;&#123;&quot;1&quot;,&quot;2&quot;, &quot;3&quot;&#125;&#125;,</span><br><span class="line">            <span class="comment">% zlabel=layer_blocks,</span></span><br><span class="line">            fill=<span class="keyword">\ConvColor</span>,</span><br><span class="line">            bandfill=<span class="keyword">\ConvReluColor</span>,<span class="comment">%</span></span><br><span class="line">            opacity = 0.2,</span><br><span class="line">            height=40,width=&#123;1,1,1&#125;,depth=40&#125;</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">% conv+bn+relu</span></span><br><span class="line"><span class="keyword">\pic</span>[shift          =&#123;    (10,0,0)&#125;] at  (0,0,0) </span><br><span class="line">    &#123;</span><br><span class="line">    Box             =&#123;</span><br><span class="line">        name        =conv1,<span class="comment">%</span></span><br><span class="line">        xlabel      =&#123;&#123;1&#125;&#125;,</span><br><span class="line">        fill        =<span class="keyword">\ConvColor</span>,<span class="comment">%</span></span><br><span class="line">        height      =40,width=1,depth=40&#125;</span><br><span class="line">    &#125;;</span><br><span class="line"><span class="keyword">\pic</span>[shift          =&#123; (0,0,0)&#125;] at (conv1-east) </span><br><span class="line">    &#123;</span><br><span class="line">        Box         =&#123;</span><br><span class="line">        name        =bn1,<span class="comment">%</span></span><br><span class="line">        caption     =layer叠加,</span><br><span class="line">        xlabel      =&#123;&#123;2&#125;&#125;,</span><br><span class="line">        fill        =<span class="keyword">\BnColor</span>,<span class="comment">%</span></span><br><span class="line">        opacity     =0.5,</span><br><span class="line">        height      =40,width=1,depth=40&#125;</span><br><span class="line">    &#125;;</span><br><span class="line"><span class="keyword">\pic</span>[shift          =&#123;(0,0,0)&#125;] at (bn1-east)</span><br><span class="line">    &#123;</span><br><span class="line">            Box     =&#123;</span><br><span class="line">            name    =relu1,<span class="comment">%</span></span><br><span class="line">            xlabel  =&#123;&#123;3&#125;&#125;,</span><br><span class="line">            fill    =<span class="keyword">\ReLUColor</span>,</span><br><span class="line">            opacity =0.5,</span><br><span class="line">            height  =40,width=1,depth=40,</span><br><span class="line">             &#125;</span><br><span class="line">    &#125;;</span><br></pre></td></tr></table></figure>
+<p>效果如图所示：</p>
+<p><img src="/2021/05/31/PlotNeuralNet%E7%9A%84Latex%E8%A7%A3%E6%9E%90%E4%B8%8E%E5%AE%9A%E5%88%B6/layers.png" alt="layers"></p>
+<h2 id="残差结构"><a class="markdownIt-Anchor" href="#残差结构"></a> 残差结构</h2>
+<figure class="highlight latex"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">\documentclass</span>[border=15pt, multi, tikz]&#123;standalone&#125;</span><br><span class="line"><span class="keyword">\usepackage</span>&#123;import&#125;</span><br><span class="line"><span class="keyword">\subimport</span>&#123;../../layers/&#125;&#123;init&#125;</span><br><span class="line"><span class="keyword">\usetikzlibrary</span>&#123;positioning&#125;</span><br><span class="line"><span class="keyword">\usetikzlibrary</span>&#123;3d&#125; <span class="comment">%for including external image</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">\def</span><span class="keyword">\ConvColor</span>&#123;rgb:yellow,5;red,2.5;white,5&#125;</span><br><span class="line"><span class="keyword">\def</span><span class="keyword">\ConvReluColor</span>&#123;rgb:yellow,5;red,5;white,5&#125;</span><br><span class="line"><span class="keyword">\def</span><span class="keyword">\ConvBnReluColor</span>&#123;rgb:yellow,5;red,5;white,2.5&#125;</span><br><span class="line"><span class="keyword">\def</span><span class="keyword">\PoolColor</span>&#123;rgb:red,1;black,0.3&#125;</span><br><span class="line"><span class="keyword">\def</span><span class="keyword">\DcnvColor</span>&#123;rgb:blue,5;green,2.5;white,5&#125;</span><br><span class="line"><span class="keyword">\def</span><span class="keyword">\SoftmaxColor</span>&#123;rgb:magenta,5;black,7&#125;</span><br><span class="line"><span class="keyword">\def</span><span class="keyword">\SumColor</span>&#123;rgb:blue,5;green,15&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">\begin</span>&#123;document&#125;</span><br><span class="line"><span class="keyword">\begin</span>&#123;tikzpicture&#125;</span><br><span class="line"><span class="keyword">\tikzstyle</span>&#123;connection&#125;=[ultra thick,every node/.style=&#123;sloped,allow upside down&#125;,draw=<span class="keyword">\edgecolor</span>,opacity=0.7]</span><br><span class="line"><span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span></span><br><span class="line"><span class="comment">%% Draw Layer Blocks</span></span><br><span class="line"><span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span></span><br><span class="line"></span><br><span class="line"><span class="comment">% conv1_1,conv1_2,%pool1</span></span><br><span class="line"><span class="keyword">\pic</span>[shift=&#123;(0,0,0)&#125;] at (0,0,0) &#123;RightBandedBox=&#123;name=cr1,caption=conv1,<span class="comment">%</span></span><br><span class="line">        xlabel=&#123;&#123;&quot;64&quot;,&quot;<span class="keyword">\ </span>64&quot;&#125;&#125;,zlabel=I,fill=<span class="keyword">\ConvColor</span>,bandfill=<span class="keyword">\ConvBnReluColor</span>,<span class="comment">%</span></span><br><span class="line">        height=40,width=&#123;2,2&#125;,depth=40&#125;&#125;;</span><br><span class="line"><span class="keyword">\pic</span>[shift=&#123;(0,0,0)&#125;] at (cr1-east) &#123;Box=&#123;name=p1,<span class="comment">%</span></span><br><span class="line">        fill=<span class="keyword">\PoolColor</span>,opacity=0.5,height=35,width=1,depth=35&#125;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">\pic</span>[shift=&#123;(3,0,0)&#125;] at (p1-east) &#123;Ball=&#123;name=elt1,<span class="comment">%</span></span><br><span class="line">        fill=<span class="keyword">\SumColor</span>,opacity=0.6,<span class="comment">%</span></span><br><span class="line">        radius=2.5,logo=<span class="built_in">$</span>+<span class="built_in">$</span>&#125;&#125;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">%% score16</span></span><br><span class="line"><span class="keyword">\pic</span>[shift=&#123;(0,-4,0)&#125;] at (elt1-west) &#123;Box=&#123;name=score16,<span class="comment">%</span></span><br><span class="line">            fill=<span class="keyword">\PoolColor</span>,<span class="comment">%</span></span><br><span class="line">            opacity=0,height=0.01,width=0.01,depth=0.01&#125;&#125;;</span><br><span class="line"><span class="comment">%%　draw connections</span></span><br><span class="line"><span class="comment">%\draw [connection]  (p1-east) -- node &#123;\midarrow&#125; (p1-east -| elt1-west) -- node &#123;\midarrow&#125; (elt1-west);</span></span><br><span class="line"><span class="keyword">\draw</span> [connection]  (p1-east)    -- node &#123;<span class="keyword">\midarrow</span>&#125; (elt1-west);</span><br><span class="line"><span class="keyword">\path</span> (p1-east) -- (elt1-south) coordinate[pos=0.25] (between4<span class="built_in">_</span>5) ;</span><br><span class="line"><span class="keyword">\draw</span> [connection]  (between4<span class="built_in">_</span>5)    -- node &#123;<span class="keyword">\midarrow</span>&#125; (score16-west-|between4<span class="built_in">_</span>5) -- node &#123;<span class="keyword">\midarrow</span>&#125; (score16-west);</span><br><span class="line"><span class="keyword">\draw</span> [connection]  (score16-east) -- node &#123;<span class="keyword">\midarrow</span>&#125; (score16-east -| elt1-south) -- node &#123;<span class="keyword">\midarrow</span>&#125; (elt1-south);</span><br><span class="line"><span class="keyword">\draw</span> [connection]  (p1-east)    -- node &#123;<span class="keyword">\midarrow</span>&#125; (elt1-west);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span></span><br><span class="line"><span class="keyword">\end</span>&#123;tikzpicture&#125;</span><br><span class="line"><span class="keyword">\end</span>&#123;document&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="/2021/05/31/PlotNeuralNet%E7%9A%84Latex%E8%A7%A3%E6%9E%90%E4%B8%8E%E5%AE%9A%E5%88%B6/%E6%AE%8B%E5%B7%AE%E7%BB%93%E6%9E%84.png" alt="残差结构"></p>
+<h1 id="plotneuralnet的个性化定制"><a class="markdownIt-Anchor" href="#plotneuralnet的个性化定制"></a> PlotNeuralNet的个性化定制</h1>
+<p>PlotNeuralNet默认将图形的深度，也就是<em>n_fliter的数据</em>标注在角上，如下图所示，没有居中，因此，需要对它进行<a target="_blank" rel="noopener" href="https://github.com/demonlord1997/PlotNeuralNet," title="PlotNeuralNet的demonlord1997修改版">修改</a>。</p>
+<p>自定义方法：修改layers文件夹下的Box.sty和RightBandedBox.sty文件。</p>
+<p><img src="/2021/05/31/PlotNeuralNet%E7%9A%84Latex%E8%A7%A3%E6%9E%90%E4%B8%8E%E5%AE%9A%E5%88%B6/zlabel.png" alt="zlabel"></p>
+<h2 id="boxsty"><a class="markdownIt-Anchor" href="#boxsty"></a> <strong>Box.sty</strong></h2>
+<p>将depthlabel设置中的pos=0改为pos=0.5，将captionlabel中的文本宽度由text width=15改为text width=40，这是因为默认宽度有些小，长文本显示不全。</p>
+<blockquote></blockquote>
+<p><code>\coordinate (a1) at (0 , \y/2 , \z/2);</code><br>
+<code>\coordinate (b1) at (0 ,-\y/2 , \z/2);</code><br>
+<s>\tikzstyle{depthlabel}=[pos=0,text width=14*\z,text centered,sloped]</s><br>
+<code>\tikzstyle&#123;depthlabel&#125;=[pos=0.5,text width=14*\z,text centered,sloped]</code></p>
+<blockquote></blockquote>
+<p><s>\tikzstyle{captionlabel}=[text width=15*\LastEastx/\scale,text centered]</s><br>
+<code> \tikzstyle&#123;captionlabel&#125;=[text width=40*\LastEastx/\scale,text centered]</code></p>
+<blockquote></blockquote>
+<p><code>\path (\LastEastx/2,-\y/2,+\z/2) + (0,-25pt) coordinate (cap)</code><br>
+<code>edge [&quot;\textcolor&#123;black&#125;&#123; \bf \caption&#125;&quot;',captionlabel](cap) ; %Block caption/pic object label</code></p>
+<h2 id="rightbandedboxsty"><a class="markdownIt-Anchor" href="#rightbandedboxsty"></a> <strong>RightBandedBox.sty</strong></h2>
+<p>RightBandedBox.sty的修改与Box.sty的修改类似。pos=0改为pos=0.5，text width=15改为text width=40</p>
+<blockquote></blockquote>
+<p><code>\coordinate (a1) at (0 , \y/2 , \z/2);</code><br>
+<code>\coordinate (b1) at (0 ,-\y/2 , \z/2);</code><br>
+<s>\tikzstyle{depthlabel}=[pos=0,text width=14*\z,text centered,sloped]</s><br>
+<code>\tikzstyle&#123;depthlabel&#125;=[pos=0.5,text width=14*\z,text centered,sloped]</code></p>
+<blockquote></blockquote>
+<p><code>\path (c) edge [&quot;\small\zlabels&quot;',depthlabel](f); %depth label'   </code>\path (b1) edge [“\ylabel”,midway] (a1);  %height label’</p>
+<blockquote></blockquote>
+<p><s>\tikzstyle{captionlabel}=[text width=15*\LastEastx/\scale,text centered]</s><br>
+`\tikzstyle{captionlabel}=[text width=40*\LastEastx/\scale,text centered]’</p>
+<blockquote></blockquote>
+<p><code>\path (\LastEastx/2,-\y/2,+\z/2) + (0,-25pt) coordinate (cap)'   </code>edge [“\textcolor{black}{ \bf \caption}”‘,captionlabel] (cap); %Block caption/pic object label’</p>
+ 
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <div class="declare">
+      <ul class="post-copyright">
+        <li>
+          <i class="ri-copyright-line"></i>
+          <strong>版权声明： </strong>
+          
+          本博客所有文章除特别声明外，著作权归作者所有。转载请注明出处！
+          
+        </li>
+      </ul>
+    </div>
+    
+    <footer class="article-footer">
+       
+<div class="share-btn">
+      <span class="share-sns share-outer">
+        <i class="ri-share-forward-line"></i>
+        分享
+      </span>
+      <div class="share-wrap">
+        <i class="arrow"></i>
+        <div class="share-icons">
+          
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="ri-weibo-fill"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="ri-wechat-fill"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="ri-qq-fill"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="ri-douban-line"></i>
+          </a>
+          <!-- <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a> -->
+          
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="ri-facebook-circle-fill"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="ri-twitter-fill"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="ri-google-fill"></i>
+          </a>
+        </div>
+      </div>
+</div>
+
+<div class="wx-share-modal">
+    <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://tcsds.github.io/2021/05/31/PlotNeuralNet%E7%9A%84Latex%E8%A7%A3%E6%9E%90%E4%B8%8E%E5%AE%9A%E5%88%B6/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div id="share-mask"></div>  
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../../../tags/PlotNeuralNet/" rel="tag">PlotNeuralNet</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../../../tags/%E5%94%90%E6%9C%9D%E7%94%9F/" rel="tag">唐朝生</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../../../tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%8F%AF%E8%A7%86%E5%8C%96/" rel="tag">深度学习可视化</a></li></ul>
+
+    </footer>
+  </div>
+
+   
+  <nav class="article-nav">
+    
+      <a href="../../../../2023/01/19/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%88%86%E7%B1%BB%E7%9A%84%E8%AF%84%E4%BC%B0/" class="article-nav-link">
+        <strong class="article-nav-caption">上一篇</strong>
+        <div class="article-nav-title">
+          
+            机器学习分类的评估
+          
+        </div>
+      </a>
+    
+    
+      <a href="../../10/%E9%9D%A2%E5%90%91Python%E7%9A%84PlotNeuralNet%E6%95%99%E7%A8%8B/" class="article-nav-link">
+        <strong class="article-nav-caption">下一篇</strong>
+        <div class="article-nav-title">面向Python的PlotNeuralNet教程</div>
+      </a>
+    
+  </nav>
+
+   
+<!-- valine评论 -->
+<div id="vcomments-box">
+  <div id="vcomments"></div>
+</div>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js"></script>
+<script>
+  new Valine({
+    el: "#vcomments",
+    app_id: "U0I96P0Wt6FGcfboCjpouXE7-gzGzoHsz",
+    app_key: "oNYyWjG0vf67jnY7BjKw7kYm",
+    path: window.location.pathname,
+    avatar: "monsterid",
+    placeholder: "给我的文章加点评论吧~",
+    recordIP: true,
+  });
+  const infoEle = document.querySelector("#vcomments .info");
+  if (infoEle && infoEle.childNodes && infoEle.childNodes.length > 0) {
+    infoEle.childNodes.forEach(function (item) {
+      item.parentNode.removeChild(item);
+    });
+  }
+</script>
+<style>
+  #vcomments-box {
+    padding: 5px 30px;
+  }
+
+  @media screen and (max-width: 800px) {
+    #vcomments-box {
+      padding: 5px 0px;
+    }
+  }
+
+  #vcomments-box #vcomments {
+    background-color: #fff;
+  }
+
+  .v .vlist .vcard .vh {
+    padding-right: 20px;
+  }
+
+  .v .vlist .vcard {
+    padding-left: 10px;
+  }
+</style>
+
+ 
+   
+     
+</article>
+
+</section>
+      <footer class="footer">
+  <div class="outer">
+    <ul>
+      <li>
+        Copyrights &copy;
+        2017-2025
+        <i class="ri-heart-fill heart_icon"></i> 善良的右行
+      </li>
+    </ul>
+    <ul>
+      <li>
+        
+      </li>
+    </ul>
+    <ul>
+      <li>
+        
+        
+        <span>
+  <span><i class="ri-user-3-fill"></i>访问人数:<span id="busuanzi_value_site_uv"></span></span>
+  <span class="division">|</span>
+  <span><i class="ri-eye-fill"></i>浏览次数:<span id="busuanzi_value_page_pv"></span></span>
+</span>
+        
+      </li>
+    </ul>
+    <ul>
+      
+    </ul>
+    <ul>
+      
+    </ul>
+    <ul>
+      <li>
+        <!-- cnzz统计 -->
+        
+        <script type="text/javascript" src=''></script>
+        
+      </li>
+    </ul>
+  </div>
+</footer>    
+    </main>
+    <div class="float_btns">
+      <div class="totop" id="totop">
+  <i class="ri-arrow-up-line"></i>
+</div>
+
+<div class="todark" id="todark">
+  <i class="ri-moon-line"></i>
+</div>
+
+    </div>
+    <aside class="sidebar on">
+      <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+  <div class="logo">
+    <a href="../../../../index.html"><img src="/images/ayer2.png" alt="图数据科学实验室"></a>
+  </div>
+  
+  <ul class="nav nav-main">
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="../../../../news">新闻</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="../../../../index.html">主页</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="../../../../projects">项目</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="../../../../articles">论文</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="../../../../prizes">获奖</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="../../../../competition">竞赛</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="../../../../archives">归档</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="../../../../categories">分类</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="../../../../aboutme">团队</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="../../../../tags">标签</a>
+    </li>
+    
+  </ul>
+</nav>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      
+      <a class="nav-item-link nav-item-search"  title="搜索">
+        <i class="ri-search-line"></i>
+      </a>
+      
+      
+      <a class="nav-item-link" target="_blank" href="../../../../atom.xml" title="RSS Feed">
+        <i class="ri-rss-line"></i>
+      </a>
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+    </aside>
+    <div id="mask"></div>
+
+<!-- #reward -->
+<div id="reward">
+  <span class="close"><i class="ri-close-line"></i></span>
+  <p class="reward-p"><i class="ri-cup-line"></i>请我喝杯咖啡吧~</p>
+  <div class="reward-box">
+    
+    <div class="reward-item">
+      <img class="reward-img" src="../../../../images/zhifubao.png">
+      <span class="reward-type">支付宝</span>
+    </div>
+    
+    
+    <div class="reward-item">
+      <img class="reward-img" src="../../../../images/weixin.png">
+      <span class="reward-type">微信</span>
+    </div>
+    
+  </div>
+</div>
+    
+<script src="../../../../js/jquery-3.6.0.min.js"></script>
+ 
+<script src="../../../../js/lazyload.min.js"></script>
+
+<!-- Tocbot -->
+ 
+<script src="../../../../js/tocbot.min.js"></script>
+
+<script>
+  tocbot.init({
+    tocSelector: ".tocbot",
+    contentSelector: ".article-entry",
+    headingSelector: "h1, h2, h3, h4, h5, h6",
+    hasInnerContainers: true,
+    scrollSmooth: true,
+    scrollContainer: "main",
+    positionFixedSelector: ".tocbot",
+    positionFixedClass: "is-position-fixed",
+    fixedSidebarOffset: "auto",
+  });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.js"></script>
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.css"
+/>
+<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js"></script>
+
+<script src="../../../../dist/main.js"></script>
+
+<!-- ImageViewer -->
+ <!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" style="display:none" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css">
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"></script>
+
+<script>
+    function viewer_init() {
+        let pswpElement = document.querySelectorAll('.pswp')[0];
+        let $imgArr = document.querySelectorAll(('.article-entry img:not(.reward-img)'))
+
+        $imgArr.forEach(($em, i) => {
+            $em.onclick = () => {
+                // slider展开状态
+                // todo: 这样不好，后面改成状态
+                if (document.querySelector('.left-col.show')) return
+                let items = []
+                $imgArr.forEach(($em2, i2) => {
+                    let img = $em2.getAttribute('data-idx', i2)
+                    let src = $em2.getAttribute('data-target') || $em2.getAttribute('src')
+                    let title = $em2.getAttribute('alt')
+                    // 获得原图尺寸
+                    const image = new Image()
+                    image.src = src
+                    items.push({
+                        src: src,
+                        w: image.width || $em2.width,
+                        h: image.height || $em2.height,
+                        title: title
+                    })
+                })
+                var gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, {
+                    index: parseInt(i)
+                });
+                gallery.init()
+            }
+        })
+    }
+    viewer_init()
+</script> 
+<!-- MathJax -->
+ <script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+      tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+  });
+
+  MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for(i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+  });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.6/unpacked/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script>
+  var ayerConfig = {
+    mathjax: true,
+  };
+</script>
+
+<!-- Katex -->
+ 
+    
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css">
+        <script src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/auto-render.min.js"></script>
+        
+    
+ 
+<!-- busuanzi  -->
+ 
+<script src="../../../../js/busuanzi-2.3.pure.min.js"></script>
+ 
+<!-- ClickLove -->
+
+<!-- ClickBoom1 -->
+
+<!-- ClickBoom2 -->
+
+<!-- CodeCopy -->
+ 
+<link rel="stylesheet" href="../../../../css/clipboard.css">
+ <script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
+<script>
+  function wait(callback, seconds) {
+    var timelag = null;
+    timelag = window.setTimeout(callback, seconds);
+  }
+  !function (e, t, a) {
+    var initCopyCode = function(){
+      var copyHtml = '';
+      copyHtml += '<button class="btn-copy" data-clipboard-snippet="">';
+      copyHtml += '<i class="ri-file-copy-2-line"></i><span>COPY</span>';
+      copyHtml += '</button>';
+      $(".highlight .code pre").before(copyHtml);
+      $(".article pre code").before(copyHtml);
+      var clipboard = new ClipboardJS('.btn-copy', {
+        target: function(trigger) {
+          return trigger.nextElementSibling;
+        }
+      });
+      clipboard.on('success', function(e) {
+        let $btn = $(e.trigger);
+        $btn.addClass('copied');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('ri-file-copy-2-line');
+        $icon.addClass('ri-checkbox-circle-line');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPIED';
+        
+        wait(function () { // 等待两秒钟后恢复
+          $icon.removeClass('ri-checkbox-circle-line');
+          $icon.addClass('ri-file-copy-2-line');
+          $span[0].innerText = 'COPY';
+        }, 2000);
+      });
+      clipboard.on('error', function(e) {
+        e.clearSelection();
+        let $btn = $(e.trigger);
+        $btn.addClass('copy-failed');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('ri-file-copy-2-line');
+        $icon.addClass('ri-time-line');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPY FAILED';
+        
+        wait(function () { // 等待两秒钟后恢复
+          $icon.removeClass('ri-time-line');
+          $icon.addClass('ri-file-copy-2-line');
+          $span[0].innerText = 'COPY';
+        }, 2000);
+      });
+    }
+    initCopyCode();
+  }(window, document);
+</script>
+ 
+<!-- CanvasBackground -->
+
+<script>
+  if (window.mermaid) {
+    mermaid.initialize({ theme: "forest" });
+  }
+</script>
+
+
+    
+    <div id="music">
+    
+    
+    
+    <iframe frameborder="no" border="1" marginwidth="0" marginheight="0" width="200" height="86"
+        src="//music.163.com/outchain/player?type=2&id=28907016&auto=1&height=66"></iframe>
+</div>
+
+<style>
+    #music {
+        position: fixed;
+        right: 15px;
+        bottom: 0;
+        z-index: 998;
+    }
+</style>
+    
+    
+
+  </div>
+</body>
+
+</html>

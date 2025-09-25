@@ -1,0 +1,1439 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title>PlotNeuralNet的Latex解析与定制</title>
+    <url>/2021/05/31/PlotNeuralNet%E7%9A%84Latex%E8%A7%A3%E6%9E%90%E4%B8%8E%E5%AE%9A%E5%88%B6/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><p>本文参考了<a href="https://demonlord1997.github.io/2020/07/03/PlotNeuralNet%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E/," title="PlotNeuralNet个性化定制与使用说明">demonlord1997</a>、<a href="https://blog.csdn.net/weixin_41892813/article/details/106157933," title="卷积神经网络画图神器PlotNeuralNet（基于Latex）使用记录">糯米鸡呀呀呀呀</a>等人的博文，在此表示感谢！</p>
+<h1 id="基本构件"><a class="markdownIt-Anchor" href="#基本构件"></a> 基本构件</h1>
+<h2 id="构件类型"><a class="markdownIt-Anchor" href="#构件类型"></a> 构件类型</h2>
+<p>基本构件类型和顺序是：</p>
+<ol>
+<li><strong>\pic</strong>, 表示添加层</li>
+<li>指定层的位置： \pic[shift  ={(x, y, z)}] at  (x, y, z)， 表示：第1个坐标是指相对于第2个坐标的偏移量</li>
+<li>添加具体类型的层，其中，**Box={…}**表示单个层， **RightBandedBox={…}**表示多个层，**Ball={…}**表示层间相加符号<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>⨁</mo></mrow><annotation encoding="application/x-tex">\bigoplus</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.00001em;vertical-align:-0.25001em;"></span><span class="mop op-symbol small-op" style="position:relative;top:-0.0000050000000000050004em;">⨁</span></span></span></span></li>
+<li>添加层间连线，<strong>\draw [connection]  (<em>层的位置，如vonv1-east,或坐标(x,y,z)</em>)    – node { <em>箭头形状，如\midarrow</em>} (cr2-west)</strong></li>
+<li>自定义层间连线路径，**\path (p4-east) – (cr5-west) coordinate[pos=0.25] (between4_5) **</li>
+</ol>
+<h2 id="层的类型"><a class="markdownIt-Anchor" href="#层的类型"></a> 层的类型</h2>
+<p>网络中层包括：layer, block 和 unit。</p>
+<p>在绘制网络层时，要在指定层的类型</p>
+<p>其中，layer是单个网络层，对应的配置文件是layers文件夹下的<strong>Box.sty</strong>，在绘图时，所用的命令是：</p>
+<figure class="highlight latex"><table><tr><td class="code"><pre><span class="line">&#123;Box                =&#123;</span><br><span class="line">           name    =...,</span><br><span class="line">           caption =  ...,</span><br><span class="line">           xlabel  = ...,</span><br><span class="line">           ylabel  = ...,</span><br><span class="line">           fill    = ...,</span><br><span class="line">           opacity = ...,</span><br><span class="line">           height  = ...,width= ...,depth= ...,</span><br><span class="line">                   &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>其中，以下语句是绘图时常用的，其中，<strong>\subimport{…/layers/}{init}</strong>，表示layer文件夹下的init文件，因此，这一句的具体写法要结合当前tex文件所在位置。**\def\ReLUColor{rgb:red,1;black,0.3}**是自定义的ReLU层的颜色，可以根据需要自己调整。</p>
+<figure class="highlight latex"><table><tr><td class="code"><pre><span class="line"><span class="keyword">\documentclass</span>[border=15pt, multi, tikz]&#123;standalone&#125;</span><br><span class="line"><span class="keyword">\usepackage</span>&#123;import&#125;</span><br><span class="line"><span class="keyword">\subimport</span>&#123;../layers/&#125;&#123;init&#125;</span><br><span class="line"><span class="keyword">\usetikzlibrary</span>&#123;positioning&#125;</span><br><span class="line"><span class="keyword">\usetikzlibrary</span>&#123;3d&#125; <span class="comment">%for including external image </span></span><br><span class="line"></span><br><span class="line"><span class="keyword">\def</span><span class="keyword">\ReLUColor</span>&#123;rgb:red,1;black,0.3&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">\begin</span>&#123;document&#125;</span><br><span class="line"><span class="keyword">\begin</span>&#123;tikzpicture&#125;</span><br><span class="line"><span class="keyword">\tikzstyle</span>&#123;connection&#125;=[ultra thick,every node/.style=&#123;sloped,allow upside down&#125;,draw=<span class="keyword">\edgecolor</span>,opacity=0.7]</span><br><span class="line"></span><br><span class="line"><span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span></span><br><span class="line"><span class="comment">% 这部分添加绘图命令</span></span><br><span class="line"><span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span></span><br><span class="line"><span class="keyword">\end</span>&#123;tikzpicture&#125;</span><br><span class="line"><span class="keyword">\end</span>&#123;document&#125;</span><br></pre></td></tr></table></figure>
+<p>可以看到，图中标签“深度”的位置没有居中，需要自行设置，具体设置方法见下文自定义配置。</p>
+<h3 id="单个layer"><a class="markdownIt-Anchor" href="#单个layer"></a> 单个layer</h3>
+<p>单个layer要在shift后指定<strong>Box</strong>，可以通过fill指定填充的颜色，<code>height=..,width=...,depth=...</code>指定图片的高、宽和深。</p>
+<ul>
+<li>
+<p><code>[shift   =&#123;(0,0,0)&#125;]  at  (0,0,0) </code>表示第1个坐标是指相对于第2个坐标的偏移量。</p>
+</li>
+<li>
+<p>name   =score16,% 表示该层的名称</p>
+</li>
+<li>
+<p>caption= 标题, %表示该层的标题</p>
+</li>
+<li>
+<p><code>xlabel =&#123;&#123; "宽度： 显示的是s\_filer的值",  &#125;&#125;</code>,  无论是中文还是英文，只能显示第1个位置的字符;同时，要在s后加转义符\：s\_filer。xlabel的值是数组形式，即(x,y,z,…),在<strong>Box</strong>中只显示第1个值,即<strong>x</strong>。如果是在&quot;RightBandedBox&quot;,则可以显示多个值。</p>
+</li>
+<li>
+<p><code>ylabel =&#123;&#123;高度 &#125;&#125;</code>, 加不加引号，似无影响；这里可以显示多个字符;ylabel在神经网络架构中一般不显示</p>
+</li>
+<li>
+<p><code>zlabel = 深度</code>, ： 显示的是n_filer的值, 加不加{}，似无影响；这里可以显示多个字符</p>
+</li>
+<li>
+<p>opacity表示透明度</p>
+</li>
+</ul>
+<p>“”</p>
+<figure class="highlight latex"><table><tr><td class="code"><pre><span class="line"><span class="keyword">\documentclass</span>[border=15pt, multi, tikz]&#123;standalone&#125;</span><br><span class="line"><span class="keyword">\usepackage</span>[UTF8]&#123;ctex&#125; <span class="comment">%显示中文</span></span><br><span class="line"><span class="keyword">\usepackage</span>&#123;import&#125;</span><br><span class="line"><span class="keyword">\subimport</span>&#123;../layers/&#125;&#123;init&#125;</span><br><span class="line"><span class="keyword">\usetikzlibrary</span>&#123;positioning&#125;</span><br><span class="line"><span class="keyword">\usetikzlibrary</span>&#123;3d&#125; <span class="comment">%for including external image </span></span><br><span class="line"></span><br><span class="line"><span class="keyword">\def</span><span class="keyword">\ReLUColor</span>&#123;rgb:red,1;black,0.3&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">\begin</span>&#123;document&#125;</span><br><span class="line"><span class="keyword">\begin</span>&#123;tikzpicture&#125;</span><br><span class="line"><span class="keyword">\tikzstyle</span>&#123;connection&#125;=[ultra thick,every node/.style=&#123;sloped,allow upside down&#125;,draw=<span class="keyword">\edgecolor</span>,opacity=0.7]</span><br><span class="line"></span><br><span class="line"><span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span></span><br><span class="line"><span class="comment">%% Draw Layer Blocks</span></span><br><span class="line"><span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span></span><br><span class="line"></span><br><span class="line"><span class="comment">% one layer for a conv or BN or ReLU layer, etc</span></span><br><span class="line"><span class="keyword">\pic</span>[shift         =&#123;(5,0,0)&#125;] at  (0,0,0) <span class="comment">% 第1个坐标是指相对于第2个坐标的偏移量</span></span><br><span class="line">    &#123;</span><br><span class="line">        Box        =&#123;</span><br><span class="line">            name   =conv,<span class="comment">% 表示该层的名称 </span></span><br><span class="line">            caption= 标题, <span class="comment">%表示该层的标题</span></span><br><span class="line">            xlabel =&#123;&#123; &quot;宽度： 显示的是s<span class="keyword">\_</span>filer的值&quot;,  &#125;&#125;, <span class="comment">% 无论是中文还是英文，只能显示第1个位置的字符;同时，要在s后加转义符\</span></span><br><span class="line">            ylabel =&#123;&#123;高度 &#125;&#125;, <span class="comment">% 加不加引号，似无影响；这里可以显示多个字符;ylabel在神经网络架构中一般不显示</span></span><br><span class="line">            zlabel = 深度： 显示的是n<span class="keyword">\_</span>filer的值, <span class="comment">% 加不加&#123;&#125;，似无影响；这里可以显示多个字符</span></span><br><span class="line">            fill   =<span class="keyword">\ReLUColor</span>,</span><br><span class="line">            opacity = 0.2,</span><br><span class="line">            height=64,width=30,depth=45</span><br><span class="line">                    &#125;</span><br><span class="line">    &#125;; </span><br><span class="line"><span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span></span><br><span class="line"><span class="keyword">\end</span>&#123;tikzpicture&#125;</span><br><span class="line"><span class="keyword">\end</span>&#123;document&#125;</span><br></pre></td></tr></table></figure>
+<p>效果如图所示：</p>
+<p><img src="/2021/05/31/PlotNeuralNet%E7%9A%84Latex%E8%A7%A3%E6%9E%90%E4%B8%8E%E5%AE%9A%E5%88%B6/layer.png" alt="layer"></p>
+<h3 id="layer组合"><a class="markdownIt-Anchor" href="#layer组合"></a> layer组合</h3>
+<p>多个layer的组合，有2种方法实现。</p>
+<ol>
+<li>在shift后使用<strong>RightBandedBox</strong>，此外，layer的名称和层数，是通过<strong>xlabel</strong>和<strong>width</strong>进行设定。例如：<code>xlabel=&#123;&#123;"32","64", "128"&#125;&#125;， ···，width=&#123;2,2,4&#125;</code>。xlabel和width的值是数组形式，即(x,y,z,…)，数组内的数值个数决定了有多少个层。</li>
+<li>通过多个<strong>Box</strong>，使多个单层layer成为layers的组合。</li>
+</ol>
+<p>例如：</p>
+<figure class="highlight latex"><table><tr><td class="code"><pre><span class="line"><span class="keyword">\pic</span>[shift=&#123;(5,0,0)&#125;] at (0,0,0) </span><br><span class="line">    &#123;RightBandedBox=&#123;</span><br><span class="line">            name=cr1,</span><br><span class="line">            caption=使用RightBandedBox,</span><br><span class="line">            xlabel=&#123;&#123;&quot;1&quot;,&quot;2&quot;, &quot;3&quot;&#125;&#125;,</span><br><span class="line">            <span class="comment">% zlabel=layer_blocks,</span></span><br><span class="line">            fill=<span class="keyword">\ConvColor</span>,</span><br><span class="line">            bandfill=<span class="keyword">\ConvReluColor</span>,<span class="comment">%</span></span><br><span class="line">            opacity = 0.2,</span><br><span class="line">            height=40,width=&#123;1,1,1&#125;,depth=40&#125;</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">% conv+bn+relu</span></span><br><span class="line"><span class="keyword">\pic</span>[shift          =&#123;    (10,0,0)&#125;] at  (0,0,0) </span><br><span class="line">    &#123;</span><br><span class="line">    Box             =&#123;</span><br><span class="line">        name        =conv1,<span class="comment">%</span></span><br><span class="line">        xlabel      =&#123;&#123;1&#125;&#125;,</span><br><span class="line">        fill        =<span class="keyword">\ConvColor</span>,<span class="comment">%</span></span><br><span class="line">        height      =40,width=1,depth=40&#125;</span><br><span class="line">    &#125;;</span><br><span class="line"><span class="keyword">\pic</span>[shift          =&#123; (0,0,0)&#125;] at (conv1-east) </span><br><span class="line">    &#123;</span><br><span class="line">        Box         =&#123;</span><br><span class="line">        name        =bn1,<span class="comment">%</span></span><br><span class="line">        caption     =layer叠加,</span><br><span class="line">        xlabel      =&#123;&#123;2&#125;&#125;,</span><br><span class="line">        fill        =<span class="keyword">\BnColor</span>,<span class="comment">%</span></span><br><span class="line">        opacity     =0.5,</span><br><span class="line">        height      =40,width=1,depth=40&#125;</span><br><span class="line">    &#125;;</span><br><span class="line"><span class="keyword">\pic</span>[shift          =&#123;(0,0,0)&#125;] at (bn1-east)</span><br><span class="line">    &#123;</span><br><span class="line">            Box     =&#123;</span><br><span class="line">            name    =relu1,<span class="comment">%</span></span><br><span class="line">            xlabel  =&#123;&#123;3&#125;&#125;,</span><br><span class="line">            fill    =<span class="keyword">\ReLUColor</span>,</span><br><span class="line">            opacity =0.5,</span><br><span class="line">            height  =40,width=1,depth=40,</span><br><span class="line">             &#125;</span><br><span class="line">    &#125;;</span><br></pre></td></tr></table></figure>
+<p>效果如图所示：</p>
+<p><img src="/2021/05/31/PlotNeuralNet%E7%9A%84Latex%E8%A7%A3%E6%9E%90%E4%B8%8E%E5%AE%9A%E5%88%B6/layers.png" alt="layers"></p>
+<h2 id="残差结构"><a class="markdownIt-Anchor" href="#残差结构"></a> 残差结构</h2>
+<figure class="highlight latex"><table><tr><td class="code"><pre><span class="line"><span class="keyword">\documentclass</span>[border=15pt, multi, tikz]&#123;standalone&#125;</span><br><span class="line"><span class="keyword">\usepackage</span>&#123;import&#125;</span><br><span class="line"><span class="keyword">\subimport</span>&#123;../../layers/&#125;&#123;init&#125;</span><br><span class="line"><span class="keyword">\usetikzlibrary</span>&#123;positioning&#125;</span><br><span class="line"><span class="keyword">\usetikzlibrary</span>&#123;3d&#125; <span class="comment">%for including external image</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">\def</span><span class="keyword">\ConvColor</span>&#123;rgb:yellow,5;red,2.5;white,5&#125;</span><br><span class="line"><span class="keyword">\def</span><span class="keyword">\ConvReluColor</span>&#123;rgb:yellow,5;red,5;white,5&#125;</span><br><span class="line"><span class="keyword">\def</span><span class="keyword">\ConvBnReluColor</span>&#123;rgb:yellow,5;red,5;white,2.5&#125;</span><br><span class="line"><span class="keyword">\def</span><span class="keyword">\PoolColor</span>&#123;rgb:red,1;black,0.3&#125;</span><br><span class="line"><span class="keyword">\def</span><span class="keyword">\DcnvColor</span>&#123;rgb:blue,5;green,2.5;white,5&#125;</span><br><span class="line"><span class="keyword">\def</span><span class="keyword">\SoftmaxColor</span>&#123;rgb:magenta,5;black,7&#125;</span><br><span class="line"><span class="keyword">\def</span><span class="keyword">\SumColor</span>&#123;rgb:blue,5;green,15&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">\begin</span>&#123;document&#125;</span><br><span class="line"><span class="keyword">\begin</span>&#123;tikzpicture&#125;</span><br><span class="line"><span class="keyword">\tikzstyle</span>&#123;connection&#125;=[ultra thick,every node/.style=&#123;sloped,allow upside down&#125;,draw=<span class="keyword">\edgecolor</span>,opacity=0.7]</span><br><span class="line"><span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span></span><br><span class="line"><span class="comment">%% Draw Layer Blocks</span></span><br><span class="line"><span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span></span><br><span class="line"></span><br><span class="line"><span class="comment">% conv1_1,conv1_2,%pool1</span></span><br><span class="line"><span class="keyword">\pic</span>[shift=&#123;(0,0,0)&#125;] at (0,0,0) &#123;RightBandedBox=&#123;name=cr1,caption=conv1,<span class="comment">%</span></span><br><span class="line">        xlabel=&#123;&#123;&quot;64&quot;,&quot;<span class="keyword">\ </span>64&quot;&#125;&#125;,zlabel=I,fill=<span class="keyword">\ConvColor</span>,bandfill=<span class="keyword">\ConvBnReluColor</span>,<span class="comment">%</span></span><br><span class="line">        height=40,width=&#123;2,2&#125;,depth=40&#125;&#125;;</span><br><span class="line"><span class="keyword">\pic</span>[shift=&#123;(0,0,0)&#125;] at (cr1-east) &#123;Box=&#123;name=p1,<span class="comment">%</span></span><br><span class="line">        fill=<span class="keyword">\PoolColor</span>,opacity=0.5,height=35,width=1,depth=35&#125;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">\pic</span>[shift=&#123;(3,0,0)&#125;] at (p1-east) &#123;Ball=&#123;name=elt1,<span class="comment">%</span></span><br><span class="line">        fill=<span class="keyword">\SumColor</span>,opacity=0.6,<span class="comment">%</span></span><br><span class="line">        radius=2.5,logo=<span class="built_in">$</span>+<span class="built_in">$</span>&#125;&#125;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">%% score16</span></span><br><span class="line"><span class="keyword">\pic</span>[shift=&#123;(0,-4,0)&#125;] at (elt1-west) &#123;Box=&#123;name=score16,<span class="comment">%</span></span><br><span class="line">            fill=<span class="keyword">\PoolColor</span>,<span class="comment">%</span></span><br><span class="line">            opacity=0,height=0.01,width=0.01,depth=0.01&#125;&#125;;</span><br><span class="line"><span class="comment">%%　draw connections</span></span><br><span class="line"><span class="comment">%\draw [connection]  (p1-east) -- node &#123;\midarrow&#125; (p1-east -| elt1-west) -- node &#123;\midarrow&#125; (elt1-west);</span></span><br><span class="line"><span class="keyword">\draw</span> [connection]  (p1-east)    -- node &#123;<span class="keyword">\midarrow</span>&#125; (elt1-west);</span><br><span class="line"><span class="keyword">\path</span> (p1-east) -- (elt1-south) coordinate[pos=0.25] (between4<span class="built_in">_</span>5) ;</span><br><span class="line"><span class="keyword">\draw</span> [connection]  (between4<span class="built_in">_</span>5)    -- node &#123;<span class="keyword">\midarrow</span>&#125; (score16-west-|between4<span class="built_in">_</span>5) -- node &#123;<span class="keyword">\midarrow</span>&#125; (score16-west);</span><br><span class="line"><span class="keyword">\draw</span> [connection]  (score16-east) -- node &#123;<span class="keyword">\midarrow</span>&#125; (score16-east -| elt1-south) -- node &#123;<span class="keyword">\midarrow</span>&#125; (elt1-south);</span><br><span class="line"><span class="keyword">\draw</span> [connection]  (p1-east)    -- node &#123;<span class="keyword">\midarrow</span>&#125; (elt1-west);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span></span><br><span class="line"><span class="keyword">\end</span>&#123;tikzpicture&#125;</span><br><span class="line"><span class="keyword">\end</span>&#123;document&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="/2021/05/31/PlotNeuralNet%E7%9A%84Latex%E8%A7%A3%E6%9E%90%E4%B8%8E%E5%AE%9A%E5%88%B6/%E6%AE%8B%E5%B7%AE%E7%BB%93%E6%9E%84.png" alt="残差结构"></p>
+<h1 id="plotneuralnet的个性化定制"><a class="markdownIt-Anchor" href="#plotneuralnet的个性化定制"></a> PlotNeuralNet的个性化定制</h1>
+<p>PlotNeuralNet默认将图形的深度，也就是<em>n_fliter的数据</em>标注在角上，如下图所示，没有居中，因此，需要对它进行<a href="https://github.com/demonlord1997/PlotNeuralNet," title="PlotNeuralNet的demonlord1997修改版">修改</a>。</p>
+<p>自定义方法：修改layers文件夹下的Box.sty和RightBandedBox.sty文件。</p>
+<p><img src="/2021/05/31/PlotNeuralNet%E7%9A%84Latex%E8%A7%A3%E6%9E%90%E4%B8%8E%E5%AE%9A%E5%88%B6/zlabel.png" alt="zlabel"></p>
+<h2 id="boxsty"><a class="markdownIt-Anchor" href="#boxsty"></a> <strong>Box.sty</strong></h2>
+<p>将depthlabel设置中的pos=0改为pos=0.5，将captionlabel中的文本宽度由text width=15改为text width=40，这是因为默认宽度有些小，长文本显示不全。</p>
+<blockquote></blockquote>
+<p><code>\coordinate (a1) at (0 , \y/2 , \z/2);</code><br>
+<code>\coordinate (b1) at (0 ,-\y/2 , \z/2);</code><br>
+<s>\tikzstyle{depthlabel}=[pos=0,text width=14*\z,text centered,sloped]</s><br>
+<code>\tikzstyle&#123;depthlabel&#125;=[pos=0.5,text width=14*\z,text centered,sloped]</code></p>
+<blockquote></blockquote>
+<p><s>\tikzstyle{captionlabel}=[text width=15*\LastEastx/\scale,text centered]</s><br>
+<code> \tikzstyle&#123;captionlabel&#125;=[text width=40*\LastEastx/\scale,text centered]</code></p>
+<blockquote></blockquote>
+<p><code>\path (\LastEastx/2,-\y/2,+\z/2) + (0,-25pt) coordinate (cap)</code><br>
+<code>edge [&quot;\textcolor&#123;black&#125;&#123; \bf \caption&#125;&quot;',captionlabel](cap) ; %Block caption/pic object label</code></p>
+<h2 id="rightbandedboxsty"><a class="markdownIt-Anchor" href="#rightbandedboxsty"></a> <strong>RightBandedBox.sty</strong></h2>
+<p>RightBandedBox.sty的修改与Box.sty的修改类似。pos=0改为pos=0.5，text width=15改为text width=40</p>
+<blockquote></blockquote>
+<p><code>\coordinate (a1) at (0 , \y/2 , \z/2);</code><br>
+<code>\coordinate (b1) at (0 ,-\y/2 , \z/2);</code><br>
+<s>\tikzstyle{depthlabel}=[pos=0,text width=14*\z,text centered,sloped]</s><br>
+<code>\tikzstyle&#123;depthlabel&#125;=[pos=0.5,text width=14*\z,text centered,sloped]</code></p>
+<blockquote></blockquote>
+<p><code>\path (c) edge [&quot;\small\zlabels&quot;',depthlabel](f); %depth label'   </code>\path (b1) edge [“\ylabel”,midway] (a1);  %height label’</p>
+<blockquote></blockquote>
+<p><s>\tikzstyle{captionlabel}=[text width=15*\LastEastx/\scale,text centered]</s><br>
+`\tikzstyle{captionlabel}=[text width=40*\LastEastx/\scale,text centered]’</p>
+<blockquote></blockquote>
+<p><code>\path (\LastEastx/2,-\y/2,+\z/2) + (0,-25pt) coordinate (cap)'   </code>edge [“\textcolor{black}{ \bf \caption}”‘,captionlabel] (cap); %Block caption/pic object label’</p>
+]]></content>
+      <categories>
+        <category>科研工具</category>
+        <category>可视化</category>
+      </categories>
+      <tags>
+        <tag>深度学习可视化</tag>
+        <tag>PlotNeuralNet</tag>
+        <tag>唐朝生</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Hello World</title>
+    <url>/2025/08/29/hello-world/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
+<h2 id="quick-start"><a class="markdownIt-Anchor" href="#quick-start"></a> Quick Start</h2>
+<h3 id="create-a-new-post"><a class="markdownIt-Anchor" href="#create-a-new-post"></a> Create a new post</h3>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
+<h3 id="run-server"><a class="markdownIt-Anchor" href="#run-server"></a> Run server</h3>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
+<h3 id="generate-static-files"><a class="markdownIt-Anchor" href="#generate-static-files"></a> Generate static files</h3>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
+<h3 id="deploy-to-remote-sites"><a class="markdownIt-Anchor" href="#deploy-to-remote-sites"></a> Deploy to remote sites</h3>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+]]></content>
+  </entry>
+  <entry>
+    <title>医学图像处理SCI期刊</title>
+    <url>/2025/04/19/%E5%8C%BB%E5%AD%A6%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86SCI%E6%9C%9F%E5%88%8A/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><h1 id="医学图像处理sci期刊"><a class="markdownIt-Anchor" href="#医学图像处理sci期刊"></a> 医学图像处理SCI期刊</h1>
+<p>来源：<a href="https://blog.csdn.net/qimo601/article/details/82343744">https://blog.csdn.net/qimo601/article/details/82343744</a></p>
+<p>医学图像处理SCI期刊介绍</p>
+<p>SCI Journals for Medical Image <a href="https://so.csdn.net/so/search?q=Processing&amp;spm=1001.2101.3001.7020">Processing</a></p>
+<table>
+<thead>
+<tr>
+<th>Title</th>
+<th>Impact factor</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Brain</td>
+<td>10.870</td>
+</tr>
+<tr>
+<td>Journal of Neuroscience</td>
+<td>7.869</td>
+</tr>
+<tr>
+<td>Cerebral Cortex</td>
+<td>7.463</td>
+</tr>
+<tr>
+<td>Neuroimage</td>
+<td>7.063            Technical Note</td>
+</tr>
+<tr>
+<td>Human Brain Mapping</td>
+<td>7.032</td>
+</tr>
+<tr>
+<td>Bioinformatics</td>
+<td>6.911          Application Note</td>
+</tr>
+<tr>
+<td>Cortex</td>
+<td>5.042</td>
+</tr>
+<tr>
+<td>Medical Image Analysis</td>
+<td>4.662</td>
+</tr>
+<tr>
+<td>IEEE Transactions on Medical Imaging</td>
+<td>4.268</td>
+</tr>
+<tr>
+<td>PLoS ONE</td>
+<td>4.244</td>
+</tr>
+<tr>
+<td>IEEE Transactions on Image Processing</td>
+<td>4.017</td>
+</tr>
+<tr>
+<td>Neuroinformatics</td>
+<td>3.582</td>
+</tr>
+<tr>
+<td>BMC Bioinformatics</td>
+<td>3.510                 Software</td>
+</tr>
+<tr>
+<td>Neuroscience</td>
+<td>3.389</td>
+</tr>
+<tr>
+<td>Pattern<a href="http://www.elsevier.com/wps/find/journaldescription.cws_home/328/description#description"> Recognition</a></td>
+<td>3.219</td>
+</tr>
+<tr>
+<td>Medical Physics</td>
+<td>3.138</td>
+</tr>
+<tr>
+<td>Journal of Magnetic Resonance Imaging</td>
+<td>3.083</td>
+</tr>
+<tr>
+<td>Physics in Medicine and Biology</td>
+<td>2.920</td>
+</tr>
+<tr>
+<td>Magnetic Resonance Imaging</td>
+<td>2.286</td>
+</tr>
+<tr>
+<td>IEEE Transactions on Biomedical Engineering</td>
+<td>2.525</td>
+</tr>
+<tr>
+<td>Journal of Neuroscience Methods</td>
+<td>2.484</td>
+</tr>
+<tr>
+<td>IEEE Transactions on Information Technology in Biomedicine</td>
+<td>2.327</td>
+</tr>
+<tr>
+<td>Neuroscience Letters</td>
+<td>2.146</td>
+</tr>
+<tr>
+<td>Computerized Medical Imaging and Graphics</td>
+<td>1.954</td>
+</tr>
+<tr>
+<td>NeuroReport</td>
+<td>1.878</td>
+</tr>
+<tr>
+<td><a href="http://www.journals.elsevier.com/signal-processing/">Signal Processing</a></td>
+<td>1.745</td>
+</tr>
+<tr>
+<td>Computer methods and programs in biomedicine</td>
+<td>1.589</td>
+</tr>
+<tr>
+<td>Journal of Digital Imaging</td>
+<td>1.209</td>
+</tr>
+<tr>
+<td>Cognitive Computation</td>
+<td>1.137</td>
+</tr>
+<tr>
+<td>Journal of Real-Time Image Processing</td>
+<td>1.060</td>
+</tr>
+<tr>
+<td>Computational and Mathematical Methods in Medicine</td>
+<td>0.791</td>
+</tr>
+</tbody>
+</table>
+<p>IEEE Transactions 系列的杂志影响因子不是最高的，但是质量很高，在业内的影响力非常大。</p>
+<p>Others: <a href="http://www.papamarkos.gr/index/category/57/">http://www.papamarkos.gr/index/category/57/</a></p>
+<h2 id="一区"><a class="markdownIt-Anchor" href="#一区"></a> 一区</h2>
+<table>
+<thead>
+<tr>
+<th>期刊名</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>International Journal of Computer Vision</td>
+<td>IJCV（偏理论）</td>
+</tr>
+<tr>
+<td>IEEE Transactions on Pattern Analysis and Machine Intelligence</td>
+<td>PAMI（偏应用）</td>
+</tr>
+<tr>
+<td>IEEE Transactions on Image Processing</td>
+<td>TIP</td>
+</tr>
+<tr>
+<td>IEEE transactions on Signal Processing</td>
+<td>TSP</td>
+</tr>
+<tr>
+<td>IEEE transactions on Medical Imaging</td>
+<td></td>
+</tr>
+<tr>
+<td>IEEE transactions on Biomedical Engineering</td>
+<td></td>
+</tr>
+<tr>
+<td>Journal of Machine Learning Research</td>
+<td>理论</td>
+</tr>
+<tr>
+<td>Physics in Medicine and Biology</td>
+<td></td>
+</tr>
+<tr>
+<td>IEEE Transactions on <a href="http://ieeexplore.ieee.org/xpl/RecentIssue.jsp?punumber=4233">Information Technology in Biomedicine</a></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="http://link.springer.com/journal/330">European Radiology</a></td>
+<td></td>
+</tr>
+<tr>
+<td>Applied Soft Computing</td>
+<td>直接拒稿较少、周期长</td>
+</tr>
+<tr>
+<td>Information Fusion</td>
+<td>编辑认真</td>
+</tr>
+<tr>
+<td>Information Sciences</td>
+<td>语言要求极高/很慢/期刊不错</td>
+</tr>
+<tr>
+<td>Computer Graphics Forum</td>
+<td></td>
+</tr>
+<tr>
+<td>Image and Vision Computing</td>
+<td>Q1/Q2</td>
+</tr>
+<tr>
+<td>Neuroinformatics</td>
+<td>Q1/Q2</td>
+</tr>
+<tr>
+<td>PloS ONE</td>
+<td></td>
+</tr>
+<tr>
+<td><em>Neural Networks</em></td>
+<td></td>
+</tr>
+<tr>
+<td><em>IEEE Transactions on Cybernetics</em></td>
+<td></td>
+</tr>
+<tr>
+<td>IEEE transactions on neural networks</td>
+<td></td>
+</tr>
+<tr>
+<td>Pattern Recognition</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h2 id="二-区"><a class="markdownIt-Anchor" href="#二-区"></a> 二 区</h2>
+<table>
+<thead>
+<tr>
+<th>期刊名</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Applied Soft Computing</td>
+<td></td>
+</tr>
+<tr>
+<td>Expert systems with application</td>
+<td></td>
+</tr>
+<tr>
+<td>IEEE Transactions on Multimedia</td>
+<td></td>
+</tr>
+<tr>
+<td>IEEE Transactions on Circuits and Systems for Video Technology</td>
+<td></td>
+</tr>
+<tr>
+<td>Computer Vision and Image Understanding</td>
+<td></td>
+</tr>
+<tr>
+<td>IEEE Transactions on Biomedical Engineering</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>IEEE Transactions on Systems Man and Cybernetics Part B- Cybernetics</td>
+<td></td>
+</tr>
+<tr>
+<td>IEEE Transactions on Information Theory</td>
+<td></td>
+</tr>
+<tr>
+<td>Journal of Machine Learning Research</td>
+<td></td>
+</tr>
+<tr>
+<td>Neurocomputing</td>
+<td></td>
+</tr>
+<tr>
+<td>Physics in Medicine and Biology</td>
+<td></td>
+</tr>
+<tr>
+<td>IEEE Journal of Biomedical and Health Informatics</td>
+<td>Q2/Q3</td>
+</tr>
+<tr>
+<td>Pattern Recognition Letters</td>
+<td>慢</td>
+</tr>
+<tr>
+<td><a href="http://www.sciencedirect.com/science/journal/09333657">Artificial Intelligence in Medicine</a></td>
+<td></td>
+</tr>
+<tr>
+<td>International Journal of Imaging Systems and Technology</td>
+<td>Q2/Q3</td>
+</tr>
+<tr>
+<td>Machine Vision and Applications</td>
+<td>慢/范围较广Q2/Q3</td>
+</tr>
+<tr>
+<td><a href="http://info.sagepub.co.uk/c/145DO3qrgh3TO7lb24tRSldUfHa"><em>Acta Radiologica</em></a></td>
+<td>covers all aspects of radiology, from clinical radiology to experimental work</td>
+</tr>
+<tr>
+<td>Computerized Medical Imaging and Graphics</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h2 id="三-区"><a class="markdownIt-Anchor" href="#三-区"></a> 三 区</h2>
+<table>
+<thead>
+<tr>
+<th>期刊名</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>International Journal of Computer Assisted Radiology and Surgery</td>
+<td></td>
+</tr>
+<tr>
+<td><a href="https://biomedical-engineering-online.biomedcentral.com/">BioMedical Engineering OnLine</a></td>
+<td></td>
+</tr>
+<tr>
+<td>Soft Computing</td>
+<td>慢</td>
+</tr>
+<tr>
+<td>Machine Vision and Applications</td>
+<td></td>
+</tr>
+<tr>
+<td>IEEE Computer Graphics and Applications</td>
+<td></td>
+</tr>
+<tr>
+<td>Signal Processing-Image Communication</td>
+<td></td>
+</tr>
+<tr>
+<td>Signal Processing</td>
+<td></td>
+</tr>
+<tr>
+<td>Journal of Visual Communication and Image Representation</td>
+<td></td>
+</tr>
+<tr>
+<td>Image and Vision Computing</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>IET Computer Vision</td>
+<td></td>
+</tr>
+<tr>
+<td>IET Image Processing</td>
+<td></td>
+</tr>
+<tr>
+<td>IET Signal Processing</td>
+<td></td>
+</tr>
+<tr>
+<td>IEEE Computer Graphics and Applications</td>
+<td></td>
+</tr>
+<tr>
+<td>COMPUTERIZED MEDICAL IMAGING AND GRAPHICS</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h2 id="四-区"><a class="markdownIt-Anchor" href="#四-区"></a> 四 区</h2>
+<table>
+<thead>
+<tr>
+<th>期刊名</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>OPTIK</td>
+<td>好中</td>
+</tr>
+<tr>
+<td>International Journal of Computational Intelligence Systems</td>
+<td></td>
+</tr>
+<tr>
+<td>IEEE Signal Processing Letters</td>
+<td></td>
+</tr>
+<tr>
+<td>Optical Engineering</td>
+<td></td>
+</tr>
+<tr>
+<td>Biomedical Signal Processing and Control</td>
+<td></td>
+</tr>
+<tr>
+<td>Computer Methods and Programs in Biomedicine</td>
+<td></td>
+</tr>
+<tr>
+<td>Signal Image and Video Processing</td>
+<td></td>
+</tr>
+<tr>
+<td>Journal of Electronic Imaging</td>
+<td></td>
+</tr>
+<tr>
+<td>Journal of Mathematical Imaging and Vision</td>
+<td></td>
+</tr>
+<tr>
+<td>Journal of Biomedical Science</td>
+<td></td>
+</tr>
+<tr>
+<td>International Journal of Pattern Recognition and Artificial Intelligence</td>
+<td>超慢</td>
+</tr>
+<tr>
+<td>Journal of Medical and Biological Engineering</td>
+<td></td>
+</tr>
+<tr>
+<td>Signal Processing</td>
+<td></td>
+</tr>
+<tr>
+<td>Machine Vision and Applications</td>
+<td></td>
+</tr>
+<tr>
+<td>Journal of Electronic Imaging</td>
+<td>入门用</td>
+</tr>
+<tr>
+<td>IRBM</td>
+<td></td>
+</tr>
+<tr>
+<td>International Journal of Pattern Recognition and Artificial Intelligence</td>
+<td>慢</td>
+</tr>
+<tr>
+<td>Journal of Digital Imaging</td>
+<td></td>
+</tr>
+<tr>
+<td>Bio-Medical Materials and Engineering</td>
+<td></td>
+</tr>
+<tr>
+<td>JOURNAL OF INTERNATIONAL MEDICAL RESEARCH</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>另外：</p>
+<p>相关方向包括：</p>
+<p>放射学   Radiology<br>
+影像学   Neuroimage<br>
+超声学   Ultrasound in obstetrics and gynecology<br>
+核医学   Journal of nuclear medicine</p>
+<p>其中影像学著名期刊如下， 其他方向请参照[1]:</p>
+<table>
+<thead>
+<tr>
+<th><strong>期刊名称</strong></th>
+<th><strong>期/年</strong></th>
+<th><strong>出版国</strong></th>
+<th><strong>08影响因子</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>NeuroImage神经成像</td>
+<td>18</td>
+<td>美国</td>
+<td>5.694</td>
+</tr>
+<tr>
+<td>Magnetic Resonance in Medicine医用磁共振</td>
+<td>12</td>
+<td>美国</td>
+<td>3.449</td>
+</tr>
+<tr>
+<td>Journal of Magnetic Resonance Imaging核磁共振成像杂志</td>
+<td>12</td>
+<td>美国</td>
+<td>2.658</td>
+</tr>
+<tr>
+<td>Magnetic Resonance Imaging 磁共振成像</td>
+<td>10</td>
+<td>美国</td>
+<td>1.871</td>
+</tr>
+<tr>
+<td>Abdominal Imaging 腹部影像学</td>
+<td>6</td>
+<td>德国</td>
+<td>1.485</td>
+</tr>
+<tr>
+<td>International Journal of Cardiovascular Imaging 国际心血管成像杂志</td>
+<td>6</td>
+<td>荷兰</td>
+<td>1.268</td>
+</tr>
+</tbody>
+</table>
+<p>European Journal of Radiology</p>
+<p>Computer Methods and Programs in Biomedicine</p>
+<p>Australasian Physical &amp; Engineering Sciences in Medicine</p>
+<p>Peptides</p>
+<p>Mol Divers</p>
+<p><em><a href="http://communications.elsevier.com/r/?id=h4f9b33ea,24e03d8d,24f79334">IFAC Journal of Systems &amp; Control</a></em></p>
+]]></content>
+      <categories>
+        <category>科研</category>
+        <category>学术</category>
+      </categories>
+      <tags>
+        <tag>期刊</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>可解释人工智能 (XAI) 文献的趋势</title>
+    <url>/2023/01/19/%E5%8F%AF%E8%A7%A3%E9%87%8A%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD(XAI)%E7%9A%84%E6%96%87%E7%8C%AE%E8%B6%8B%E5%8A%BF/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><p>本文源于<a href="https://medium.com/@alonjacovi/trends-in-explainable-ai-xai-literature-a1db485e871," title="rends in Explainable AI (XAI) Literature">Alon Jacovi</a>的博文</p>
+<p>这是一份关于 XAI-Scholar 的报告，是Alon Jacovi收集的 XAI* 论文合集，以及作者从中得出的一些有趣的趋势和见解。这是此处 Arxiv 报告的<a href="https://arxiv.org/abs/2301.05433," title="Trends in Explainable AI (XAI) Literature">非正式版本</a>。重现代码和数据可在这个 github 存储库中获得。该集合基于使用此 Python API 的 SemanticScholar 数据库。</p>
+<p>*对于 XAI，我指的是研究文章的相对包容性定义，这些文章讨论了现代人工智能系统中解释/解释的发展、实施或实践（无论它们是否这样称呼自己）。这个定义与我在各种精选的 XAI 论文、研讨会和 XAI 期刊问题中观察到的最常见定义一致。</p>
+<p>近年来，XAI 研究已经开始达到这样的规模：(1) 难以通过人工测量掌握； (2) 足够大，可以看到整体经验和统计趋势。我的目标是收集大量格式良好的 XAI 论文，以使这种实证分析成为可能。下面的分析可以作为概念证明，说明可以用它做什么。作者个人的动机是研究 XAI 的多学科性，但还有许多其他可能的用途。</p>
+<p>与类似领域相比，XAI 研究具有多种特性，使其难以从整体上观察：</p>
+<ol>
+<li>
+<p>它涉及到的学科非常多，在许多不同领域都有不可忽视的社区，这些社区不经常互动或共享领域的研究。</p>
+</li>
+<li>
+<p>论文用来自称 XAI 研究的术语并不是 XAI 独有的（例如，“xai”和“Xai Xai”是研究中出现的具有多重意义的名称），而且这个术语比 XAI 的研究历史更长。</p>
+</li>
+<li>
+<p>“XAI 研究”论文最流行的定义通常包括那些不自称为 XAI 的论文，只要它们试图解释 AI 技术。</p>
+</li>
+</ol>
+<h2 id="一些发现"><a class="markdownIt-Anchor" href="#一些发现"></a> 一些发现：</h2>
+<ol>
+<li>XAI 研究在 2016 年、2018 年和 2021 年（尤其是 2021 年）在计算机科学之外出现了最大的“扩张”增长峰值。</li>
+<li>随着时间的推移，由传统上发表在两个或更多不同研究领域的作者撰写的论文的相对比例明显增加。</li>
+<li>CS 与不同的 XAI 领域有不同的引用关系。例如，XAI-CS 引用 XAI-Psychology 的频率高于反之亦然，但 XAI-CS 和 XAI-Medicine 的关系则相反。这种影响的“方向”显示了当前文献中哪些领域经常提到/被哪些其他领域提到。</li>
+<li>XAI 领域之间的差异在于它们涉及非 XAI 研究的频率。比例最高的是XAI-Biology、XAI-Engineering和XAI-Law——而比例最低的是XAI-Psychology、XAI-Business和XAI-Philosophy，它们的影响往往更多地延伸到其他XAI文献。</li>
+<li>论文之间的引用行为在不同领域之间存在显着差异。例如，XAI-Philosophy 引用的top-cited Philosophy 论文与XAI-CS 引用的Philosophy 论文明显不同，等等。不出所料，领域外的引用往往集中在该领域的少数论文，但“突破”其领域传统界限的论文并不总是该领域被引用次数最多的论文。</li>
+<li>例如，该集合可以通过查看哪些 XAI 论文对其领域外或 XAI 之外的论文最具影响力来充当论文发现引擎；或者特定领域的哪些非 XAI 论文对另一个领域的 XAI 最有用。 arxiv 报告和 github 存储库中有很多示例，但我也会在此处包含一些示例。</li>
+</ol>
+<h1 id="收集方法"><a class="markdownIt-Anchor" href="#收集方法"></a> 收集方法</h1>
+<h2 id="第一步关键词搜索"><a class="markdownIt-Anchor" href="#第一步关键词搜索"></a> 第一步：关键词搜索</h2>
+<p>我在 SemanticScholar 查询中搜索了以下关键字，并使用论文标题 + 摘要使用精确匹配来过滤它们。<br>
+关键词是：“xai”、“(xai)”、“hcxai”、“explainability”、“interpretability”、“explainable ai”、“explainable artificial intelligence”、“interpretable ml”、“interpretable machine learning”、“interpretable模型”、“特征归因”、“特征重要性”、“全局解释”、“局部解释”、“局部解释”、“全局解释”、“模型解释”、“模型解释”、“显着性”、“反事实解释” ”。(<code>The keywords are: *“ xai “, “(xai)”, “hcxai”, “explainability”, “interpretability”, “explainable ai”, “explainable artificial intelligence”, “interpretable ml”, “interpretable machine learning”, “interpretable model”, “feature attribution”, “feature importance”, “global explanation”, “local explanation”, “local interpretation”, “global interpretation”, “model explanation”, “model interpretation”, “saliency”, “counterfactual explanation”.*</code>)</p>
+<p>这组关键字实际上是相当保守的（最初我从一个更大的列表开始），但即使使用这个保守的集合，不幸的是，1-keyword-match 过滤导致许多非 XAI 论文因各种原因被检索——所以我只包括论文匹配 2 个或更多唯一关键字。 100 篇论文的随机样本通过人工检查产生了 99% 的精度（一篇论文在摘要中提到关键词只是作为相邻研究的动机）。</p>
+<p>基于关键字的搜索检索到 3101 篇论文。</p>
+<h2 id="第二步人工搜集"><a class="markdownIt-Anchor" href="#第二步人工搜集"></a> 第二步：人工搜集</h2>
+<p>我从以下精选列表中获取了论文：</p>
+<ol>
+<li><a href="https://xainlp2020.github.io/xainlp/table"><em>https://xainlp2020.github.io/xainlp/tabl</em></a><em>e</em></li>
+<li><a href="https://github.com/hbaniecki/adversarial-explainable-ai"><em>https://github.com/hbaniecki/adversarial-explainable-ai</em></a></li>
+<li><a href="https://github.com/SinaMohseni/Awesome-XAI-Evaluation"><em>https://github.com/SinaMohseni/Awesome-XAI-Evaluation</em></a></li>
+<li><a href="https://github.com/wangyongjie-ntu/Awesome-explainable-AI"><em>https://github.com/wangyongjie-ntu/Awesome-explainable-AI</em></a></li>
+<li><a href="https://github.com/pbiecek/xai_resources"><em>https://github.com/pbiecek/xai_resources</em></a></li>
+<li><a href="https://github.com/lopusz/awesome-interpretable-machine-learning"><em>https://github.com/lopusz/awesome-interpretable-machine-learning</em></a></li>
+<li><a href="https://github.com/rehmanzafar/xai-iml-sota"><em>https://github.com/rehmanzafar/xai-iml-sota</em></a></li>
+<li><a href="https://github.com/kevinmcareavey/chai-xai"><em>https://github.com/kevinmcareavey/chai-xai</em></a></li>
+<li><a href="https://github.com/feifeife/All-about-XAI"><em>https://github.com/feifeife/All-about-XAI</em></a></li>
+<li><a href="https://github.com/samzabdiel/XAI"><em>https://github.com/samzabdiel/XAI</em></a></li>
+<li><a href="https://github.com/AstraZeneca/awesome-explainable-graph-reasoning"><em>https://github.com/AstraZeneca/awesome-explainable-graph-reasoning</em></a></li>
+<li><a href="https://github.com/anguyen8/XAI-papers"><em>https://github.com/anguyen8/XAI-papers</em></a></li>
+</ol>
+<p>然后使用带模糊匹配的 SemanticScholar API 按标题搜索它们。这使 766 篇论文增加到 3867 篇论文。</p>
+<h2 id="第三步带有手动过滤的引文树扩展"><a class="markdownIt-Anchor" href="#第三步带有手动过滤的引文树扩展"></a> 第三步：带有手动过滤的引文树扩展</h2>
+<p>我从步骤 1-2 的论文集中取出了前 2000 篇被引用最多的论文，并从中手动选择了关于 XAI 的论文。</p>
+<p>这使 648 篇论文增加到 4515 篇论文。</p>
+<h2 id="第-4-步-带自动过滤的引文树扩展"><a class="markdownIt-Anchor" href="#第-4-步-带自动过滤的引文树扩展"></a> 第 4 步： 带自动过滤的引文树扩展</h2>
+<p>在上面的每个步骤 1-3 之后，我检索了所收集论文的所有引文和参考文献，并通过 2-keyword-match 方法过滤它们。我以递归方式执行此操作，直到不再添加新论文为止。</p>
+<p>总共增加了 709 篇论文，总数达到 5224 篇。</p>
+<h2 id="第-5-步-人工质量检查"><a class="markdownIt-Anchor" href="#第-5-步-人工质量检查"></a> 第 5 步 ：人工质量检查</h2>
+<p>最后，我试探性地浏览了数据集，发现了 25 篇归因错误的论文。删除它们使最终数量减少到 5199 篇论文。</p>
+<h2 id="总结"><a class="markdownIt-Anchor" href="#总结"></a> 总结</h2>
+<p>第 1 步和第 4 步基于关键字自动过滤，其作用是根据最近流行的术语检索自我识别为 XAI 的论文。第 2 步和第 3 步基于不限于特定关键字的手动过滤，其作用是检索在 XAI 术语收敛之前发表的论文，以及未自我识别为 XAI 但被社区认为是 XAI 的论文。</p>
+<h2 id="收集到的论文合集"><a class="markdownIt-Anchor" href="#收集到的论文合集"></a> 收集到的论文合集</h2>
+<p>最终合集有5199篇论文。<br>
+每篇论文都有：</p>
+<ul>
+<li><em>The SemanticScholar ID and URL</em></li>
+<li><em>Title</em></li>
+<li><em>Abstract</em></li>
+<li><em>Authors</em></li>
+<li><em>Number of citations</em></li>
+<li><em>Number of references</em></li>
+<li><em>Year</em></li>
+<li><em>Venue</em></li>
+<li><em>Field of study</em></li>
+<li><em>SemanticScholar’s “tldr” summary</em></li>
+</ul>
+<p>每篇论文的以下数据也可以分别从 SemanticScholar 中检索：</p>
+<ul>
+<li>参考文献列表</li>
+<li>引文列表</li>
+<li>SemanticScholar 的嵌入向量</li>
+</ul>
+<p>数据的最终大小为 19 MB。从 SemanticScholar 检索参考和引用后，完整数据的大小约为 950 MB。<br>
+这是跨研究领域的分布：</p>
+<p><img src="/2023/01/19/%E5%8F%AF%E8%A7%A3%E9%87%8A%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD(XAI)%E7%9A%84%E6%96%87%E7%8C%AE%E8%B6%8B%E5%8A%BF/1AmdTnrOreooBK-shQNjIVg-1674130652423-55.webp" alt="img"></p>
+<p>考虑到易读性，不含CS的分布：</p>
+<p><img src="/2023/01/19/%E5%8F%AF%E8%A7%A3%E9%87%8A%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD(XAI)%E7%9A%84%E6%96%87%E7%8C%AE%E8%B6%8B%E5%8A%BF/1epaBhPwWwuK3YlhRU2nteA-1674130722009-65.webp" alt="img"></p>
+<h2 id="不足之处"><a class="markdownIt-Anchor" href="#不足之处"></a> 不足之处</h2>
+<ol>
+<li>不用说，这里的检索是有偏见的：第 1 步和第 4 步偏向于特定术语，第 2 步和第 3 步偏向于 CS 和数学中有影响力/高引用的论文。</li>
+<li>SemanticScholar 有噪声数据——不要指望完美的格式。有些论文缺少摘要；部分论文字段错误；地点名称不一致（即，有多个字符串指的是同一个地点）；缺少引文/参考文献、作者等。这是少数，但也不容忽视。</li>
+<li>低于100% 精确度——我尽力了，但一些非 XAI 论文可能漏掉了。从我做的抽样来看，你可以期待非常高的精度，但不是 100%。</li>
+<li>显然，这个集合远没有达到 100% 的召回率。根据我非常有偏见和轶事的观察，我估计截至 2022 年 12 月 31 日，XAI 文献的“真实”主体大约是这个集合的 x1.5 到 x2——所以总共有大约 8k 到 10k 篇论文。遗漏的论文可能早于术语开始融合的时间，或者由于步骤 2-3 优先考虑高被引论文而导致引用量较低。</li>
+<li>该集合在 2022 年 12 月的一段时间内被检索，但有些场馆似乎从出版日期到论文集/Semantic Scholar 出现有所延迟——因此对增长趋势的观察可能要将 2022 年视为部分年份（我没有任何证据表明这个问题有多大或多小）。</li>
+</ol>
+<p>在使用集合时，请依靠您自己的判断来决定观察到的趋势是否可以克服基于这些限制的误差范围。</p>
+<h1 id="研究结果"><a class="markdownIt-Anchor" href="#研究结果"></a> 研究结果</h1>
+<h2 id="增长趋势"><a class="markdownIt-Anchor" href="#增长趋势"></a> 增长趋势</h2>
+<p>首先，XAI 通常显示出相对的年度增长——但这种增长在很大程度上是由计算机科学控制的（它显示出相同的增长趋势）。</p>
+<p><img src="/2023/01/19/%E5%8F%AF%E8%A7%A3%E9%87%8A%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD(XAI)%E7%9A%84%E6%96%87%E7%8C%AE%E8%B6%8B%E5%8A%BF/14tKfXYQq639KcbXAnsvd9A.png" alt="img"></p>
+<p>限制了非CS 论文揭示了不同的增长趋势。例如，XAI-Medicine 呈指数级增长，尤其是在 2016 年、2018 年和 2021 年的相对增长较大。</p>
+<p><img src="/2023/01/19/%E5%8F%AF%E8%A7%A3%E9%87%8A%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD(XAI)%E7%9A%84%E6%96%87%E7%8C%AE%E8%B6%8B%E5%8A%BF/1fZmByOHxPBjVwu85WW2qng.png" alt="img"></p>
+<p>在控制非医学和非 CS 论文时，这些趋势也成立。</p>
+<p><img src="/2023/01/19/%E5%8F%AF%E8%A7%A3%E9%87%8A%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD(XAI)%E7%9A%84%E6%96%87%E7%8C%AE%E8%B6%8B%E5%8A%BF/1NCoYhCgvf0m5_SDIJv8F-w.png" alt="img"></p>
+<p>总体而言，XAI 似乎在 2016 年、2018 年和 2021 年向“非中心”领域进行了最大的扩张。</p>
+<h2 id="合作趋势"><a class="markdownIt-Anchor" href="#合作趋势"></a> 合作趋势</h2>
+<p>我们可以通过将作者的“领域”定义为他们大部分论文的领域（通过 SemanticScholar 单独检索）来查看研究领域变量与作者-论文图之间的相互作用。<br>
+然后我们可以统计合作的次数。</p>
+<p>我们可以将此网络可视化为加权无向图。边的权重是所有论文中至少有一个合作的百分比（低于 5% 的边缘被忽略）。</p>
+<p><img src="/2023/01/19/%E5%8F%AF%E8%A7%A3%E9%87%8A%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD(XAI)%E7%9A%84%E6%96%87%E7%8C%AE%E8%B6%8B%E5%8A%BF/1R6CRDAgPYGQitIwDX9slVw.png" alt="img"></p>
+<p>和以前一样，由于 CS 扭曲了整个尺度，我们可以在没有 CS 的情况下查看同一张图，以获得其他场配对的细粒度视图（省略了低于 3% 的边）：</p>
+<p><img src="/2023/01/19/%E5%8F%AF%E8%A7%A3%E9%87%8A%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD(XAI)%E7%9A%84%E6%96%87%E7%8C%AE%E8%B6%8B%E5%8A%BF/1oQJlVgzmlCF2kFsacZE59Q.png" alt="img"></p>
+<p>当然，我们可以检查合作的增长趋势。该图显示了所有年度论文中合作论文的年度数量：</p>
+<p><img src="/2023/01/19/%E5%8F%AF%E8%A7%A3%E9%87%8A%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD(XAI)%E7%9A%84%E6%96%87%E7%8C%AE%E8%B6%8B%E5%8A%BF/12nMfXKNdm5IN7q6Mrx-ARA.png" alt="img"></p>
+<p>很难在这张图中看到，但如果我们绘制合作论文的百分比，我们可以看到随时间的比例增长：</p>
+<p><img src="/2023/01/19/%E5%8F%AF%E8%A7%A3%E9%87%8A%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD(XAI)%E7%9A%84%E6%96%87%E7%8C%AE%E8%B6%8B%E5%8A%BF/1P2bfDHAWEi39ApwLD3XUvA.png" alt="img"></p>
+<p>如果我们将 2016 年视为异常值，传统上在不同领域发表论文的作者合作的论文比例会逐渐增加。</p>
+<h2 id="引文趋势"><a class="markdownIt-Anchor" href="#引文趋势"></a> 引文趋势</h2>
+<p>最后，我们可以检查研究领域变量和引用参考图之间的交互作用。</p>
+<p>最容易分析的趋势是围绕 CS，因为所有领域都与 CS 有显着的引用关系。</p>
+<p>例如，哪些 XAI 领域被 XAI-CS 引用最多（前 5 名）？</p>
+<p><img src="/2023/01/19/%E5%8F%AF%E8%A7%A3%E9%87%8A%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD(XAI)%E7%9A%84%E6%96%87%E7%8C%AE%E8%B6%8B%E5%8A%BF/1WwQ1mMV8SbWgIbJNEaxZwQ.png" alt="img"></p>
+<p>受到XAI-数学的影响当然是有道理的，但我们也可以看到 XAI-工程、XAI-心理学、XAI-医学和 XAI-商业对 XAI-CS 文献的影响不可忽视。</p>
+<h3 id="cs与其他领域的引用关系的方向是什么"><a class="markdownIt-Anchor" href="#cs与其他领域的引用关系的方向是什么"></a> CS与其他领域的引用关系的“方向”是什么？</h3>
+<p>我们可以将其可视化为加权有向图：下面我们可以看到围绕 CS 的 XAI 字段之间的引用与参考关系——两个字段之间的每对边都被归一化为总和为 100%。两边跨度少于 100 个引用的关系将被忽略。</p>
+<p><img src="/2023/01/19/%E5%8F%AF%E8%A7%A3%E9%87%8A%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD(XAI)%E7%9A%84%E6%96%87%E7%8C%AE%E8%B6%8B%E5%8A%BF/1Qjnhsh5KTDiTT8MFDxvxMQ.png" alt="img"></p>
+<p>该图基本上显示了两个领域中哪个领域更多地被另一个领域所借鉴。我们可以看到，心理学和数学领域的XAI论文被XAI-CS引用的频率比其他领域高。XAI-Engineering/XAI-Medicine大致相当，而对于所有其他领域，这种关系是翻转的–意味着它们更多地被XAI-CS告知，而不是XAI-CS被它们告知。</p>
+<h3 id="xai-中非-cs-领域之间的引用关系是什么"><a class="markdownIt-Anchor" href="#xai-中非-cs-领域之间的引用关系是什么"></a> XAI 中非 CS 领域之间的引用关系是什么？</h3>
+<p>和以前一样，我们可以省略 CS 来查看其他配对。该图显示了每个 XAI 领域的前 3 个引用 XAI 领域。来自一个节点的所有出边都被归一化为总和为 100%。对其他字段的引用少于 20 次的字段将被忽略。</p>
+<p><img src="/2023/01/19/%E5%8F%AF%E8%A7%A3%E9%87%8A%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD(XAI)%E7%9A%84%E6%96%87%E7%8C%AE%E8%B6%8B%E5%8A%BF/1E0SGBmnbRAtY1ETXAXELSQ.png" alt="img"></p>
+<h3 id="哪些-xai-领域对非-xai-文献的影响最大"><a class="markdownIt-Anchor" href="#哪些-xai-领域对非-xai-文献的影响最大"></a> 哪些 XAI 领域对非 XAI 文献的影响最大？</h3>
+<p>如果我们将集合之外的论文定义为非 XAI 论文，则该图显示了 XAI 领域的排名，按非 XAI 引用占该 XAI 领域所有引用的百分比。它基本上显示了哪些领域最经常为非 XAI 文献提供信息。 （引用少于 100 次的字段被忽略）。</p>
+<p><img src="/2023/01/19/%E5%8F%AF%E8%A7%A3%E9%87%8A%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD(XAI)%E7%9A%84%E6%96%87%E7%8C%AE%E8%B6%8B%E5%8A%BF/0dekBBbHgyf5mF9xX-1674130753993-68.png" alt="img"></p>
+<p>例如，XAI-Biology相对来说经常被非XAI文献引用，而XAI-Philosophy则相反，它似乎相对来说更经常被XAI引用。</p>
+<h1 id="论文层面的引文趋势和论文发现"><a class="markdownIt-Anchor" href="#论文层面的引文趋势和论文发现"></a> 论文层面的引文趋势和论文发现</h1>
+<p>最后，我们可以在个别论文的层面上看一下引用行为。</p>
+<p>例如，当XAI-CS引用哲学时，他们是在引用各种各样的论文，还是在引用少数精选的论文？</p>
+<p><img src="/2023/01/19/%E5%8F%AF%E8%A7%A3%E9%87%8A%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD(XAI)%E7%9A%84%E6%96%87%E7%8C%AE%E8%B6%8B%E5%8A%BF/1ofxh6LedA5quqE6za2JaRg.png" alt="img"></p>
+<p>被XAI-CS引用最多的10篇哲学论文控制了这些领域之间32%的引文。我们可以通过查看XAI-CS对每个领域的论文引用的论文分布熵来更普遍地检查这一点。</p>
+<p><img src="/2023/01/19/%E5%8F%AF%E8%A7%A3%E9%87%8A%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD(XAI)%E7%9A%84%E6%96%87%E7%8C%AE%E8%B6%8B%E5%8A%BF/1A9mwW3-wMYbe6G5DL9j5tA.webp" alt="img"></p>
+<p>正如我们预期的那样，我们可以在这里看到哲学有一个相对峰值的分布。顺便说一句，如果你很好奇——XAI-CS 的“法律”引用绝大多数由一篇论文（“可计算算法”）控制，引用率为 44% 😃</p>
+<p><img src="/2023/01/19/%E5%8F%AF%E8%A7%A3%E9%87%8A%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD(XAI)%E7%9A%84%E6%96%87%E7%8C%AE%E8%B6%8B%E5%8A%BF/1qPHPjeH2xgLjn0VP2r-7nQ.png" alt="img"></p>
+<p>为了说明问题，下面是另一个关于心理学和CS的场景。</p>
+<p><img src="/2023/01/19/%E5%8F%AF%E8%A7%A3%E9%87%8A%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD(XAI)%E7%9A%84%E6%96%87%E7%8C%AE%E8%B6%8B%E5%8A%BF/16-MIXRKS6giv7sJz9Nq4mg.png" alt="img"></p>
+<p><img src="/2023/01/19/%E5%8F%AF%E8%A7%A3%E9%87%8A%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD(XAI)%E7%9A%84%E6%96%87%E7%8C%AE%E8%B6%8B%E5%8A%BF/1KbcsQoXyXuVBuGT5aDZqkw.png" alt="img"></p>
+<p>我们可以问的其他问题是：</p>
+<h2 id="被本领域以外的论文引用最多的-xai-论文有哪些"><a class="markdownIt-Anchor" href="#被本领域以外的论文引用最多的-xai-论文有哪些"></a> 被本领域以外的论文引用最多的 XAI 论文有哪些？</h2>
+<p>换句话说，哪些论文在他们的领域之外“突破”了？</p>
+<p><img src="/2023/01/19/%E5%8F%AF%E8%A7%A3%E9%87%8A%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD(XAI)%E7%9A%84%E6%96%87%E7%8C%AE%E8%B6%8B%E5%8A%BF/1f8wCTtWlzwLuW3e_arjCqA.png" alt="img"></p>
+<p><img src="/2023/01/19/%E5%8F%AF%E8%A7%A3%E9%87%8A%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD(XAI)%E7%9A%84%E6%96%87%E7%8C%AE%E8%B6%8B%E5%8A%BF/13gt61856PFagKzI4qPE_Fg.png" alt="img"></p>
+<h2 id="特定领域的哪些-xai-论文在该领域被引用最多"><a class="markdownIt-Anchor" href="#特定领域的哪些-xai-论文在该领域被引用最多"></a> 特定领域的哪些 XAI 论文在该领域被引用最多？</h2>
+<p><img src="/2023/01/19/%E5%8F%AF%E8%A7%A3%E9%87%8A%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD(XAI)%E7%9A%84%E6%96%87%E7%8C%AE%E8%B6%8B%E5%8A%BF/1Bcjb81Aqt_2KutNmFy6PAg.png" alt="img"></p>
+<h1 id="结论"><a class="markdownIt-Anchor" href="#结论"></a> 结论</h1>
+<p>XAI 研究正在大规模地围绕特定术语进行融合，这使得根据经验观察趋势成为可能。虽然检索过程有一些局限性和偏见，但可以在某种程度上解释它们（例如，通过承认检索偏向 CS，并看到在相反方向上克服这种偏见的趋势）。</p>
+]]></content>
+      <categories>
+        <category>人工智能</category>
+        <category>综述</category>
+      </categories>
+      <tags>
+        <tag>可解释人工智能</tag>
+        <tag>towardsdatascience</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>机器学习分类的评估</title>
+    <url>/2023/01/19/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%88%86%E7%B1%BB%E7%9A%84%E8%AF%84%E4%BC%B0/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><p>本文源于<a href="https://towardsdatascience.com/evaluation-of-machine-learning-classifiers-3912e7f5cf74," title="Evaluation of Machine Learning Classifiers">J. Rafid Siddiqui</a>博士的博客</p>
+<p>偏差-方差分析、正则化、性能指标的解释以及谐波分类器的实现</p>
+<p><img src="/2023/01/19/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%88%86%E7%B1%BB%E7%9A%84%E8%AF%84%E4%BC%B0/14NqIWicEK49QMvnButf4Yw.png" alt="Figure 1: A depiction of Results from a Bias-Variance Analysis"></p>
+<h1 id="偏差-方差分析"><a class="markdownIt-Anchor" href="#偏差-方差分析"></a> 偏差-方差分析</h1>
+<p>偏差-方差分析是一个评估机器学习分类器的过程。每个分类器都可能出现高偏差或高方差的问题，这取决于训练的条件。了解这些常见问题并加以预防，可以帮助人们建立更好、更普遍、更高性能的模型。</p>
+<h2 id="高偏差high-bias-欠拟合"><a class="markdownIt-Anchor" href="#高偏差high-bias-欠拟合"></a> 高偏差（<strong>High Bias</strong> , 欠拟合）</h2>
+<p>当一个分类器高度偏向某种类型的预测（例如，某个类）而不管输入数据的变化时，我们称这种模型存在高偏差问题。例如，如果我们在一个不可线性分离的训练集上训练一个线性模型，那么即使在训练集上，这样的模型也会表现得很差。所以我们将这样的模型称为欠拟合模型，因为它没有完全捕获数据集的结构。这种欠拟合问题的示例如下图所示。</p>
+<p><img src="/2023/01/19/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%88%86%E7%B1%BB%E7%9A%84%E8%AF%84%E4%BC%B0/19d2d7Ra4bPevQL3uD-Cm8Q.png" alt="Figure 2: An Example of a model suffering from an Underfitting Problem "></p>
+<p>您可能已经注意到，这样的模型在训练集和测试集上都表现不佳。这是因为模型没有配备足够的参数来处理数据中的非线性。这也可能意味着没有足够的数据。在样本量太小而无法训练的情况下，模型不会收敛到最佳点，结果模型会出现欠拟合问题。</p>
+<h2 id="高方差high-variance-过拟合"><a class="markdownIt-Anchor" href="#高方差high-variance-过拟合"></a> 高方差（<strong>High Variance</strong>, 过拟合）</h2>
+<p>训练机器学习分类器时的另一个常见问题发生在模型在训练集上表现良好时，但是，当它在与已经训练过的示例集不同的示例集上进行测试时，其性能会显着下降。此问题称为高方差或过拟合问题。之所以这样命名，是因为该模型在预测输出中具有高方差。换句话说，模型无法处理给定类别的输入样本中的方差，它不会为给定类别生成稳定的预测，而是为同一类别生成不同的预测。这种过度拟合问题的示例如下图所示。</p>
+<p><img src="/2023/01/19/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%88%86%E7%B1%BB%E7%9A%84%E8%AF%84%E4%BC%B0/1723KFsOjFzxD9srFV7qEpA.png" alt="Figure 3: An Example of a model suffering from an Overfitting Problem"></p>
+<h2 id="学习曲线learning-curves-诊断"><a class="markdownIt-Anchor" href="#学习曲线learning-curves-诊断"></a> 学习曲线（<strong>Learning Curves</strong>， 诊断）</h2>
+<p>既然您知道什么是高偏差和高方差问题，您可能想知道如何才能发现模型存在哪个问题。在示例中的二维数据中，我们可以很容易地通过绘制数据和分类器的决策边界来肉眼看到，但是，当数据是多维时，这样做是不可行的。因此，需要一种通用的诊断方法来找到确切的问题。学习曲线就是这样一种标准，可以用来找出问题的类型。更具体地说，我们绘制了从训练集中随机抽取的一组数据实例的目标函数值。然后我们迭代地增加样本数量，并不断绘制新数据样本集的目标函数值。这为我们提供了模型在训练集上的行为方式的曲线。除了训练集，我们还使用交叉验证集来验证性能。除了训练测试拆分之外，我们还创建了一个单独的数据拆分，并将其称为交叉验证集。然后在训练阶段执行所有参数调整和评估，并与该交叉验证集进行比较。我们也重复上述绘制交叉验证集学习曲线的过程。这种学习曲线的示例结果如图 4 所示。</p>
+<p><img src="/2023/01/19/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%88%86%E7%B1%BB%E7%9A%84%E8%AF%84%E4%BC%B0/1FIbf-9YyI2oJzYF9L9L1FQ.png" alt="Figure 4: An Example of Learning Curves for Underfitting, Overfitting and Best Fitting respectively "></p>
+<p>如果我们观察学习曲线，我们将看到当两条曲线（即 Jₜ 和 Jcᵥ）不收敛时，我们遇到了欠拟合问题，这意味着模型没有学到任何东西并且不会在训练中准确分类和测试数据。然而，当我们看到训练数据上的曲线 Jₜ 显示出明显的收敛而交叉验证集 (Jcᵥ) 的曲线显示出发散时，我们就会遇到过拟合问题。训练集和交叉验证集的最终成本值之间的差距越大，模型遭受过度拟合问题的可能性就越大，并且它对新示例的作用比对已有示例的作用更大受过训练。在最佳拟合的情况下，两条曲线都会收敛，这表明模型是平衡的，并且对训练和测试示例都适用。需要注意的是，在复杂的数据集中，两条曲线可能不会收敛到绝对零，并且两条曲线之间可能会有一个小的差距，但是，这不会是一个显着的差距，并且与绝对收敛点的距离不应该是太多了。</p>
+<h1 id="解决方案"><a class="markdownIt-Anchor" href="#解决方案"></a> 解决方案</h1>
+<h2 id="使用更好的数据"><a class="markdownIt-Anchor" href="#使用更好的数据"></a> 使用更好的数据</h2>
+<p>构建机器学习模型时的大多数问题都源于不良数据。如果数据集太小、噪音太大和/或包含矛盾/误导性数据点，那么最好的做法是找到更好的数据。与其他类相比，不平衡且某个类的实例较少的数据集也会导致过度拟合问题。在出现过度拟合问题的情况下，如果问题是由于缺乏数据引起的，则增加数据的大小可以解决问题。如果问题是由于数据不平衡引起的，则对数据进行规范化和分层也会有所帮助。</p>
+<h2 id="正则化"><a class="markdownIt-Anchor" href="#正则化"></a> 正则化</h2>
+<p>处理过拟合问题的一种方法是在目标函数中引入正则化项，这将使约束条件放松一些，从而适应数据的可变性。更具体地说，我们可以在目标函数中增加一个项（例如，权重的L1/L2准则），这将导致对训练集中由于噪声而出现的轻微偏差点的惩罚减少。在下图中可以看到这种正则化的一个例子。</p>
+<p><img src="/2023/01/19/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%88%86%E7%B1%BB%E7%9A%84%E8%AF%84%E4%BC%B0/1lp6Y37sEHzk8buy7Zgnk0w.png" alt="Figure 5: An Example of Effect of using Regularization for solving Overfitting problem"></p>
+<p>如果我们观察正则化对分类边界的影响，我们会注意到它扩大了分类边界，从而允许容纳噪声点，否则这些点会因决策边界狭窄而被错误分类。然而，这可能会以降低训练集的性能为代价，如图上 所示。因此，这是一个选择问题，由参数 Lambda 控制该参数决定了在构建分类器时要给正则化项多少权重。在保持数据大小不变的情况下，通过绘制训练集和交叉验证集的学习曲线与Lambda参数的变化，也可以了解Lambda的最佳值。</p>
+<h2 id="构建更好的特征空间"><a class="markdownIt-Anchor" href="#构建更好的特征空间"></a> 构建更好的特征空间</h2>
+<p>在有些情况下，问题的产生是由于不良/不充分的特征空间。在这种情况下，我们必须构建一个更好的特征空间。例如，如果出现欠拟合的问题，如我们前面描述的问题（即非线性数据集上的线性分类器），就必须增加特征的数量和类型。我们可以在图3中看到增加更多特征（即三次多项式模型）的结果。该模型在对训练集进行分类时变得很好，因此，解决了欠拟合的问题。然而，我们也看到，它开始受到过拟合问题的困扰，对某些数据样本来说，变得过于局限。我们在前面的章节中也讨论了如何缓解过拟合问题。然而，在某些情况下，简单地改变特征空间到一个更合适的特征空间，可以大幅提高性能，并可以提供一个更通用的模型，甚至对未见过的数据也能稳健地工作。如果我们仔细观察数据，我们应该看到它是一个重复的模式，我们可以用谐波分类器为它建模。事实上，如果我们用一个谐波分类器（例如正弦波）来建模，我们可以得到一个对任何新样本都有效的模型，从而为我们提供一个通用的解决方案。图6中显示了一个在数据上拟合的谐波分类器的例子。正如我们所看到的，它不仅只用一个周期来学习和分类训练集，而且对任何数量的周期都是稳健的。</p>
+<p><img src="/2023/01/19/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%88%86%E7%B1%BB%E7%9A%84%E8%AF%84%E4%BC%B0/1hk0EUwO18bvNsWHvA8DzIg.png" alt="img"></p>
+<h1 id="性能指标"><a class="markdownIt-Anchor" href="#性能指标"></a> 性能指标</h1>
+<p><img src="/2023/01/19/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%88%86%E7%B1%BB%E7%9A%84%E8%AF%84%E4%BC%B0/1yg-heoGpvawX135W0hKHgg.png" alt="img"></p>
+<p>一旦训练了分类器，就需要一种衡量标准来确定分类性能有多好。可以有多种指标可用于此类性能评估。准确性是许多任务的常用指标。但是，当数据集不平衡时，这是一个不好的指标。如果数据集只有某个类的几个实例，则准确性将高度偏向多数类。在这种情况下，必须使用不同的指标。如上图所示，我们通过计算分类标签的频率构建了一组指标，例如真阳性率 (TPR) 和假阳性率 (FPR)。 TPR（召回率/灵敏度）衡量分类器对正类（即第 1 类）的预测精度，FPR 衡量分类器对负类（即第 0 类）的预测性能。在高召回率/TPR 和低 FPR 之间总是存在权衡。例如，如果我们以对象检测器/分类器为例，那么 TPR 会告诉我们检测器在显示的对象中正确找到对象的频率，而 FPR 会测量在没有对象时错误检测到对象的频率现场。</p>
+<p>此外，分类器的性能在很大程度上取决于用于将点分类为类别的概率的阈值。例如，在二元分类器的情况下，我们可以对输出概率使用阈值（例如 0.5），并根据输出概率的值将点分类为 0 类或 1 类。然而，0.5 是一个任意值，并且在不同的分类场景中有所不同。因此，为了找到最佳阈值——分类器性能达到最大值的阈值，可以将阈值从 0 变为 1 并观察性能指标（例如 TPR、FPR 等）。此过程称为接受者操作特征分析 (ROC)，通过绘制 ROC 曲线来执行。通过在改变分类器的阈值的同时绘制 FPR 与 TPR 的关系来获得 ROC 曲线。这种曲线下的面积提供了性能的衡量标准（即，面积越大，分类性能越好）。无技能分类器（即返回随机类或常量类作为预测输出的分类器）被绘制为对角线。任何接近无技能分类器的输出曲线都被认为是没有分类能力的坏分类器。一个完美的分类器由左上角的方形曲线表示。此类 ROC 曲线的示例输出如下图所示。</p>
+<p><img src="/2023/01/19/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%88%86%E7%B1%BB%E7%9A%84%E8%AF%84%E4%BC%B0/1-yt12nC3-4ODOecjv--ltg.png" alt="img"></p>
+<p>除了 ROC 曲线之外，还有另一个指标称为“Precision-Recall”曲线。它是通过绘制 TPR 与 Precision/PPV（阳性预测值）的对比图获得的。精度衡量分类的正确性。如果我们使用之前的对象检测类比，那么精度衡量的是分类器将对象正确分类到它检测到的对象中的频率。与 TPR vs FPR 相同，TPR 和 Precision 之间存在权衡。高 TPR 可能会以精度损失为代价。 Precision-Recall 曲线对于不平衡数据特别有用。 Precision-Recall 的解释类似于 ROC 曲线，但是，完美的分类器性能位于右上角，No-Skill 分类器（例如多数分类器或随机分类器）显示为 0.5 附近的一条平线。</p>
+]]></content>
+      <categories>
+        <category>机器学习</category>
+      </categories>
+      <tags>
+        <tag>towardsdatascience</tag>
+        <tag>模型评估</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>科研项目技术路线图绘制方法</title>
+    <url>/2017/07/27/%E7%A7%91%E7%A0%94%E9%A1%B9%E7%9B%AE%E6%8A%80%E6%9C%AF%E8%B7%AF%E7%BA%BF%E5%9B%BE%E7%BB%98%E5%88%B6%E6%96%B9%E6%B3%95/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><blockquote>
+<p>注：本文主要是汇集科学网<a href="http://blog.sciencenet.cn/blog-91591-489613.html" title="学术论文中流程图与系统结构图的绘制原则与方法">化柏林</a>、<a href="https://book.douban.com/subject/2986663/" title="曾路,孙永明 .  产业技术路线图原理与制定[M].广东: 华南理工大学出版社,2007">曾路</a>等前辈以及网友的经验，在此表示感谢！</p>
+</blockquote>
+<p>技术路线图是以图形或表格的形式来表达一个高水准的、综合和集成的战略规划。</p>
+<h1 id="技术路线图的结构"><a class="markdownIt-Anchor" href="#技术路线图的结构"></a> 技术路线图的结构</h1>
+<p>以下内容主要参考曾路等编著的《产业技术路线图原理与制定》<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup>一书部分内容</p>
+<p>技术路线图是以图形或表格的形式来表达一个高水准的、综合的、集成的战略规划与未来前景，其基本结构形式是基于时间的多层表，反映了各要素的组成及其战略功能的实现方式。</p>
+<p><img src="/2017/07/27/%E7%A7%91%E7%A0%94%E9%A1%B9%E7%9B%AE%E6%8A%80%E6%9C%AF%E8%B7%AF%E7%BA%BF%E5%9B%BE%E7%BB%98%E5%88%B6%E6%96%B9%E6%B3%95/%E5%9B%BE11-1.jpg" alt="图11-1"></p>
+<p>虽然技术路线图可以采用不同的形式，但是它们都是为了回答三个简单的问题：①我们去向何方？②我们处于何种状态？③我们如何达到目的？</p>
+<p>多层路线图格式可以概括性地阐述一定范围的层和亚层标题下的战略主题。可以标识三个宽层（集成子层主题），该格式能够形成集成方法，并应用于不同技术。</p>
+<ol>
+<li>技术路线图顶层是关于组织期望的目的（知道为什么），以及目的的影响因素（趋势和驱动因素）。通常，在公司层面上，该路线图层包括外部和内部期望（市场和商业需求）。</li>
+<li>路线图的中间层是关于通过什么原理实现目的。通常，在公司层面上，该路线图层包括产品、服务和运作，反映实际的“知道是什么”，直接与业务内容相关。</li>
+<li>路线图的底层是包括技术在内的相关资源，通过调配和集成这些资源以开发出将资源转化为产品的转换机制（知道如何实现）。</li>
+</ol>
+<p><img src="/2017/07/27/%E7%A7%91%E7%A0%94%E9%A1%B9%E7%9B%AE%E6%8A%80%E6%9C%AF%E8%B7%AF%E7%BA%BF%E5%9B%BE%E7%BB%98%E5%88%B6%E6%96%B9%E6%B3%95/%E5%9B%BE11-2.jpg" alt="通用的技术路线图形式" title="通用的技术路线图形式"></p>
+<p>归纳起来，技术路线图是技术与市场两方面因素的结合</p>
+<p><img src="/2017/07/27/%E7%A7%91%E7%A0%94%E9%A1%B9%E7%9B%AE%E6%8A%80%E6%9C%AF%E8%B7%AF%E7%BA%BF%E5%9B%BE%E7%BB%98%E5%88%B6%E6%96%B9%E6%B3%95/%E5%9B%BE11-3.jpg" alt="技术路线图的战略集成" title="技术路线图的战略集成"></p>
+<h1 id="技术路线图的类型"><a class="markdownIt-Anchor" href="#技术路线图的类型"></a> 技术路线图的类型</h1>
+<p>路线图可以有各种不同的形式，它们可以归纳为两个大的分类层面：</p>
+<p><img src="/2017/07/27/%E7%A7%91%E7%A0%94%E9%A1%B9%E7%9B%AE%E6%8A%80%E6%9C%AF%E8%B7%AF%E7%BA%BF%E5%9B%BE%E7%BB%98%E5%88%B6%E6%96%B9%E6%B3%95/%E5%9B%BE11-4-1620530754957.jpg" alt="技术路线图的模式" title="技术路线图的模式"></p>
+<h2 id="按目标划分的技术路线图类型"><a class="markdownIt-Anchor" href="#按目标划分的技术路线图类型"></a> 按目标划分的技术路线图类型</h2>
+<h3 id="产品规划"><a class="markdownIt-Anchor" href="#产品规划"></a> 产品规划</h3>
+<p>这是迄今为止最常见的一种技术路线图，它涉及将技术应用于制造的产品，往往涉及不止一代产品。下图所示的是菲利浦公司的一个产品规划路线图，这种方法已经得到广泛应用。</p>
+<p><img src="/2017/07/27/%E7%A7%91%E7%A0%94%E9%A1%B9%E7%9B%AE%E6%8A%80%E6%9C%AF%E8%B7%AF%E7%BA%BF%E5%9B%BE%E7%BB%98%E5%88%B6%E6%96%B9%E6%B3%95/%E5%9B%BE11-5-1620530758059.jpg" alt="产品规划路线图" title="产品规划路线图"></p>
+<h3 id="服务能力规划"><a class="markdownIt-Anchor" href="#服务能力规划"></a> 服务／能力规划</h3>
+<p>这种类型的技术路线图更适用于以服务为基础的企业，它注重的是技术怎样支持组织能力。下图所示的是英国皇家邮政( Royal mall)公司的路线图，基于最初的T-Plan的应用，用来研究技术开发对业务的影响。这个路线图注重组织的能力，将其看作是连接技术和业务（而不是产品）之间的桥梁。</p>
+<p><img src="/2017/07/27/%E7%A7%91%E7%A0%94%E9%A1%B9%E7%9B%AE%E6%8A%80%E6%9C%AF%E8%B7%AF%E7%BA%BF%E5%9B%BE%E7%BB%98%E5%88%B6%E6%96%B9%E6%B3%95/%E5%9B%BE11-6-1620530760530.jpg" alt="服务／能力规划路线图" title="服务／能力规划路线图"></p>
+<h3 id="战略规划"><a class="markdownIt-Anchor" href="#战略规划"></a> 战略规划</h3>
+<p>这种类型的技术路线图适用于一般的战略评估，它支持不同机遇或风险的评估，通常是业务层次的评估。下图所示的是利用T-Plan来支持战略业务规划。这种路线图注重未来业务前景的设计，包括市场、业务、产品、技术、技能、文化等，通过未来前景与目前形势的比较来发现差距，并探索适当的战略来弥补这种差距。</p>
+<p><img src="/2017/07/27/%E7%A7%91%E7%A0%94%E9%A1%B9%E7%9B%AE%E6%8A%80%E6%9C%AF%E8%B7%AF%E7%BA%BF%E5%9B%BE%E7%BB%98%E5%88%B6%E6%96%B9%E6%B3%95/%E5%9B%BE11-7-1620530763913.jpg" alt="战略规划路线图" title="战略规划路线图"></p>
+<h3 id="长期规划"><a class="markdownIt-Anchor" href="#长期规划"></a> 长期规划</h3>
+<p>这种类型的路线图用于支持长期规划，可以扩大规划的视野。这类路线图往往在部门或国家层次执行（前瞻），而且可以成为一个组织的“雷达”，用以识别潜在的破坏性技术 和市场。下图所示的美国集成制造技术路线图，它注重信息系统，它说明技术开发会怎样汇聚成“信息推动的严密的企业”——“天然的金块或者理想目标”。</p>
+<p><img src="/2017/07/27/%E7%A7%91%E7%A0%94%E9%A1%B9%E7%9B%AE%E6%8A%80%E6%9C%AF%E8%B7%AF%E7%BA%BF%E5%9B%BE%E7%BB%98%E5%88%B6%E6%96%B9%E6%B3%95/%E5%9B%BE11-8-1620530860361.jpg" alt="长期规划路线图" title="长期规划路线图"></p>
+<h3 id="知识产权规划"><a class="markdownIt-Anchor" href="#知识产权规划"></a> 知识产权规划</h3>
+<p>这种类型的路线图使知识产权和知识管理计划与企业的目标协调一致。下图所示的是爱丁堡大学人工智能应用部制定的路线图，使这些组织可以看到自己所拥有的关键的知识产权，以及这些知识产权与技能、技术和满足未来市场需要所需的能力之间的联系。</p>
+<p><img src="/2017/07/27/%E7%A7%91%E7%A0%94%E9%A1%B9%E7%9B%AE%E6%8A%80%E6%9C%AF%E8%B7%AF%E7%BA%BF%E5%9B%BE%E7%BB%98%E5%88%B6%E6%96%B9%E6%B3%95/%E5%9B%BE11-9-1620530859603.jpg" alt="知识产权规划路线图" title="知识产权规划路线图"></p>
+<h3 id="项目规划"><a class="markdownIt-Anchor" href="#项目规划"></a> 项目规划</h3>
+<p>这种类型的路线图注重战略的实施，而且与项目规划（如研发项目）有着比较直接的关联。下图所示的是美国国家航空航天局“起源”计划中的一个路线图，其目的是探索宇宙和宇宙中的生命是怎样发展的。这个特殊的路线图注重下一代天文望远镜开发计划的管理，它说明了技术开发与项目阶段和重要转折点之间的关系。</p>
+<p><img src="/2017/07/27/%E7%A7%91%E7%A0%94%E9%A1%B9%E7%9B%AE%E6%8A%80%E6%9C%AF%E8%B7%AF%E7%BA%BF%E5%9B%BE%E7%BB%98%E5%88%B6%E6%96%B9%E6%B3%95/%E5%9B%BE11-10-1620530858661.jpg" alt="项目规划路线图" title="项目规划路线图"></p>
+<h3 id="过程规划"><a class="markdownIt-Anchor" href="#过程规划"></a> 过程规划</h3>
+<p>这种类型的路线图可以支持知识的管理，因而强调某一个特定的过程领域（如新产品开发）。下图所示的是利用T-Plan制定的支持产品规划的路线图，它强调的是促进有效的新产品开发与采用所需知识的流动，同时融合了技术和商业观点。</p>
+<p><img src="/2017/07/27/%E7%A7%91%E7%A0%94%E9%A1%B9%E7%9B%AE%E6%8A%80%E6%9C%AF%E8%B7%AF%E7%BA%BF%E5%9B%BE%E7%BB%98%E5%88%B6%E6%96%B9%E6%B3%95/%E5%9B%BE11-11-1620530855991.jpg" alt="过程规划路线图" title="过程规划路线图"></p>
+<h3 id="综合规划"><a class="markdownIt-Anchor" href="#综合规划"></a> 综合规划</h3>
+<p>这种类型的路线图注重技术的整合与（或）演变，涉及不同的技术怎样在产品和系统内部结合，或者怎样形成新技术（往往没有明确表示时间维度）。下图所示的是美国国家航空航天局的一个路线图，它与下一代天文望远镜开发计划的管理有关，它注重技术流动，说明技术怎样进入测试和验证系统以利于科学使命的完成。</p>
+<p><img src="/2017/07/27/%E7%A7%91%E7%A0%94%E9%A1%B9%E7%9B%AE%E6%8A%80%E6%9C%AF%E8%B7%AF%E7%BA%BF%E5%9B%BE%E7%BB%98%E5%88%B6%E6%96%B9%E6%B3%95/%E5%9B%BE11-12-1620530854834.jpg" alt="综合规划路线图" title="综合规划路线图"></p>
+<h2 id="按格式划分的技术路线图类型"><a class="markdownIt-Anchor" href="#按格式划分的技术路线图类型"></a> 按格式划分的技术路线图类型</h2>
+<h3 id="多层次型"><a class="markdownIt-Anchor" href="#多层次型"></a> 多层次型</h3>
+<p>这是技术路线图中一种最常见的格式，有许多层次，包括子层次或者亚层次，如技术、产品和市场。这种技术路线图可以用来研究每一个层次内部的演变以及各层次之间的相互依赖，它有助于促进技术与产品、服务和商业系统的融合。下图所示的是飞利浦公司的一个路线图，它有助于产品和工艺与未来产品功能的开发相结合。</p>
+<p><img src="/2017/07/27/%E7%A7%91%E7%A0%94%E9%A1%B9%E7%9B%AE%E6%8A%80%E6%9C%AF%E8%B7%AF%E7%BA%BF%E5%9B%BE%E7%BB%98%E5%88%B6%E6%96%B9%E6%B3%95/%E5%9B%BE11-13-1620530852024.jpg" alt="多层次型技术路线图" title="多层次型技术路线图"></p>
+<h3 id="条型"><a class="markdownIt-Anchor" href="#条型"></a> 条型</h3>
+<p>许多技术路线图用每个层次或子层次的一组条形图表示。这种图的优点是可以简化和统一所需的产出，便于促进交流和有助于路线图制定软件的开发。下图所示的是摩托罗拉公司的一个路线图，它与汽车无线电产品的特征和技术有关。</p>
+<p><img src="/2017/07/27/%E7%A7%91%E7%A0%94%E9%A1%B9%E7%9B%AE%E6%8A%80%E6%9C%AF%E8%B7%AF%E7%BA%BF%E5%9B%BE%E7%BB%98%E5%88%B6%E6%96%B9%E6%B3%95/%E5%9B%BE11-14-1620530851091.jpg" alt="条形规划路线图" title="条形规划路线图"></p>
+<h3 id="表格型"><a class="markdownIt-Anchor" href="#表格型"></a> 表格型</h3>
+<p>在某些情况下，整个技术路线图或技术路线图中的各个层次用表格来表示。这种类型的路线图尤其适于绩效容易量化的情况，或者各种活动集中在某些特定的时间段发生的情况。下图所示的是一个表格型的路线图，它既包括产品维度，也包括技术绩效维度。</p>
+<p><img src="/2017/07/27/%E7%A7%91%E7%A0%94%E9%A1%B9%E7%9B%AE%E6%8A%80%E6%9C%AF%E8%B7%AF%E7%BA%BF%E5%9B%BE%E7%BB%98%E5%88%B6%E6%96%B9%E6%B3%95/%E5%9B%BE11-15-1620530849416.jpg" alt="./科研项目技术路线图绘制方法/表格型技术路线图" title="表格型技术路线图"></p>
+<h3 id="图解型"><a class="markdownIt-Anchor" href="#图解型"></a> 图解型</h3>
+<p>在产品或技术绩效可以量化的情况下，技术路线图就可以用简单的图来表示，通常每个子层次用一个图表示。这种类型的图有时被称之为经验曲线，它与技术的S曲线有密切的关系。图1-20说明了产品和技术是怎样共同演变的。</p>
+<h3 id="绘画型"><a class="markdownIt-Anchor" href="#绘画型"></a> 绘画型</h3>
+<p>有些技术路线图利用比较有创造性的绘画来交流技术整合情况和计划，利用一些隐喻来支持要实现的目标（如树型）。下图所示的是夏普（Sharp）公司的一个技术路线图，它与产品和系列产品的开发有关，其基础是一系列液晶显示技术。</p>
+<p><img src="/2017/07/27/%E7%A7%91%E7%A0%94%E9%A1%B9%E7%9B%AE%E6%8A%80%E6%9C%AF%E8%B7%AF%E7%BA%BF%E5%9B%BE%E7%BB%98%E5%88%B6%E6%96%B9%E6%B3%95/%E5%9B%BE11-17-1620530840301.jpg" alt="绘画型（树型）规划路线图" title="绘画型（树型）规划路线图"></p>
+<h3 id="流程图"><a class="markdownIt-Anchor" href="#流程图"></a> 流程图</h3>
+<p>绘画型技术路线图的一种特殊类型是流程图，它一般用来把目标、行动和结果联系起来。图1-22所示的是美国国家航空航天局的一个路线图，它说明了组织的远景设想可以与其使命、基本的科学问题、主要的商业领域、近中远期目标以及对美国国家优先任务的贡献联系起来。</p>
+<p><img src="/2017/07/27/%E7%A7%91%E7%A0%94%E9%A1%B9%E7%9B%AE%E6%8A%80%E6%9C%AF%E8%B7%AF%E7%BA%BF%E5%9B%BE%E7%BB%98%E5%88%B6%E6%96%B9%E6%B3%95/%E5%9B%BE11-18-1620530837593.jpg" alt="流程图式技术路线图" title="流程图式技术路线图"></p>
+<h3 id="单层次型"><a class="markdownIt-Anchor" href="#单层次型"></a> 单层次型</h3>
+<p>这种类型的技术路线图是多层次型的一部分，它的重点是多层次路线图中的一个层次。这种类型的路线图尽管不太复杂，但它也有缺点，即通常不能表现出各层次之间的关联。摩托罗拉的路线图是单层次路线图的一个例子，它重点强调了与产品及其特征相关的技术演变（其他的文献支持了路线图矩阵，而且可以利用软件将路线图的各个层次联系起来）。</p>
+<h3 id="文本型"><a class="markdownIt-Anchor" href="#文本型"></a> 文本型</h3>
+<p>有些技术路线图完全或多数是文本，描述的是较常见的技术路线图中所包括的内容（往往附于文本报告内）。大卫·普罗贝所观察到的技术路线图有上述多种格式类型，部分归因于缺乏关于其构成的、明确的和公认的标准或协议。不过，人们认为，这也说明了需要从商业目标、信息的现有来源，以及可利用的资源和预期的用途等方面对方法进行调整，以便适应具体情况。路线图并不总是完全符合上述的某个类型，就目的和格式而言，技术路线图可能会包括多种类型中的要素，因而形成混合型。</p>
+<p>最常见的一种表现形式为多层式产品技术路线图，下图所示。该路线图强调“市场拉动”作用，产品开发必须满足“市场需求”并以此为驱动力实现资源整合与技术集成。</p>
+<p><img src="/2017/07/27/%E7%A7%91%E7%A0%94%E9%A1%B9%E7%9B%AE%E6%8A%80%E6%9C%AF%E8%B7%AF%E7%BA%BF%E5%9B%BE%E7%BB%98%E5%88%B6%E6%96%B9%E6%B3%95/%E5%9B%BE11-19-1620530833556.jpg" alt="多层式产品技术路线图" title="多层式产品技术路线图"></p>
+<p>在充分了解技术路线图的格式以及制定路线图的目的后，选择产业自身发展需要的路线图形式，可以参考样板，也可以自主开发。</p>
+<h1 id="技术路线图的的步骤"><a class="markdownIt-Anchor" href="#技术路线图的的步骤"></a> 技术路线图的的步骤</h1>
+<h2 id="选择技术路线图类型"><a class="markdownIt-Anchor" href="#选择技术路线图类型"></a> 选择技术路线图类型</h2>
+<p>产业技术路线图的制定代表一种有效的集成方法，包括支持技术、管理和规划的集成。在充分了解技术路线图的格式以及制定路线图的目的后，选择产业自身发展需要的路线图形式，可以参考样板，也可以自主开发。</p>
+<p><img src="/2017/07/27/%E7%A7%91%E7%A0%94%E9%A1%B9%E7%9B%AE%E6%8A%80%E6%9C%AF%E8%B7%AF%E7%BA%BF%E5%9B%BE%E7%BB%98%E5%88%B6%E6%96%B9%E6%B3%95/%E5%9B%BE11-20-1620530831794.jpg" alt="技术路线图类型" title="技术路线图类型"></p>
+<h2 id="绘制技术路线图步骤"><a class="markdownIt-Anchor" href="#绘制技术路线图步骤"></a> 绘制技术路线图步骤</h2>
+<h3 id="绘制研发需求技术路线图"><a class="markdownIt-Anchor" href="#绘制研发需求技术路线图"></a> 绘制研发需求技术路线图</h3>
+<p>根据各种研发需求并依据时间节点（近期、中期和长期）进行分组，在各种研发需求之间建立有效的连接。如下图所示，可以预测出研发结果，也可以明确地显示出政府资助、产业开发和企业研究的优先顺序。</p>
+<p><img src="/2017/07/27/%E7%A7%91%E7%A0%94%E9%A1%B9%E7%9B%AE%E6%8A%80%E6%9C%AF%E8%B7%AF%E7%BA%BF%E5%9B%BE%E7%BB%98%E5%88%B6%E6%96%B9%E6%B3%95/%E5%9B%BE11-21-1620530829463.jpg" alt="研发需求技术路线图" title="研发需求技术路线图"></p>
+<p>在绘制研发需求技术路线图的过程中，要在每个项目标注上专家判定的优先级别，并对不同时间范畴的研发需求作出判断，以便为各个层面的研发投入提供指引。如果项目间存在关联关系，还可建立不同层面研发需求之间的关联关系，并标识出来</p>
+<h3 id="绘制优先研发需求技术路线图"><a class="markdownIt-Anchor" href="#绘制优先研发需求技术路线图"></a> 绘制优先研发需求技术路线图</h3>
+<p>优先研发需求项目往往是制约产业发展的最关键的技术壁垒，认真研究其攻关过程中可能存在的风险、利润影响因素和研发时间节点，有利于各研发主体在决策时高度关注这些问题，以便更有效地开展科研组织工作。</p>
+<p><img src="/2017/07/27/%E7%A7%91%E7%A0%94%E9%A1%B9%E7%9B%AE%E6%8A%80%E6%9C%AF%E8%B7%AF%E7%BA%BF%E5%9B%BE%E7%BB%98%E5%88%B6%E6%96%B9%E6%B3%95/%E5%9B%BE11-22-1620530826907.jpg" alt="优先研发需求技术路线图格式" title="优先研发需求技术路线图格式"></p>
+<h3 id="绘制优先研发需求风险-利润路线图"><a class="markdownIt-Anchor" href="#绘制优先研发需求风险-利润路线图"></a> 绘制优先研发需求风险-利润路线图</h3>
+<p>将筛选出的优先研发需求项目置于以风险程度为横轴、以利润率为纵轴的坐标系。通过该坐标系，可以看到每一个优先项目与风险和利润间的相关程度，为科技主管部门或者产业联盟领导在项目立项、科研经费的投入等方面作出科学判断提供依据。</p>
+<p><img src="/2017/07/27/%E7%A7%91%E7%A0%94%E9%A1%B9%E7%9B%AE%E6%8A%80%E6%9C%AF%E8%B7%AF%E7%BA%BF%E5%9B%BE%E7%BB%98%E5%88%B6%E6%96%B9%E6%B3%95/%E5%9B%BE11-23-1620530824440.jpg" alt="优先研发需求风险-利润路线图的格式" title="优先研发需求风险-利润路线图的格式"></p>
+<p>在绘制风险路线图的过程中，要对每个项目标注上专家判定的优先级别。</p>
+<h3 id="绘制技术发展模式路线图"><a class="markdownIt-Anchor" href="#绘制技术发展模式路线图"></a> 绘制技术发展模式路线图</h3>
+<p>将筛选出的优先研发需求项目按技术发展模式分为自主研发、技术合作、技术引进等三种模式，并在项目注释表的备注栏中分别标明国外已解决、国外可能先解决、国外仍然未解决等情况。在国外已解决的关键技术上要标注出国别及其技术成熟程度；国外可能先解决的问题，要预测和标注出解决的时间节点；国外仍然未解决的问题，也要标注出解决的时间节点和可能的机构组织，以便今后跟踪国际先进技术发展的趋势。</p>
+<p><img src="/2017/07/27/%E7%A7%91%E7%A0%94%E9%A1%B9%E7%9B%AE%E6%8A%80%E6%9C%AF%E8%B7%AF%E7%BA%BF%E5%9B%BE%E7%BB%98%E5%88%B6%E6%96%B9%E6%B3%95/%E5%9B%BE11-24-1620530822167.jpg" alt="技术发展模式路线图的格式" title="技术发展模式路线图的格式"></p>
+<h3 id="绘制综合技术路线图"><a class="markdownIt-Anchor" href="#绘制综合技术路线图"></a> 绘制综合技术路线图</h3>
+<p>在可能的情况下，将几张技术路线图综合起来，绘制出综合技术路线图，并且与资源等要素有机地链接起来，以便能够了解产业技术路线图的全貌。链接过程中要注意技术的整合与演变。</p>
+<h3 id="完成技术路线图报告"><a class="markdownIt-Anchor" href="#完成技术路线图报告"></a> 完成技术路线图报告</h3>
+<p>在绘制完成技术路线图后，总结产业技术路线图的整个绘制过程，尤其是完成过程中所收集到的资料、运用的方法、制定的组织机制等，按照要求，完成产业技术路线图报告。</p>
+<h1 id="绘制图形的原则"><a class="markdownIt-Anchor" href="#绘制图形的原则"></a> <strong>绘制图形的原则</strong></h1>
+<ol>
+<li>图类同图，异类异图。同类型的图框用同一种符号表示，不同类型的图框用不同的符号表示，数据、流程、工具、方法等需要区分；</li>
+<li>整齐划一。同类型的图框大小尽量统一，均匀分布，并且能够对齐，我一般使用绘图工具里的居中对齐，纵（横）向分布；</li>
+<li>居中优先。文字字体统一，大小一致，居中显示</li>
+<li>—箭指中间。箭头指向框图的中间</li>
+<li>大字串联。绘图的逻辑用大号字体串联。</li>
+</ol>
+<h1 id="绘制图形的快速技巧"><a class="markdownIt-Anchor" href="#绘制图形的快速技巧"></a> <strong>绘制图形的快速技巧</strong></h1>
+<p>绘画需要花很多的时间，所以如何快带绘图是我们需要考虑的一个问题。对于提高绘图速度，我一般使用以下方法：</p>
+<ol>
+<li><strong>先调格式后复制</strong>。充分运用Ctrl+C和Ctrl+V，同一类型的图框应先把格式调好（如字体、居中、文本框上下左右边距等）以后，再复制。</li>
+<li><strong>定好首尾用分布</strong>。同样类型的框图再复制好以后，更改里面的内容文字，把第一个框图和最后一个框图的位置确定好，然后使用自动排列功能，包括横纵向分布与对齐等。箭头等符号也是一样。一般的图形几分钟就能画好了。</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th style="text-align:center"><img src="/2017/07/27/%E7%A7%91%E7%A0%94%E9%A1%B9%E7%9B%AE%E6%8A%80%E6%9C%AF%E8%B7%AF%E7%BA%BF%E5%9B%BE%E7%BB%98%E5%88%B6%E6%96%B9%E6%B3%95/%E5%9B%BE1-1620530810556.jpg" alt="基于NLP的知识抽取系统架构图" title="基于NLP的知识抽取系统架构图"></th>
+<th style="text-align:center"><img src="/2017/07/27/%E7%A7%91%E7%A0%94%E9%A1%B9%E7%9B%AE%E6%8A%80%E6%9C%AF%E8%B7%AF%E7%BA%BF%E5%9B%BE%E7%BB%98%E5%88%B6%E6%96%B9%E6%B3%95/%E5%9B%BE2-1620530812922.jpg" alt="文献计量分析研究的处理流程" title="文献计量分析研究的处理流程"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">(a)<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup></td>
+<td style="text-align:center">(b)<sup class="footnote-ref"><a href="#fn3" id="fnref3">[3]</a></sup></td>
+</tr>
+<tr>
+<td style="text-align:center"><img src="/2017/07/27/%E7%A7%91%E7%A0%94%E9%A1%B9%E7%9B%AE%E6%8A%80%E6%9C%AF%E8%B7%AF%E7%BA%BF%E5%9B%BE%E7%BB%98%E5%88%B6%E6%96%B9%E6%B3%95/%E5%9B%BE3-1620530808538.jpg" alt="基于情报转化模型的科技情报工作实例图3" title="基于情报转化模型的科技情报工作实例图"></td>
+<td style="text-align:center"><img src="/2017/07/27/%E7%A7%91%E7%A0%94%E9%A1%B9%E7%9B%AE%E6%8A%80%E6%9C%AF%E8%B7%AF%E7%BA%BF%E5%9B%BE%E7%BB%98%E5%88%B6%E6%96%B9%E6%B3%95/%E5%9B%BE4-1620530815375.jpg" alt="基于IPO的搜索引擎发展趋势图" title="基于IPO的搜索引擎发展趋势图"></td>
+</tr>
+<tr>
+<td style="text-align:center">©<sup class="footnote-ref"><a href="#fn4" id="fnref4">[4]</a></sup></td>
+<td style="text-align:center">(d)<sup class="footnote-ref"><a href="#fn5" id="fnref5">[5]</a></sup></td>
+</tr>
+</tbody>
+</table>
+<h1 id="课题技术路线图示例"><a class="markdownIt-Anchor" href="#课题技术路线图示例"></a> 课题技术路线图示例</h1>
+<blockquote>
+<p>注：以下示例图来源于<a href="http://www.dxy.cn/bbs/topic/37100532" title="国基各领域技术路线图大全100份！！！绝对HOLD住专家">丁香园</a>。</p>
+</blockquote>
+<h2 id="经典的流程图"><a class="markdownIt-Anchor" href="#经典的流程图"></a> 经典的流程图</h2>
+<p>以各种流程图模块组合表述课题研究方法步骤</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center"><img src="/2017/07/27/%E7%A7%91%E7%A0%94%E9%A1%B9%E7%9B%AE%E6%8A%80%E6%9C%AF%E8%B7%AF%E7%BA%BF%E5%9B%BE%E7%BB%98%E5%88%B6%E6%96%B9%E6%B3%95/%E5%9B%BE5-1-1620530804305.jpg" alt="流程图模块组合" title="流程图模块组合_示例1"></th>
+<th style="text-align:center"><img src="/2017/07/27/%E7%A7%91%E7%A0%94%E9%A1%B9%E7%9B%AE%E6%8A%80%E6%9C%AF%E8%B7%AF%E7%BA%BF%E5%9B%BE%E7%BB%98%E5%88%B6%E6%96%B9%E6%B3%95/%E5%9B%BE5-2-1620530802715.jpg" alt="流程图模块组合" title="流程图模块组合_示例2"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">(a)</td>
+<td style="text-align:center">(b)</td>
+</tr>
+</tbody>
+</table>
+<h2 id="方框线条"><a class="markdownIt-Anchor" href="#方框线条"></a> 方框+线条</h2>
+<p>这类流程图主要用线段+方框的形式，指向性非常明确</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center"><img src="/2017/07/27/%E7%A7%91%E7%A0%94%E9%A1%B9%E7%9B%AE%E6%8A%80%E6%9C%AF%E8%B7%AF%E7%BA%BF%E5%9B%BE%E7%BB%98%E5%88%B6%E6%96%B9%E6%B3%95/%E5%9B%BE6-1-1620530798041.jpg" alt="方框+线条" title="方框+线条_示例1"></th>
+<th style="text-align:center"><img src="/2017/07/27/%E7%A7%91%E7%A0%94%E9%A1%B9%E7%9B%AE%E6%8A%80%E6%9C%AF%E8%B7%AF%E7%BA%BF%E5%9B%BE%E7%BB%98%E5%88%B6%E6%96%B9%E6%B3%95/%E5%9B%BE6-2-1620530800994.jpg" alt="方框+线条" title="方框+线条_示例2"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">(a)</td>
+<td style="text-align:center">(b)</td>
+</tr>
+</tbody>
+</table>
+<h2 id="文字虚实线条"><a class="markdownIt-Anchor" href="#文字虚实线条"></a> 文字+虚实线条</h2>
+<p>这类流程图主要用虚实线条+文字，看起来纯粹，清爽</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center"><img src="/2017/07/27/%E7%A7%91%E7%A0%94%E9%A1%B9%E7%9B%AE%E6%8A%80%E6%9C%AF%E8%B7%AF%E7%BA%BF%E5%9B%BE%E7%BB%98%E5%88%B6%E6%96%B9%E6%B3%95/%E5%9B%BE7-1-1620530786582.jpg" alt="文字+虚实线条" title="文字+虚实线条_示例1"></th>
+<th style="text-align:center"><img src="/2017/07/27/%E7%A7%91%E7%A0%94%E9%A1%B9%E7%9B%AE%E6%8A%80%E6%9C%AF%E8%B7%AF%E7%BA%BF%E5%9B%BE%E7%BB%98%E5%88%B6%E6%96%B9%E6%B3%95/%E5%9B%BE7-2-1620530785068.jpg" alt="文字+虚实线条" title="文字+虚实线条_示例2"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">(a)</td>
+<td style="text-align:center">(b)</td>
+</tr>
+</tbody>
+</table>
+<h2 id="文字方框线条"><a class="markdownIt-Anchor" href="#文字方框线条"></a> 文字+方框+线条</h2>
+<p>这类流程图主要用箭头指向连接文字和方框，文字和方框分别表示不同意义，表述更加明晰</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center"><img src="/2017/07/27/%E7%A7%91%E7%A0%94%E9%A1%B9%E7%9B%AE%E6%8A%80%E6%9C%AF%E8%B7%AF%E7%BA%BF%E5%9B%BE%E7%BB%98%E5%88%B6%E6%96%B9%E6%B3%95/%E5%9B%BE8-1-1620530791652.jpg" alt="文字+方框+线条" title="文字+方框+线条_示例1"></th>
+<th style="text-align:center"><img src="/2017/07/27/%E7%A7%91%E7%A0%94%E9%A1%B9%E7%9B%AE%E6%8A%80%E6%9C%AF%E8%B7%AF%E7%BA%BF%E5%9B%BE%E7%BB%98%E5%88%B6%E6%96%B9%E6%B3%95/%E5%9B%BE8-2-1620530783543.jpg" alt="文字+方框+线条" title="文字+方框+线条_示例2"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">(a)</td>
+<td style="text-align:center">(b)</td>
+</tr>
+</tbody>
+</table>
+<h2 id="方框图形线条"><a class="markdownIt-Anchor" href="#方框图形线条"></a> 方框+图形+线条</h2>
+<p>这类流程图主要用箭头指向连接文字和方框，同时又把相关理论、可能产生的结果等以图形的形式加入到流程图中，能使评审专家更加明确的知道申请人在项目研究中所运用的科学原理和技术手段，有利于形象化地理解申请人的研究思路和具体实现方法。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center"><img src="/2017/07/27/%E7%A7%91%E7%A0%94%E9%A1%B9%E7%9B%AE%E6%8A%80%E6%9C%AF%E8%B7%AF%E7%BA%BF%E5%9B%BE%E7%BB%98%E5%88%B6%E6%96%B9%E6%B3%95/%E5%9B%BE9-1.jpg" alt="方框+线条+线条" title="方框+线条+线条_示例1"></th>
+<th style="text-align:center"><img src="/2017/07/27/%E7%A7%91%E7%A0%94%E9%A1%B9%E7%9B%AE%E6%8A%80%E6%9C%AF%E8%B7%AF%E7%BA%BF%E5%9B%BE%E7%BB%98%E5%88%B6%E6%96%B9%E6%B3%95/%E5%9B%BE9-2.jpg" alt="方框+线条+线条" title="方框+线条+线条_示例2"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">(a)</td>
+<td style="text-align:center">(b)</td>
+</tr>
+<tr>
+<td style="text-align:center"><img src="/2017/07/27/%E7%A7%91%E7%A0%94%E9%A1%B9%E7%9B%AE%E6%8A%80%E6%9C%AF%E8%B7%AF%E7%BA%BF%E5%9B%BE%E7%BB%98%E5%88%B6%E6%96%B9%E6%B3%95/%E5%9B%BE9-3-1620530780511.jpg" alt="方框+线条+线条" title="方框+线条+线条_示例3"></td>
+<td style="text-align:center"><img src="/2017/07/27/%E7%A7%91%E7%A0%94%E9%A1%B9%E7%9B%AE%E6%8A%80%E6%9C%AF%E8%B7%AF%E7%BA%BF%E5%9B%BE%E7%BB%98%E5%88%B6%E6%96%B9%E6%B3%95/%E5%9B%BE9-4-1620530775202.jpg" alt="方框+线条+线条" title="方框+线条+线条_示例4"></td>
+</tr>
+<tr>
+<td style="text-align:center">©</td>
+<td style="text-align:center">(d)</td>
+</tr>
+</tbody>
+</table>
+<h2 id="图形线条"><a class="markdownIt-Anchor" href="#图形线条"></a> 图形+线条</h2>
+<p>这类流程图直接以图形表示所运用原理、结果，用线条表示应用的步骤，配以适当的文字，表述更加形象和直观，但是，由于图形结果的专业性强，对评审专家要求更高，必须是<strong>小同行类型的专家</strong>，否则难以理解申请人的意图，不利于项目申请。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center"><img src="/2017/07/27/%E7%A7%91%E7%A0%94%E9%A1%B9%E7%9B%AE%E6%8A%80%E6%9C%AF%E8%B7%AF%E7%BA%BF%E5%9B%BE%E7%BB%98%E5%88%B6%E6%96%B9%E6%B3%95/%E5%9B%BE10-1-1620530770889.jpg" alt="图形+线条" title="图形+线条_示例1"></th>
+<th style="text-align:center"><img src="/2017/07/27/%E7%A7%91%E7%A0%94%E9%A1%B9%E7%9B%AE%E6%8A%80%E6%9C%AF%E8%B7%AF%E7%BA%BF%E5%9B%BE%E7%BB%98%E5%88%B6%E6%96%B9%E6%B3%95/%E5%9B%BE10-2-1620530768778.jpg" alt="图形+线条" title="图形+线条_示例2"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">(a)</td>
+<td style="text-align:center">(b)</td>
+</tr>
+</tbody>
+</table>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p>曾路,孙永明 .  产业技术路线图原理与制定[M].广东: 华南理工大学出版社,2007 <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn2" class="footnote-item"><p>化柏林.基于NLP的知识抽取系统架构研究[J].现代图书情报技术,2007,10:38-41 <a href="#fnref2" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn3" class="footnote-item"><p>化柏林. 文献计量分析研究的分类与处理流程[J].情报科学，2007，9：1332-1336 <a href="#fnref3" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn4" class="footnote-item"><p>郑彦宁, 化柏林. 关于数据、信息、知识与情报转化关系的探讨[J].情报理论与实践, 2011,7:1-4 <a href="#fnref4" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn5" class="footnote-item"><p>化柏林.从IPO分析未来的搜索引擎[J].情报学报，2006，(1)：351-355 <a href="#fnref5" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
+]]></content>
+      <categories>
+        <category>学术笔记</category>
+        <category>课题申请</category>
+      </categories>
+      <tags>
+        <tag>唐朝生</tag>
+        <tag>技术路线图</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>面向Python的PlotNeuralNet教程</title>
+    <url>/2021/05/10/%E9%9D%A2%E5%90%91Python%E7%9A%84PlotNeuralNet%E6%95%99%E7%A8%8B/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><p>本文参考了<a href="https://blog.csdn.net/bug_with_me/article/details/107138400," title="Windows下使用PlotNeuralNet+latex快速绘制深度学习模型图">不够优秀</a>、<a href="http://www.cxyzjd.com/article/Zhanglw882/115537471," title="使用PlotNeuralNet绘制深度学习网络图">Zhanglw882</a>等人的博文，在此表示感谢！</p>
+<h1 id="入门案例详解"><a class="markdownIt-Anchor" href="#入门案例详解"></a> 入门案例详解</h1>
+<p>该案例是pyexample中的例子，能够通过 bash …/tikzmake.sh test_simple 直接运行出来，</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> sys</span><br><span class="line">sys.path.append(<span class="string">&#x27;../&#x27;</span>)</span><br><span class="line"><span class="comment">#pycore.tikzeng是发布者写的python接口，可以直接调用里面的函数来就行绘图，本博客末尾有解释</span></span><br><span class="line"><span class="keyword">from</span> pycore.tikzeng <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line"><span class="comment">#定义自己的网络图结构</span></span><br><span class="line">arch = [</span><br><span class="line">    <span class="comment"># 前三行是一个初始化的过程，以后写自己的网络图照抄上去就行</span></span><br><span class="line">    to_head( <span class="string">&#x27;..&#x27;</span> ),</span><br><span class="line">    to_cor(),</span><br><span class="line">    to_begin(),</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 网络头部添加图片</span></span><br><span class="line">    to_input(<span class="string">&#x27;img_1.png&#x27;</span>, width=<span class="number">8</span>, height=<span class="number">8</span>),</span><br><span class="line"></span><br><span class="line">    <span class="comment">#添加一个卷积层conv1</span></span><br><span class="line">    to_Conv(<span class="string">&quot;conv1&quot;</span>, <span class="number">512</span>, <span class="number">64</span>, offset=<span class="string">&quot;(0,0,0)&quot;</span>, to=<span class="string">&quot;(0,0,0)&quot;</span>, height=<span class="number">64</span>, depth=<span class="number">64</span>, width=<span class="number">2</span> ),</span><br><span class="line">    <span class="comment">#添加一个池化层pool1</span></span><br><span class="line">    to_Pool(<span class="string">&quot;pool1&quot;</span>, offset=<span class="string">&quot;(0,0,0)&quot;</span>, to=<span class="string">&quot;(conv1-east)&quot;</span>),</span><br><span class="line">    <span class="comment">#添加一个卷积层conv2</span></span><br><span class="line">    to_Conv(<span class="string">&quot;conv2&quot;</span>, <span class="number">128</span>, <span class="number">64</span>, offset=<span class="string">&quot;(1,0,0)&quot;</span>, to=<span class="string">&quot;(pool1-east)&quot;</span>, height=<span class="number">32</span>, depth=<span class="number">32</span>, width=<span class="number">2</span> ),</span><br><span class="line">    <span class="comment">#添加一个连接线，在pool1和conv2之间</span></span><br><span class="line">    to_connection( <span class="string">&quot;pool1&quot;</span>, <span class="string">&quot;conv2&quot;</span>), </span><br><span class="line">    <span class="comment">#添加一个池化层pool2</span></span><br><span class="line">    to_Pool(<span class="string">&quot;pool2&quot;</span>, offset=<span class="string">&quot;(0,0,0)&quot;</span>, to=<span class="string">&quot;(conv2-east)&quot;</span>, height=<span class="number">28</span>, depth=<span class="number">28</span>, width=<span class="number">1</span>),</span><br><span class="line">    <span class="comment">#添加一个softmax层soft1</span></span><br><span class="line">    to_SoftMax(<span class="string">&quot;soft1&quot;</span>, <span class="number">10</span> ,<span class="string">&quot;(3,0,0)&quot;</span>, <span class="string">&quot;(pool1-east)&quot;</span>, caption=<span class="string">&quot;SOFT&quot;</span>  ),</span><br><span class="line">    <span class="comment">#添加一个连接线，在pool2和soft1之间</span></span><br><span class="line">    to_connection(<span class="string">&quot;pool2&quot;</span>, <span class="string">&quot;soft1&quot;</span>), </span><br><span class="line">    <span class="comment">#添加一个 “+” 按钮sum1</span></span><br><span class="line">    to_Sum(<span class="string">&quot;sum1&quot;</span>, offset=<span class="string">&quot;(1.5,0,0)&quot;</span>, to=<span class="string">&quot;(soft1-east)&quot;</span>, radius=<span class="number">2.5</span>, opacity=<span class="number">0.6</span>),</span><br><span class="line">    <span class="comment">#添加一个连接线，在soft1和sum1之间</span></span><br><span class="line">    to_connection(<span class="string">&quot;soft1&quot;</span>, <span class="string">&quot;sum1&quot;</span>),</span><br><span class="line"></span><br><span class="line">    <span class="comment">#结束</span></span><br><span class="line">    to_end()</span><br><span class="line">    ]</span><br><span class="line"></span><br><span class="line"><span class="comment">#后面的东西在自己画图是直接粘贴过去就行</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">main</span>():</span><br><span class="line">    namefile = <span class="built_in">str</span>(sys.argv[<span class="number">0</span>]).split(<span class="string">&#x27;.&#x27;</span>)[<span class="number">0</span>]</span><br><span class="line">    to_generate(arch, namefile + <span class="string">&#x27;.tex&#x27;</span> )</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    main()</span><br></pre></td></tr></table></figure>
+<p>结果如图所示</p>
+<p><img src="/2021/05/10/%E9%9D%A2%E5%90%91Python%E7%9A%84PlotNeuralNet%E6%95%99%E7%A8%8B/demo.png" alt="入门案例"></p>
+<h2 id="添加头部图片"><a class="markdownIt-Anchor" href="#添加头部图片"></a> 添加头部图片</h2>
+<p>使用to_put()函数</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#####################################################################</span></span><br><span class="line"><span class="comment"># 添加输入的图像到网络头部，使用函数to_input</span></span><br><span class="line"><span class="comment"># to_input(pathfile,to=&#x27;(-3,0,0)&#x27;, width=8, height=8, name=&quot;temp&quot;)</span></span><br><span class="line"><span class="comment"># pathfile--输入图片的路径，</span></span><br><span class="line"><span class="comment"># to=&quot;(-3,0,0)&quot;--输入图片的坐标(x,y,z),</span></span><br><span class="line"><span class="comment"># width=16,height=16--图片显示时的宽和高,根据需要自己调节</span></span><br><span class="line"><span class="comment"># name--指名称</span></span><br><span class="line"><span class="comment"># 这行代码紧跟前三行的后面</span></span><br><span class="line"><span class="comment">#####################################################################</span></span><br><span class="line">to_input(<span class="string">&#x27;img_1.png&#x27;</span>,width=<span class="number">8</span>, height=<span class="number">8</span>),</span><br></pre></td></tr></table></figure>
+<h2 id="添加卷积层"><a class="markdownIt-Anchor" href="#添加卷积层"></a> 添加卷积层</h2>
+<p>注意一下，s_filer，n_filer指的是你在图中标注的尺寸大小，width,height, depth指的是在图中图形显示的实际厚、长与深度（宽）。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#####################################################################</span></span><br><span class="line"><span class="comment"># 添加卷积层</span></span><br><span class="line"><span class="comment"># to_Conv(name,s_filer=256,n_filer=64,offset=&quot;(0,0,0)&quot;,to=&quot;(0,0,0)&quot;,width=1,height=40, depth=40, caption=&quot; &quot;)</span></span><br><span class="line"><span class="comment"># name--名称</span></span><br><span class="line"><span class="comment"># s_filer--卷积层图像尺寸</span></span><br><span class="line"><span class="comment"># n_filer--卷积层图像深度(通道数)</span></span><br><span class="line"><span class="comment"># s_filer、n_filer指卷积层结构的参数,并非制图时的尺寸</span></span><br><span class="line"><span class="comment"># offset--与前一层分别在x,y,z方向的距离</span></span><br><span class="line"><span class="comment"># to--在x,y,z方向的坐标，</span></span><br><span class="line"><span class="comment"># offset、to的在后面会深入讲，你可以自己该不同的值试验一下，找规律</span></span><br><span class="line"><span class="comment"># width--制图时的厚度</span></span><br><span class="line"><span class="comment"># height、depth--制图时的长宽</span></span><br><span class="line"><span class="comment"># width、height、depth指在制图时,卷积层的尺寸</span></span><br><span class="line"><span class="comment"># caption--备注信息</span></span><br><span class="line"><span class="comment">#####################################################################</span></span><br><span class="line">to_Conv(<span class="string">&quot;conv1&quot;</span>, <span class="number">512</span>, <span class="number">64</span>, offset=<span class="string">&quot;(0,0,0)&quot;</span>, to=<span class="string">&quot;(0,0,0)&quot;</span>, height=<span class="number">64</span>, depth=<span class="number">64</span>, width=<span class="number">32</span> ),</span><br></pre></td></tr></table></figure>
+<p>效果如图所示</p>
+<p><img src="/2021/05/10/%E9%9D%A2%E5%90%91Python%E7%9A%84PlotNeuralNet%E6%95%99%E7%A8%8B/conv.png" alt="添加卷积层"></p>
+<h2 id="添加池化层"><a class="markdownIt-Anchor" href="#添加池化层"></a> 添加池化层</h2>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#####################################################################</span></span><br><span class="line"><span class="comment"># 添加池化层</span></span><br><span class="line"><span class="comment"># to_Pool(name,offset=&quot;(0,0,0)&quot;,to=&quot;(0,0,0)&quot;,width=1,height=32,depth=32,opacity=0.5,caption=&quot; &quot;)</span></span><br><span class="line"><span class="comment"># 部分参数与卷积层相同</span></span><br><span class="line"><span class="comment"># opacity--透明度,0-1之间</span></span><br><span class="line"><span class="comment"># to=&quot;(conv1-east)&quot;--在con1层的东侧，表示与conv1层相邻，距离为0。</span></span><br><span class="line"><span class="comment">#####################################################################</span></span><br><span class="line">to_Pool(<span class="string">&quot;pool&quot;</span>, offset=<span class="string">&quot;(0,0,0)&quot;</span>,to=<span class="string">&quot;(conv1-east)&quot;</span>,width=<span class="number">1</span>, height=<span class="number">64</span>, depth=<span class="number">64</span>,opacity=<span class="number">0.9</span>),</span><br></pre></td></tr></table></figure>
+<p>效果如下图所示：<br>
+<img src="/2021/05/10/%E9%9D%A2%E5%90%91Python%E7%9A%84PlotNeuralNet%E6%95%99%E7%A8%8B/pool.png" alt="pool1"></p>
+<p>offset、to这两个参数，使用它们可以调整层对应的位置：<br>
+to表示参考坐标，表示x，y，z，to=“(conv1-east)“可以表示在con1层的正东侧(放在平面上理解是右边)，<br>
+通过offset的值设置偏移的距离，to的表示offset所参考坐标位置。比如：offset=”(0,0,0)”,to=“(conv1-east)”</p>
+<p>测试如下代码：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">to_Conv(<span class="string">&quot;conv1&quot;</span>, <span class="number">512</span>, <span class="number">64</span>, offset=<span class="string">&quot;(0,0,0)&quot;</span>, to=<span class="string">&quot;(0,0,0)&quot;</span>, height=<span class="number">64</span>, depth=<span class="number">64</span>, width=<span class="number">2</span> ),</span><br><span class="line">to_Pool(<span class="string">&quot;pool1&quot;</span>, offset=<span class="string">&quot;(0,0,0)&quot;</span>, to=<span class="string">&quot;(conv1-east)&quot;</span>),</span><br><span class="line"></span><br><span class="line">to_Conv(<span class="string">&quot;conv2&quot;</span>, <span class="number">512</span>, <span class="number">64</span>, offset=<span class="string">&quot;(5,0,0)&quot;</span>, to=<span class="string">&quot;(0,0,0)&quot;</span>, height=<span class="number">64</span>, depth=<span class="number">64</span>, width=<span class="number">2</span> ),</span><br><span class="line">to_Pool(<span class="string">&quot;pool2&quot;</span>, offset=<span class="string">&quot;(5,0,0)&quot;</span>, to=<span class="string">&quot;(conv2-east)&quot;</span>),</span><br></pre></td></tr></table></figure>
+<p>这里创建了依次创建了卷积层conv1、池化层pool1、卷积层conv2、池化层pool2。<br>
+pool1在conv1的正东侧，偏移offset为0；<br>
+conv2在位置相对于上一幅图的位置，在X轴方向上偏移了5个单位(水平向右为x的正方向)，即上一幅图pool1的位置是(0，0，0)，故邻接的图片conv2的位置是(5,0,0),相对偏移offset(5，0，0)；<br>
+pool2在conv2的正东侧，x方向上偏移offset为5。如下图所示：</p>
+<p><img src="/2021/05/10/%E9%9D%A2%E5%90%91Python%E7%9A%84PlotNeuralNet%E6%95%99%E7%A8%8B/offset_to.png" alt></p>
+<h2 id="添加层间连接和跳接"><a class="markdownIt-Anchor" href="#添加层间连接和跳接"></a> 添加层间连接和跳接</h2>
+<p>网络中层与层之间的需要用带箭头的线进行连接，用到以下两个函数：</p>
+<ul>
+<li>to_connection()</li>
+<li>to_skip()</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#水平连接，参数为：起始位置、中止位置</span></span><br><span class="line">to_connection(<span class="string">&quot;pool1&quot;</span>, <span class="string">&quot;conv2&quot;</span>),</span><br><span class="line">to_connection(<span class="string">&quot;conv2&quot;</span>,<span class="string">&quot;pool2&quot;</span>),</span><br><span class="line"><span class="comment">#跨连接，参数为：起始位置、中止位置，pos默认为1.25</span></span><br><span class="line">to_skip(of = <span class="string">&quot;pool1&quot;</span>,to = <span class="string">&quot;pool2&quot;</span>,pos=<span class="number">1.25</span>),</span><br></pre></td></tr></table></figure>
+<p>效果如图所示：</p>
+<p><img src="/2021/05/10/%E9%9D%A2%E5%90%91Python%E7%9A%84PlotNeuralNet%E6%95%99%E7%A8%8B/connect_skip.png" alt="层间连接"></p>
+<p>pos的设置，若值大于1，表示向上平移1.25个高度，例如pos=1.25，表示skip这条线,相对于原点到终点的直线，向上平移1.25个高度；若小于1，表示该直线向下平衡若干单位</p>
+<h2 id="添加卷积层和relu层"><a class="markdownIt-Anchor" href="#添加卷积层和relu层"></a> 添加卷积层和Relu层</h2>
+<p>to_ConvConvRelu：卷积层+激活函数to_ConvConvRelu。该函数可以绘制2个卷积层和2个Relu层。即：Conv+Relu+Conv_Relu; 也可以只绘制1个卷积层和1个激活层。这里的关键点在于width=(number, number)。若绘制2个卷积层和Relu激活层，则width中的两个数字都不能为空；若只绘制1个激活层和1个Relu激活层，则width中的两个值，其中之一需要设置为0，例如width=(5, 0)。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">to_ConvConvRelu(name=<span class="string">&#x27;conv3&#x27;</span>, s_filer=<span class="number">224</span>, n_filer=(<span class="number">64</span>, <span class="number">64</span>), offset=<span class="string">&quot;(30,0,0)&quot;</span>, to=<span class="string">&quot;(0,0,0)&quot;</span>, width=(<span class="number">5</span>, <span class="number">5</span>), height=<span class="number">120</span>, depth=<span class="number">120</span>,caption=<span class="string">&#x27;ConvRelu3&#x27;</span>),</span><br><span class="line">to_ConvConvRelu(name=<span class="string">&#x27;conv4&#x27;</span>, s_filer=<span class="number">224</span>, n_filer=(<span class="number">64</span>, <span class="number">64</span>), offset=<span class="string">&quot;(43,0,0)&quot;</span>, to=<span class="string">&quot;(0,0,0)&quot;</span>, width=(<span class="number">5</span>, <span class="number">0</span>), height=<span class="number">120</span>, depth=<span class="number">120</span>,caption=<span class="string">&#x27;ConvRelu4&#x27;</span>),</span><br><span class="line">to_ConvConvRelu(<span class="string">&quot;conv5&quot;</span>, s_filer=<span class="number">224</span>, n_filer=(<span class="number">64</span>, <span class="number">64</span>), offset=<span class="string">&quot;(40,0,0)&quot;</span>, to=<span class="string">&quot;(pool2-east)&quot;</span>, height=<span class="number">100</span>, depth=<span class="number">100</span>, width=(<span class="number">4</span>,<span class="number">4</span>),caption=<span class="string">&quot;ConvRelu5&quot;</span> ),</span><br></pre></td></tr></table></figure>
+<p>效果如图所示：</p>
+<p><img src="/2021/05/10/%E9%9D%A2%E5%90%91Python%E7%9A%84PlotNeuralNet%E6%95%99%E7%A8%8B/convconvrelu.png" alt="卷积层和Relu层"></p>
+<ul>
+<li>n_filer=(64,64),width=(10,10)，会同时产生两个convrelu层，relu层厚度为默认厚度</li>
+<li>n_filer=(64,64),width=(10, 0)表示产生一个convrelu层，其中relu厚度为默认厚度</li>
+</ul>
+<h2 id="添加其它层"><a class="markdownIt-Anchor" href="#添加其它层"></a> 添加其它层</h2>
+<p>其他层的添加方法与上面几层基本一致。</p>
+<p>例如：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">to_UnPool(<span class="string">&#x27;Unpool&#x27;</span>, offset=<span class="string">&quot;(5,0,0)&quot;</span>, to=<span class="string">&quot;(0,0,0)&quot;</span>,height=<span class="number">64</span>, width=<span class="number">2</span>, depth=<span class="number">64</span>, caption=<span class="string">&#x27;Unpool&#x27;</span>),</span><br><span class="line">to_ConvRes(<span class="string">&quot;ConvRes&quot;</span>,  s_filer=<span class="number">512</span>, n_filer=<span class="number">64</span>, offset=<span class="string">&quot;(10,0,0)&quot;</span>, to=<span class="string">&quot;(0,0,0)&quot;</span>, height=<span class="number">64</span>, width=<span class="number">2</span>, depth=<span class="number">64</span>, caption=<span class="string">&#x27;ConvRes&#x27;</span>),</span><br><span class="line">to_ConvSoftMax(<span class="string">&quot;ConvSoftMax&quot;</span>,  s_filer=<span class="number">512</span>,  offset=<span class="string">&quot;(15,0,0)&quot;</span>, to=<span class="string">&quot;(0,0,0)&quot;</span>, height=<span class="number">64</span>, width=<span class="number">2</span>, depth=<span class="number">64</span>, caption=<span class="string">&#x27;ConvSoftMax&#x27;</span>),</span><br><span class="line">to_Sum(<span class="string">&quot;sum&quot;</span>, offset=<span class="string">&quot;(5,0,0)&quot;</span>, to=<span class="string">&quot;(ConvSoftMax-east)&quot;</span>, radius=<span class="number">2.5</span>, opacity=<span class="number">0.6</span>),</span><br></pre></td></tr></table></figure>
+<p>效果如下：</p>
+<p><img src="/2021/05/10/%E9%9D%A2%E5%90%91Python%E7%9A%84PlotNeuralNet%E6%95%99%E7%A8%8B/others.png" alt="其他网络层"></p>
+<h1 id="函数使用说明"><a class="markdownIt-Anchor" href="#函数使用说明"></a> 函数使用说明</h1>
+<h2 id="卷积层api详解"><a class="markdownIt-Anchor" href="#卷积层api详解"></a> 卷积层api详解</h2>
+<p>to_Conv(name=“conv1”, s_filer=512, n_filer=64, offset=“(0,0,0)”, to=“(0,0,0)”, height=64, depth=64, width=2, caption=‘conv1’ )<br>
+to_ConvConvRelu的参数含义相同。</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>参数值</th>
+<th>函数的功能</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>name</td>
+<td>“conv1”</td>
+<td>该层的名字</td>
+</tr>
+<tr>
+<td>s_filer(z_label)</td>
+<td>512</td>
+<td>写在左下角的z方向的数字</td>
+</tr>
+<tr>
+<td>n_filer(x_label)</td>
+<td>64</td>
+<td>写在左下角的x方向的数字</td>
+</tr>
+<tr>
+<td>offset(x,y,z)</td>
+<td>(0,0,0)</td>
+<td>和上一个图形在x,y,z方向上的偏移值，若x为1,则图像位于前面1的位置</td>
+</tr>
+<tr>
+<td>to(x,y,z)</td>
+<td>(0,0,0)</td>
+<td>若为(0,0,0)表示第一个图，若加上某一层的name,表示与该层相邻，距离为0。</td>
+</tr>
+<tr>
+<td>height</td>
+<td>64</td>
+<td>图像的高度,若没填，则为上一个图的一半</td>
+</tr>
+<tr>
+<td>depth</td>
+<td>64</td>
+<td>图像的深度,若没填，则为上一个图的一半</td>
+</tr>
+<tr>
+<td>width</td>
+<td>2</td>
+<td>图像的宽度,若没填，则为上一个图的一半</td>
+</tr>
+<tr>
+<td>opacity</td>
+<td>0.5</td>
+<td>图像的透明度</td>
+</tr>
+<tr>
+<td>caption</td>
+<td>2</td>
+<td>卷积层的名称</td>
+</tr>
+</tbody>
+</table>
+<h2 id="池化层api详解"><a class="markdownIt-Anchor" href="#池化层api详解"></a> 池化层api详解</h2>
+<p>to_Pool(name=“pool1”, offset=“(0,0,0)”, to=“(conv1-east)”,caption=‘pool1’)</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>参数值</th>
+<th>函数的功能</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>name</td>
+<td>“pool1”</td>
+<td>该层的名字</td>
+</tr>
+<tr>
+<td>offset(x,y,z)</td>
+<td>(0,0,0)</td>
+<td>和上一个图形在x,y,z方向上的偏移值，若都为0，则和原图像的位置相同</td>
+</tr>
+<tr>
+<td>to(x,y,z)</td>
+<td>“(conv1-east)”</td>
+<td>上一个图的name，再加上&quot;-east&quot;，跟在name这个图的后面</td>
+</tr>
+<tr>
+<td>height</td>
+<td>32</td>
+<td>若没填，则为上一个图的一半</td>
+</tr>
+<tr>
+<td>depth</td>
+<td>32</td>
+<td>若没填，则为上一个图的一半</td>
+</tr>
+<tr>
+<td>width</td>
+<td>1</td>
+<td>若没填，则为上一个图的一半</td>
+</tr>
+<tr>
+<td>opacity</td>
+<td>若为0.5</td>
+<td>透明度</td>
+</tr>
+</tbody>
+</table>
+<h2 id="卷积激活函数-to_convconvrelu"><a class="markdownIt-Anchor" href="#卷积激活函数-to_convconvrelu"></a> 卷积激活函数-to_ConvConvRelu</h2>
+<p>to_ConvConvRelu可以生成<strong>一个或多个convrelu层</strong></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">to_ConvConvRelu(name=<span class="string">&#x27;conv3&#x27;</span>, s_filer=<span class="number">224</span>, n_filer=(<span class="number">64</span>, <span class="number">64</span>), offset=<span class="string">&quot;(40,0,0)&quot;</span>, to=<span class="string">&quot;(0,0,0)&quot;</span>, width=(<span class="number">2</span>, <span class="number">2</span>), height=<span class="number">120</span>, depth=<span class="number">120</span>,caption=<span class="string">&#x27;ConvRelu3&#x27;</span>),</span><br><span class="line">to_ConvConvRelu(<span class="string">&quot;conv4&quot;</span>, <span class="number">112</span>, (<span class="number">128</span>,<span class="number">128</span>), offset=<span class="string">&quot;(6,0,0)&quot;</span>, to=<span class="string">&quot;(pool2-east)&quot;</span>, height=<span class="number">100</span>, depth=<span class="number">100</span>, width=(<span class="number">4</span>,<span class="number">4</span>),caption=<span class="string">&quot;ConvRelu4&quot;</span> ),</span><br></pre></td></tr></table></figure>
+<h2 id="激活函数-softmax"><a class="markdownIt-Anchor" href="#激活函数-softmax"></a> 激活函数-SoftMax</h2>
+<p>to_SoftMax(name=“soft1”, s_filer=10, offset=“(3,0,0)”, to=“(pool1-east)”, caption=“SOFT” )</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>参数值</th>
+<th>函数的功能</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>name</td>
+<td>“soft1”</td>
+<td>该层的名字</td>
+</tr>
+<tr>
+<td>s_filer(z_label)</td>
+<td>10</td>
+<td>写在左下角的z方向的数字</td>
+</tr>
+<tr>
+<td>offset(x,y,z)</td>
+<td>“(3,0,0)”</td>
+<td>和上一个图形在x,y,z方向上的偏移值，若都为0，则和原图像的位置相同</td>
+</tr>
+<tr>
+<td>to(x,y,z)</td>
+<td>“(pool1-east)”</td>
+<td>上一个图的name，再加上&quot;-east&quot;，表示与conv1层相邻，距离为0。</td>
+</tr>
+<tr>
+<td>caption</td>
+<td>“SOFT”</td>
+<td>标题（会显示在图中）</td>
+</tr>
+</tbody>
+</table>
+<h2 id="箭头连接"><a class="markdownIt-Anchor" href="#箭头连接"></a> 箭头连接</h2>
+<h3 id="to_connection"><a class="markdownIt-Anchor" href="#to_connection"></a> to_connection</h3>
+<p>to_connection( “pool1”, “conv2”)：从哪一个图到哪一个图画个箭头</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>参数值</th>
+<th>函数的功能</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>of</td>
+<td>“pool1”</td>
+<td>起始层</td>
+</tr>
+<tr>
+<td>to</td>
+<td>“conv2”</td>
+<td>中止层</td>
+</tr>
+</tbody>
+</table>
+<h3 id="跳接"><a class="markdownIt-Anchor" href="#跳接"></a> 跳接</h3>
+<p>to_skip(of = “pool1”,to = “pool2”,pos=1.5):参数为：起始位置、中止位置，pos默认为1.25</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>参数值</th>
+<th>函数的功能</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>of</td>
+<td>“pool1”</td>
+<td>起始层</td>
+</tr>
+<tr>
+<td>to</td>
+<td>“conv2”</td>
+<td>中止层</td>
+</tr>
+<tr>
+<td>pos</td>
+<td>1.25</td>
+<td>表示skip这条线,相对于原点到终点的直线，向上平移1.25个高度；若小于1，表示该直线向下平衡若干单位</td>
+</tr>
+</tbody>
+</table>
+<h2 id="自定义网络构件"><a class="markdownIt-Anchor" href="#自定义网络构件"></a> 自定义网络构件</h2>
+<p>如果自定义新的网络构件，就需要修改pycore文件夹下的tikzeng.py文件。<br>
+也可以可直接下载<a href="https://demonlord1997.github.io/2020/07/03/PlotNeuralNet%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E/," title="PlotNeuralNet个性化定制与使用说明">demonlord1997</a>博主修改好的<a href="https://demonlord1997.github.io/2020/07/03/PlotNeuralNet%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E/," title="PlotNeuralNet个性化定制与使用说明">tikzeng.py</a>文件。</p>
+<p>修改规则：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">func</span>(<span class="params">parameter</span>):</span><br><span class="line">    <span class="keyword">return</span> <span class="string">r&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    LaTeX grammar</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br></pre></td></tr></table></figure>
+<p>理论上，需要掌握基本的LaTeX语法才能对其进行修改，不过可以按照tikzeng.py文件中相关函数的定义，进行新构件的定制。</p>
+<p>为了支持中文，需要将tikzmake.sh中的pdflatex改成xelatex，如果安装了TeXlive或者MikTeX，可以手动指定xelatex的路径，例如，我的xelatex路径是<code>/usr/local/texlive/2019/bin/x86_64-linux/xelatex</code>,则tikzmake.sh文件可以修改为：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">python3 <span class="variable">$1</span>.py <span class="comment">#如果是Windows系统，则这里的python3应该写为python</span></span><br><span class="line"></span><br><span class="line">/usr/local/texlive/2019/bin/x86_64-linux/xelatex <span class="variable">$1</span>.tex <span class="comment">##指明xelatex路径</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">rm</span> *.aux *.<span class="built_in">log</span> *.vscodeLog</span><br><span class="line"><span class="built_in">rm</span> *.tex</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> [[ <span class="string">&quot;<span class="variable">$OSTYPE</span>&quot;</span> == <span class="string">&quot;darwin&quot;</span>* ]]; <span class="keyword">then</span></span><br><span class="line">    open <span class="variable">$1</span>.pdf</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">    xdg-open <span class="variable">$1</span>.pdf</span><br><span class="line"><span class="keyword">fi</span></span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>科研工具</category>
+        <category>可视化</category>
+      </categories>
+      <tags>
+        <tag>深度学习可视化</tag>
+        <tag>PlotNeuralNet</tag>
+      </tags>
+  </entry>
+</search>
